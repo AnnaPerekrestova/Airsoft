@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="433dp"
+        android:text="Bastardos Inmortales"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/members"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="30dp"
+        android:text="Состав команды"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:onClick="onClickMembers"/>
+
+    <Button
+        android:id="@+id/results"
+        android:layout_width="170dp"
+
+        android:layout_height="wrap_content"
+        android:layout_below="@id/members"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="30dp"
+        android:text="Результаты игр" />
+    <!--
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" -->
+
+
+    <Button
+        android:id="@+id/stats"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/results"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="30dp"
+        android:text="Статистика"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="366dp"
+        android:layout_height="419dp"
+
+        app:srcCompat="@drawable/vanya" />
+
+</RelativeLayout>
