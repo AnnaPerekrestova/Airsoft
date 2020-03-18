@@ -11,12 +11,14 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="433dp"
+        android:layout_marginTop="313dp"
         android:text="Bastardos Inmortales"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
 
     <Button
         android:id="@+id/members"
@@ -56,12 +58,5 @@
         android:text="Статистика"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="366dp"
-        android:layout_height="419dp"
-
-        app:srcCompat="@drawable/vanya" />
 
 </RelativeLayout>

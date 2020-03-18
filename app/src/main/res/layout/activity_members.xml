@@ -7,20 +7,24 @@
     tools:context=".MembersActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/add_new_member"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="307dp"
-        tools:layout_editor_absoluteY="35dp" />
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:text="Добавить нового участника команды"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TableLayout
         android:layout_width="409dp"
         android:layout_height="624dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="106dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp">
 
         <TableRow
+            
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
