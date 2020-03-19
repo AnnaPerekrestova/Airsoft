@@ -15,8 +15,8 @@
         android:text="Bastardos Inmortales"
         android:textAlignment="center"
         android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerHorizontal="true"
+
 
         />
 
@@ -25,20 +25,17 @@
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="30dp"
         android:text="Состав команды"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_centerHorizontal="true"
         android:onClick="onClickMembers"/>
 
     <Button
         android:id="@+id/results"
         android:layout_width="170dp"
-
         android:layout_height="wrap_content"
         android:layout_below="@id/members"
-        android:layout_marginStart="100dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="Результаты игр" />
     <!--
@@ -53,10 +50,8 @@
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/results"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="30dp"
         android:text="Статистика"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
