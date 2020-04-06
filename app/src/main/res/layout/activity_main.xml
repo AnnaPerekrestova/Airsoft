@@ -28,7 +28,7 @@
         android:layout_marginTop="30dp"
         android:text="Состав команды"
         android:layout_centerHorizontal="true"
-        android:onClick="onClickMembers"/>
+        />
 
     <Button
         android:id="@+id/results"
