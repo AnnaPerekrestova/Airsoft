@@ -17,21 +17,19 @@ public class MainActivity extends AppCompatActivity {
         addListenerOnButton();
 
     }
-    public void addListenerOnButton(){
-        Button buttonMembers = (Button)findViewById(R.id.members);
+
+    public void addListenerOnButton() {
+        Button buttonMembers = (Button) findViewById(R.id.members);
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View view){
+                    public void onClick(View view) {
                         Intent i = new Intent(".MembersActivity");
                         startActivity(i);
                     }
                 }
 
         );
-
-    }
-
 
     }
 }
