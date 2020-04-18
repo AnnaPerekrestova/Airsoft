@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,44 +10,51 @@
         android:id="@+id/add_new_member"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
-        android:text="Добавить нового участника команды"
-        />
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="43dp"
+        android:text="@string/add_new_team_member"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
 
-        tools:context=".MembersActivity"
         android:layout_width="409dp"
         android:layout_height="624dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_member"
+        tools:context=".MembersActivity">
 
         <TableRow
-            
+
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/textView_fio"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="ФИО"
+                android:layout_marginStart="30dp"
+                android:text="@string/FIO"
                 android:textAlignment="center"
                 android:textSize="26sp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="30dp"
 
-            />
+                />
+
             <TextView
                 android:id="@+id/textView_position"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Должность"
-                android:textAlignment="center"
-                android:textSize="26sp"
-                android:layout_centerHorizontal="true"
                 android:layout_marginStart="160dp"
-        />
+                android:text="@string/position"
+                android:textAlignment="center"
+                android:textSize="26sp" />
         </TableRow>
 
         <TableRow
@@ -63,4 +70,4 @@
             android:layout_height="match_parent" />
     </TableLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

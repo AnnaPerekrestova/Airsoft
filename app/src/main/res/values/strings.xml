@@ -2,4 +2,15 @@
     <string name="app_name">Airsoft</string>
     <string name="title_activity_members">MembersActivity</string>
     <string name="Statistic">Статистика</string>
+    <string name="plays_results">Результаты игр</string>
+    <string name="team_list">Состав команды</string>
+    <string name="bastardos_inmortales">Bastardos Inmortales</string>
+    <string name="add_new_team_member">Добавить нового участника команды</string>
+    <string name="FIO">ФИО</string>
+    <string name="position">Должность</string>
+    <string name="player_edit">Редактирование информации об игроке</string>
+    <string name="nickname">Позывной</string>
+    <string name="game_class">Класс</string>
+    <string name="weapons_inf">Информация об оружии</string>
+    <string name="save">Сохранить</string>
 </resources>
