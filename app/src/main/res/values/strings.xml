@@ -14,4 +14,5 @@
     <string name="weapons_inf">Информация об оружии</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
+    <string name="back">Назад</string>
 </resources>

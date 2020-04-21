@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="350dp"
         android:text="@string/weapons_inf"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,32 +86,32 @@
 
     <EditText
         android:id="@+id/arsenal"
-        android:layout_width="325dp"
-        android:layout_height="74dp"
+        android:layout_width="287dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="400dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="540dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/person_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save"
         android:layout_marginStart="280dp"
-        android:layout_marginTop="650dp"
+        android:layout_marginTop="500dp"
+        android:text="@string/save"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/person_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="180dp"
-        android:layout_marginTop="650dp"
+        android:layout_marginTop="500dp"
         android:text="@string/cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

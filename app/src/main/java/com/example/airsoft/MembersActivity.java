@@ -17,12 +17,22 @@ public class MembersActivity extends AppCompatActivity {
     }
     public void addListenerOnButton() {
         Button buttonAddPerson = findViewById(R.id.add_new_member);
-        //Button buttonMembers = findViewById(R.id.members);
+        Button buttonBack = findViewById(R.id.button_back);
         buttonAddPerson.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".PersonActivity");
+                        startActivity(i);
+                    }
+                }
+
+        );
+        buttonBack.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".MainActivity");
                         startActivity(i);
                     }
                 }
