@@ -25,7 +25,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/FIO"
+
+        android:hint="@string/FIO"
         android:layout_marginStart="35dp"
         android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/nickname"
+        android:inputType="text"
+        android:hint="@string/nickname"
         android:layout_marginStart="35dp"
         android:layout_marginTop="150dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/position"
+        android:hint="@string/position"
         android:layout_marginStart="35dp"
         android:layout_marginTop="200dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,18 +61,6 @@
         tools:ignore="Autofill,LabelFor" />
 
 
-    <EditText
-        android:id="@+id/game_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/game_class"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="250dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/textView5"
@@ -91,6 +80,7 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="400dp"
         android:ems="10"
+        android:hint="@string/weapons_inf"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         app:layout_constraintStart_toStartOf="parent"
