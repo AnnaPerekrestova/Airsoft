@@ -47,12 +47,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void addListenerOnButton() {
         Button buttonMembers = findViewById(R.id.members);
-        //Button buttonMembers = findViewById(R.id.members);
+        Button buttonGames = findViewById(R.id.games);
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".MembersActivity");
+                        startActivity(i);
+                    }
+                }
+
+        );
+        buttonGames.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".GamesActivity");
                         startActivity(i);
                     }
                 }

@@ -15,5 +15,12 @@
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="back">Назад</string>
+    <string name="addgame">Добавить игру</string>
+    <string name="gamedate">Дата</string>
+    <string name="place">Место</string>
+    <string name="winner">Победитель</string>
+    <string name="teams">Команды</string>
     <string name="to_main">На главную</string>
+    <string name="game_date">Дата</string>
+    <string name="new_game">Новая игра</string>
 </resources>

@@ -7,28 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MembersActivity extends AppCompatActivity {
+public class GamesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_members);
+        setContentView(R.layout.activity_games);
         addListenerOnButton();
     }
-    public void addListenerOnButton() {
-        Button buttonAddPerson = findViewById(R.id.add_new_member);
-        Button buttonBack = findViewById(R.id.button_back_members);
-        buttonAddPerson.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(".PersonActivity");
-                        startActivity(i);
-                    }
-                }
 
-        );
-        buttonBack.setOnClickListener(
+    public void addListenerOnButton() {
+        Button buttonBackGames = findViewById(R.id.button_back_games);
+        Button buttonNewGame = findViewById(R.id.add_game);
+        buttonBackGames.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -37,8 +28,19 @@ public class MembersActivity extends AppCompatActivity {
                 }
 
         );
+        buttonNewGame.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".NewGameActivity");
+                        startActivity(i);
+                    }
+                }
 
+        );
     }
+
+
 
 
 }

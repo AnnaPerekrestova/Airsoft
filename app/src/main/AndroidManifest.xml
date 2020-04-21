@@ -9,6 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".NewGameActivity">
+            <intent-filter>
+                <action android:name=".NewGameActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GamesActivity">
+            <intent-filter>
+                <action android:name=".GamesActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".PersonActivity">
             <intent-filter>
                 <action android:name=".PersonActivity" />
@@ -17,11 +31,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MembersActivity">
-        <intent-filter>
-            <action android:name=".MembersActivity" />
+            <intent-filter>
+                <action android:name=".MembersActivity" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

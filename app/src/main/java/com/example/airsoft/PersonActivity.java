@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
-
-import static java.util.logging.Logger.global;
 
 public class PersonActivity extends AppCompatActivity {
 
@@ -35,15 +34,13 @@ public class PersonActivity extends AppCompatActivity {
         DatabaseReference db_personNickname;
         DatabaseReference db_personPosition;
         DatabaseReference db_personArsenal;
-        db_personFIO = database.getReference("Team/members_id/1/FIO");
-        db_personNickname= database.getReference("Team/members_id/1/Nickname");
-        db_personPosition = database.getReference("Team/members_id/1/Position");
-        db_personArsenal = database.getReference("Team/members_id/1/Arsenal");
-        db_personFIO = database.getReference("Team/members_id/1/FIO");
-        db_personNickname= database.getReference("Team/members_id/1/Nickname");
-        db_personPosition = database.getReference("Team/members_id/1/Position");
-        db_personArsenal = database.getReference("Team/members_id/1/Arsenal");
 
+        String key = database.getReference("quiz").push().getKey();
+
+        db_personFIO = database.getReference("Team/members_id/"+key+"/FIO");
+        db_personNickname= database.getReference("Team/members_id/"+key+"/Nickname");
+        db_personPosition = database.getReference("Team/members_id/"+key+"/Position");
+        db_personArsenal = database.getReference("Team/members_id/"+key+"/Arsenal");
         db_personFIO.setValue(personFIO);
         db_personNickname.setValue(personNickname);
         db_personPosition.setValue(personPosition);
