@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MembersActivity extends AppCompatActivity {
 
@@ -29,13 +30,13 @@ public class MembersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
         addListenerOnButton();
-
+        //add_to_members_table();
+        addRow();
 
 
 
     }
-    public void all_members(){
-        setContentView(R.layout.activity_new_game);
+    public void add_to_members_table(){
         final List<String> userIdList = new ArrayList<>();
         final List<List<String>> fio_pos=new ArrayList<>();
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Team");
@@ -45,7 +46,8 @@ public class MembersActivity extends AppCompatActivity {
                 if(dataSnapshot==null)return;
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                     userIdList.add(postSnapShot.getKey());
-                    Log.d("test", postSnapShot.getKey());
+                    Log.d("work_test_a", postSnapShot.getKey());
+                    //Log.d("work_test_b",  userIdList.get(0));
 
                 }
             }
@@ -55,8 +57,18 @@ public class MembersActivity extends AppCompatActivity {
                 // Error
             }
         });
+        try {
+            TimeUnit.SECONDS.sleep(5);
+            Log.d("test_do", "wait_time");
+        } catch (InterruptedException e) {
+            Log.d("test_do", "test_dodotime");
+        }
+        //Log.d("any_id", userIdList.get(1));
+        Log.d("test_do", "test_dododo");
+        //Log.d("work_test_do",  userIdList.get(0));
         for (String i: userIdList){
             int id = Integer.parseInt (i);
+            Log.d("work_test_c", "new_messenge");
             databaseRef.child("members_id").child(i).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
@@ -73,31 +85,37 @@ public class MembersActivity extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {
                     // Error
                 }
+
             });
+            Log.d("test_do", "test_what");
 
         }
         for (List<String> i: fio_pos){
-            addRow(Integer.parseInt(i.get(0)),Integer.parseInt(i.get(1)));
+            Log.d("test_do", "test_dodono");
+            //addRow(i.get(0),i.get(1));
         }
     }
 
-
-    public void addRow(int fio, int position) {
+//   String fio, String position
+    public void addRow() {
         //Сначала найдем в разметке активити саму таблицу по идентификатору
         TableLayout tableLayout = (TableLayout) findViewById(R.id.tableMembers);
         //Создаём экземпляр инфлейтера, который понадобится для создания строки таблицы из шаблона. В качестве контекста у нас используется сама активити
         LayoutInflater inflater = LayoutInflater.from(this);
         //Создаем строку таблицы, используя шаблон из файла /res/layout/table_row.xml
         TableRow tr = (TableRow) inflater.inflate(R.layout.members_row, null);
-        //Находим ячейку для номера дня по идентификатору
+        //Находим ячейку по идентификатору
         TextView tv = (TextView) tr.findViewById(R.id.textView_fio_string);
         //Обязательно приводим число к строке, иначе оно будет воспринято как идентификатор ресурса
-        tv.setText(fio);
+        tv.setText("fio");
         //Ищем следующую ячейку и устанавливаем её значение
         tv = (TextView) tr.findViewById(R.id.textView_position_string);
-        tv.setText(position);
+        tv.setText("position");
 
         tableLayout.addView(tr); //добавляем созданную строку в таблицу
+
+        Log.d("test_do", "test_dododowhat");
+
     }
 
     public void addListenerOnButton() {

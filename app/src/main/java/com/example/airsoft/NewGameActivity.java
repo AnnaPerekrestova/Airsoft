@@ -20,23 +20,25 @@ public class NewGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
-        final List<String> userIdList = new ArrayList();
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Team");
-        databaseRef.child("members_id").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot==null)return;
-                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    userIdList.add(postSnapShot.getKey());
-                    Log.d("test", postSnapShot.getKey());
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-            }
-        });
+
+//        final List<String> userIdList = new ArrayList();
+//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Team");
+//        databaseRef.child("members_id").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot==null)return;
+//                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+//                    userIdList.add(postSnapShot.getKey());
+//                    Log.d("test", postSnapShot.getKey());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // Error
+//            }
+//        });
     }
 
 
