@@ -10,16 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TestRecycle"
-            android:label="@string/title_activity_test_recycle"
+            android:name=".MembersRecyclerActivity"
+            android:label="@string/title_activity_members_recycler"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name=".TestRecycle" />
+                <action android:name=".MembersRecyclerActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".MemberInfo"></activity>
+        <activity android:name=".MemberInfo" />
         <activity android:name=".NewGameActivity">
             <intent-filter>
                 <action android:name=".NewGameActivity" />

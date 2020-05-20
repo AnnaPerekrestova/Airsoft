@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".MembersActivity");
+                        Intent i = new Intent(".MembersRecyclerActivity");
                         startActivity(i);
                     }
                 }

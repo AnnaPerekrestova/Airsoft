@@ -50,27 +50,6 @@ public class PersonActivity extends AppCompatActivity {
     public void addListenerOnButton() {
         Button buttonPersonSave = findViewById(R.id.person_save);
         Button buttonPersonCancel = findViewById(R.id.person_cancel);
-//        final String personFIO = ((EditText)findViewById(R.id.person_fio)).getText().toString();
-//        final String personNickname = ((EditText)findViewById(R.id.nickname)).getText().toString();
-//        final String personPosition = ((EditText)findViewById(R.id.person_position)).getText().toString();
-//        final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference db_personFIO;
-//        DatabaseReference db_personNickname;
-//        DatabaseReference db_personPosition;
-//        DatabaseReference db_personArsenal;
-//        db_personFIO = database.getReference("Team/members_id/1/FIO");
-//        db_personNickname= database.getReference("Team/members_id/1/Nickname");
-//        db_personPosition = database.getReference("Team/members_id/1/Position");
-//        db_personArsenal = database.getReference("Team/members_id/1/Arsenal");
-
-//        db_personFIO.setValue(personFIO);
-//        db_personNickname.setValue(personNickname);
-//        db_personPosition.setValue(personPosition);
-//        db_personArsenal.setValue(personArsenal);
-
-
 
         buttonPersonSave.setOnClickListener(
                 new View.OnClickListener() {
@@ -79,7 +58,7 @@ public class PersonActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         to_db();
-                        Intent i = new Intent(".MembersActivity");
+                        Intent i = new Intent(".MembersRecyclerActivity");
                         startActivity(i);
                         finish();
                     }
