@@ -79,6 +79,8 @@ public class PersonActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         to_db();
+                        Intent i = new Intent(".MembersActivity");
+                        startActivity(i);
                         finish();
                     }
                 }

@@ -30,17 +30,18 @@ public class MembersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
         addListenerOnButton();
-        //add_to_members_table();
-        addRow();
+        add_to_members_table();
+//        addRow();
+        Log.d("test_do", "test_aaaaaa");
 
 
 
     }
     public void add_to_members_table(){
         final List<String> userIdList = new ArrayList<>();
-        final List<List<String>> fio_pos=new ArrayList<>();
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Team");
-        databaseRef.child("members_id").addValueEventListener(new ValueEventListener() {
+        //final List<List<String>> fio_pos=new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Team");
+        databaseRef.child("members_id").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot==null)return;
@@ -50,6 +51,7 @@ public class MembersActivity extends AppCompatActivity {
                     //Log.d("work_test_b",  userIdList.get(0));
 
                 }
+                setdata(databaseRef, userIdList);
             }
 
             @Override
@@ -57,47 +59,45 @@ public class MembersActivity extends AppCompatActivity {
                 // Error
             }
         });
-        try {
-            TimeUnit.SECONDS.sleep(5);
-            Log.d("test_do", "wait_time");
-        } catch (InterruptedException e) {
-            Log.d("test_do", "test_dodotime");
-        }
         //Log.d("any_id", userIdList.get(1));
+
+    }
+
+    private void setdata(DatabaseReference databaseRef, List<String> userIdList) {
         Log.d("test_do", "test_dododo");
         //Log.d("work_test_do",  userIdList.get(0));
         for (String i: userIdList){
-            int id = Integer.parseInt (i);
+//            int id = Integer.parseInt (i);
             Log.d("work_test_c", "new_messenge");
-            databaseRef.child("members_id").child(i).addValueEventListener(new ValueEventListener() {
+            databaseRef.child("members_id").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
-                    if(dataSnapshot2==null)return;
-                    String fio =  (String)dataSnapshot2.child("fio").getValue();
-                    String pos = (String)dataSnapshot2.child("position").getValue();
-                    List<String> newList = Arrays.asList(fio, pos);
-                    fio_pos.add(newList);
 
-                    }
+                    if(dataSnapshot2==null)return;
+                    String fio =  (String)dataSnapshot2.child("FIO").getValue();
+                    String pos = (String)dataSnapshot2.child("Position").getValue();
+                    Log.d("test_fio", fio);
+                    Log.d("test_pos", pos);
+                    addRow(fio,pos);
+
+                }
 
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Error
+                    Log.d("test_do", "wait_time");
                 }
 
             });
             Log.d("test_do", "test_what");
 
         }
-        for (List<String> i: fio_pos){
-            Log.d("test_do", "test_dodono");
-            //addRow(i.get(0),i.get(1));
-        }
+
     }
 
-//   String fio, String position
-    public void addRow() {
+
+    public void addRow(String fio, String position) {
         //Сначала найдем в разметке активити саму таблицу по идентификатору
         TableLayout tableLayout = (TableLayout) findViewById(R.id.tableMembers);
         //Создаём экземпляр инфлейтера, который понадобится для создания строки таблицы из шаблона. В качестве контекста у нас используется сама активити
@@ -107,10 +107,10 @@ public class MembersActivity extends AppCompatActivity {
         //Находим ячейку по идентификатору
         TextView tv = (TextView) tr.findViewById(R.id.textView_fio_string);
         //Обязательно приводим число к строке, иначе оно будет воспринято как идентификатор ресурса
-        tv.setText("fio");
+        tv.setText(fio);
         //Ищем следующую ячейку и устанавливаем её значение
         tv = (TextView) tr.findViewById(R.id.textView_position_string);
-        tv.setText("position");
+        tv.setText(position);
 
         tableLayout.addView(tr); //добавляем созданную строку в таблицу
 
@@ -127,6 +127,7 @@ public class MembersActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent i = new Intent(".PersonActivity");
                         startActivity(i);
+                        finish();
                     }
                 }
 
@@ -140,8 +141,7 @@ public class MembersActivity extends AppCompatActivity {
                 }
 
         );
-
+        Log.d("test_do", "wait_time");
     }
-
 
 }

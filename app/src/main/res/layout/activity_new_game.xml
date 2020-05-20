@@ -7,36 +7,109 @@
     tools:context=".NewGameActivity">
 
 
-    <EditText
-        android:id="@+id/game_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="11dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_create" />
-
-    <EditText
-        android:id="@+id/game_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="3dp"
-        android:ems="10"
-        android:inputType="time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_date" />
-
     <TextView
         android:id="@+id/game_create"
         android:layout_width="217dp"
         android:layout_height="38dp"
-        android:layout_marginStart="96dp"
+        android:layout_marginStart="97dp"
         android:layout_marginTop="32dp"
         android:text="@string/new_game_create"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/currentDateTime"
+        android:layout_width="217dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/game_create" />
+
+    <Button
+        android:id="@+id/timeButton"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:onClick="setTime"
+        android:text="@string/ChageTime"
+        app:layout_constraintStart_toEndOf="@+id/dateButton"
+        app:layout_constraintTop_toBottomOf="@+id/currentDateTime" />
+
+    <Button
+        android:id="@+id/dateButton"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
+        android:onClick="setDate"
+        android:text="@string/ChageDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentDateTime" />
+
+
+    <Spinner
+        android:id="@+id/maps"
+        android:layout_width="171dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="40dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintStart_toEndOf="@+id/map"
+        app:layout_constraintTop_toBottomOf="@+id/timeButton" />
+
+    <Spinner
+        android:id="@+id/teams"
+        android:layout_width="171dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="28dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintStart_toEndOf="@+id/textView_winner"
+        app:layout_constraintTop_toBottomOf="@+id/maps" />
+
+    <TextView
+        android:id="@+id/textView_winner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/Winner"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map" />
+
+    <TextView
+        android:id="@+id/map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/Map"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateButton" />
+
+    <Button
+        android:id="@+id/game_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="324dp"
+        android:text="@string/cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teams" />
+
+    <Button
+        android:id="@+id/game_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="324dp"
+        android:text="@string/save"
+        app:layout_constraintStart_toEndOf="@+id/game_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/teams" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

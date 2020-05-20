@@ -25,4 +25,9 @@
     <string name="new_game">Новая игра</string>
     <string name="equipment_info">Информация о снаряжении</string>
     <string name="new_game_create">Создание новой игры</string>
+    <string name="Winner">Победитель</string>
+    <string name="ChageDate">Изменить дату</string>
+    <string name="ChageTime">Изменить время</string>
+    <string name="Map">Место проведения</string>
+    <string name="MemberInfo">Информация об игроке</string>
 </resources>
