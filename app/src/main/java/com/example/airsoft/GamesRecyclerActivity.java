@@ -3,6 +3,8 @@ package com.example.airsoft;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,25 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MembersRecyclerActivity extends AppCompatActivity {
+public class GamesRecyclerActivity extends AppCompatActivity {
     private List<MembersClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_members_recycler);
-
+        setContentView(R.layout.activity_games_recycler);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_games);
 
         mAdapter = new MembersAdapter(membersList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -43,20 +42,20 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        add_to_members_table();
+        add_to_games_table();
         //addListenerOnButton();
     }
-    public void add_to_members_table(){
-        final List<String> membersIdList = new ArrayList<>();
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
-        databaseRef.child("members_id").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void add_to_games_table(){
+        final List<String> gameIdList = new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Games");
+        databaseRef.child("game_id").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot==null)return;
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    membersIdList.add(postSnapShot.getKey());
+                    gameIdList.add(postSnapShot.getKey());
                 }
-                SetData(databaseRef, membersIdList);
+                SetData(databaseRef, gameIdList);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -68,15 +67,15 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
     private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
         for (String i: userIdList){
-            databaseRef.child("members_id").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseRef.child("game_id").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
-
                     if(dataSnapshot2==null)return;
-                    String fio =  (String)dataSnapshot2.child("FIO").getValue();
-                    String nick = (String)dataSnapshot2.child("Nickname").getValue();
+                    String date_time =  (String)dataSnapshot2.child("DateTime").getValue();
+                    String winner = (String)dataSnapshot2.child("WinnerTeam").getValue();
+                    String map = (String)dataSnapshot2.child("Map").getValue();
 
-                    addRow(fio,nick);
+                    addRow(date_time,map,winner);
                 }
 
                 @Override
@@ -88,11 +87,11 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         }
     }
 
-    private void addRow(String fio_from_base, String nick_from_base ) {
-        MembersClass member = new MembersClass(fio_from_base, nick_from_base);
-        membersList.add(member);
+    private void addRow(String date_time_from_base, String map_from_base, String winner_from_base ) {
+        GamesClass game = new GamesClass(date_time_from_base, map_from_base, winner_from_base);
+        //membersList.add(game);
 
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
     }
 //    public void addListenerOnButton() {
 //        Button buttonAddPerson = findViewById(R.id.members_fab);
@@ -109,9 +108,10 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 //    }
 
 
-    public void addNewMember(View view) {
-        Intent i = new Intent(".PersonActivity");
+
+
+    public void addNewGame(View view) {
+        Intent i = new Intent(".NewGameActivity");
         startActivity(i);
-        //finish();
     }
 }

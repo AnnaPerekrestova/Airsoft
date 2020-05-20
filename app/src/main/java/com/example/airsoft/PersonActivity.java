@@ -37,10 +37,10 @@ public class PersonActivity extends AppCompatActivity {
 
         String key = database.getReference("quiz").push().getKey();
 
-        db_personFIO = database.getReference("Team/members_id/"+key+"/FIO");
-        db_personNickname= database.getReference("Team/members_id/"+key+"/Nickname");
-        db_personPosition = database.getReference("Team/members_id/"+key+"/Position");
-        db_personArsenal = database.getReference("Team/members_id/"+key+"/Arsenal");
+        db_personFIO = database.getReference("Members/members_id/"+key+"/FIO");
+        db_personNickname= database.getReference("Members/members_id/"+key+"/Nickname");
+        db_personPosition = database.getReference("Members/members_id/"+key+"/Position");
+        db_personArsenal = database.getReference("Members/members_id/"+key+"/Arsenal");
         db_personFIO.setValue(personFIO);
         db_personNickname.setValue(personNickname);
         db_personPosition.setValue(personPosition);

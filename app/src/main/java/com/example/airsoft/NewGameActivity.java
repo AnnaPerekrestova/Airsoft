@@ -64,6 +64,28 @@ public class NewGameActivity extends AppCompatActivity {
     String selected = spinner.getSelectedItem().toString();
 Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();*/
 
+    public void add_to_db(){
+        final String gameDateTime = ((TextView)findViewById(R.id.currentDateTime)).getText().toString();
+        final String winnerTeam = ((Spinner)findViewById(R.id.teams)).getSelectedItem().toString();
+        final String gameMap = ((Spinner)findViewById(R.id.maps)).getSelectedItem().toString();
+        //final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference db_gameDateTime;
+        DatabaseReference db_winnerTeam;
+        DatabaseReference db_gameMap;
+        //DatabaseReference db_personArsenal;
+
+        String key = database.getReference("quiz").push().getKey();
+
+        db_gameDateTime = database.getReference("Games/game_id/"+key+"/DateTime");
+        db_winnerTeam= database.getReference("Games/game_id/"+key+"/WinnerTeam");
+        db_gameMap = database.getReference("Games/game_id/"+key+"/Map");
+        //db_personArsenal = database.getReference("Games/games_id/"+key+"/DateTime");
+        db_gameDateTime.setValue(gameDateTime);
+        db_winnerTeam.setValue(winnerTeam);
+        db_gameMap.setValue(gameMap);
+        //db_personArsenal.setValue(personArsenal);
+    }
     public void addListenerOnButton() {
         Button button_cancel = findViewById(R.id.game_cancel);
         Button button_save = findViewById(R.id.game_save);
@@ -80,9 +102,8 @@ Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();*/
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        /*finish()*/
-                        /*здесь будет сохранение новой игры*/
-                        ;
+                        finish();
+                        add_to_db();
                     }
                 }
 

@@ -10,6 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".GamesRecyclerActivity"
+            android:label="@string/title_activity_games_recycler"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".GamesRecyclerActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".MembersRecyclerActivity"
             android:label="@string/title_activity_members_recycler"
             android:theme="@style/AppTheme.NoActionBar">
@@ -18,7 +28,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
         <activity android:name=".MemberInfo" />
         <activity android:name=".NewGameActivity">
@@ -38,13 +47,6 @@
         <activity android:name=".PersonActivity">
             <intent-filter>
                 <action android:name=".PersonActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".MembersActivity">
-            <intent-filter>
-                <action android:name=".MembersActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
