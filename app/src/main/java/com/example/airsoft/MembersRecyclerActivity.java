@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private List<MembersClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
+    private String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,20 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                MembersClass selected_member = membersList.get(position);
+                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(".MemberInfo");
+                startActivity(i);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         add_to_members_table();
         //addListenerOnButton();
     }
@@ -75,6 +91,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
                     if(dataSnapshot2==null)return;
                     String fio =  (String)dataSnapshot2.child("FIO").getValue();
                     String nick = (String)dataSnapshot2.child("Nickname").getValue();
+
 
                     addRow(fio,nick);
                 }
@@ -114,4 +131,6 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         startActivity(i);
         //finish();
     }
+
+
 }

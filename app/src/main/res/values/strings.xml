@@ -39,6 +39,7 @@
     <string name="ChageTime">Изменить время</string>
     <string name="Map">Место проведения</string>
     <string name="MemberInfo">Информация об игроке</string>
+    <string name="GameInfo">Информация об игре</string>
     <string name="title_activity_members_recycler">MembersRecyclerActivity</string>
     <string name="title_activity_games_recycler">GamesRecyclerActivity</string>
 </resources>
