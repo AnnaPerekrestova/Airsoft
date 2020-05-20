@@ -41,9 +41,9 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        MembersClass movie = membersList.get(position);
-        holder.nickname.setText(movie.getNickname());
-        holder.fio.setText(movie.getFio());
+        MembersClass member = membersList.get(position);
+        holder.nickname.setText(member.getNickname());
+        holder.fio.setText(member.getFio());
 
     }
 

@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GamesRecyclerActivity extends AppCompatActivity {
-    private List<MembersClass> membersList = new ArrayList<>();
+    private List<GamesClass> gameList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private MembersAdapter mAdapter;
+    private GamesAdapter gAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +36,11 @@ public class GamesRecyclerActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_games);
 
-        mAdapter = new MembersAdapter(membersList);
+        gAdapter = new GamesAdapter(gameList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(gAdapter);
 
         add_to_games_table();
         //addListenerOnButton();
@@ -89,9 +89,9 @@ public class GamesRecyclerActivity extends AppCompatActivity {
 
     private void addRow(String date_time_from_base, String map_from_base, String winner_from_base ) {
         GamesClass game = new GamesClass(date_time_from_base, map_from_base, winner_from_base);
-        //membersList.add(game);
+        gameList.add(game);
 
-        //mAdapter.notifyDataSetChanged();
+        gAdapter.notifyDataSetChanged();
     }
 //    public void addListenerOnButton() {
 //        Button buttonAddPerson = findViewById(R.id.members_fab);
