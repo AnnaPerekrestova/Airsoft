@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public void addListenerOnButton() {
         Button buttonMembers = findViewById(R.id.members);
         Button buttonGames = findViewById(R.id.games);
+        Button rec = findViewById(R.id.recycler_button);
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -63,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".GamesActivity");
+                        startActivity(i);
+                    }
+                }
+
+        );
+        rec.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".TestRecycle");
                         startActivity(i);
                     }
                 }

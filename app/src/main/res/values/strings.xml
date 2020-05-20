@@ -25,6 +25,15 @@
     <string name="new_game">Новая игра</string>
     <string name="equipment_info">Информация о снаряжении</string>
     <string name="new_game_create">Создание новой игры</string>
+    <string name="title_activity_test_recycle">TestRecycle</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="Winner">Победитель</string>
     <string name="ChageDate">Изменить дату</string>
     <string name="ChageTime">Изменить время</string>
