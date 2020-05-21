@@ -53,7 +53,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
                 String id_member = (String) selected_member.getMember_id();
                 Intent intent = new Intent(".MemberInfo");
-                intent.putExtra("id_m", id_member.toString());
+                intent.putExtra("id_m", id_member);
                 startActivity(intent);
 
             }
