@@ -49,9 +49,13 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 MembersClass selected_member = membersList.get(position);
-                Toast.makeText(getApplicationContext(), selected_member.getMember_id() + " is selected!", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(".MemberInfo");
-                startActivity(i);
+                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
+
+                String id_member = (String) selected_member.getMember_id();
+                Intent intent = new Intent(".MemberInfo");
+                intent.putExtra("id_m", id_member.toString());
+                startActivity(intent);
+
             }
 
             @Override
@@ -96,12 +100,12 @@ public class MembersRecyclerActivity extends AppCompatActivity {
                 }
 
 
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Error
                     Log.d("Error", "databaseError");
                 }
-
             });
         }
     }
