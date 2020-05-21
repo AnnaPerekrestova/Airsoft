@@ -49,7 +49,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 MembersClass selected_member = membersList.get(position);
-                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), selected_member.getMember_id() + " is selected!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(".MemberInfo");
                 startActivity(i);
             }
@@ -83,30 +83,31 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     }
 
     private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
-        for (String i: userIdList){
-            databaseRef.child("members_id").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
+        for (final String id: userIdList){
+            databaseRef.child("members_id").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
 
                     if(dataSnapshot2==null)return;
                     String fio =  (String)dataSnapshot2.child("FIO").getValue();
                     String nick = (String)dataSnapshot2.child("Nickname").getValue();
-
-
-                    addRow(fio,nick);
+                    addRow(id,fio,nick);
                 }
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Error
                     Log.d("Error", "databaseError");
                 }
+
             });
         }
     }
 
-    private void addRow(String fio_from_base, String nick_from_base ) {
-        MembersClass member = new MembersClass(fio_from_base, nick_from_base);
+    private void addRow(String id_from_base, String fio_from_base, String nick_from_base ) {
+        MembersClass member = new MembersClass(id_from_base, fio_from_base, nick_from_base);
         membersList.add(member);
 
         mAdapter.notifyDataSetChanged();
