@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,24 @@ public class GamesRecyclerActivity extends AppCompatActivity {
         recyclerView.setAdapter(gAdapter);
 
         add_to_games_table();
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                GamesClass selected_game = gameList.get(position);
+                Toast.makeText(getApplicationContext(), selected_game.getGame_id() + " is selected!", Toast.LENGTH_SHORT).show();
+
+//                String id_member = (String) selected_member.getMember_id();
+//                Intent intent = new Intent(".MemberInfo");
+//                intent.putExtra("id_m", id_member);
+//                startActivity(intent);
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         //addListenerOnButton();
     }
     public void add_to_games_table(){
@@ -66,8 +85,8 @@ public class GamesRecyclerActivity extends AppCompatActivity {
     }
 
     private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
-        for (String i: userIdList){
-            databaseRef.child("game_id").child(i).addListenerForSingleValueEvent(new ValueEventListener() {
+        for (final String id: userIdList){
+            databaseRef.child("game_id").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
                     if(dataSnapshot2==null)return;
@@ -75,7 +94,7 @@ public class GamesRecyclerActivity extends AppCompatActivity {
                     String winner = (String)dataSnapshot2.child("WinnerTeam").getValue();
                     String map = (String)dataSnapshot2.child("Map").getValue();
 
-                    addRow(date_time,map,winner);
+                    addRow(id, date_time,map,winner);
                 }
 
                 @Override
@@ -87,8 +106,8 @@ public class GamesRecyclerActivity extends AppCompatActivity {
         }
     }
 
-    private void addRow(String date_time_from_base, String map_from_base, String winner_from_base ) {
-        GamesClass game = new GamesClass(date_time_from_base, map_from_base, winner_from_base);
+    private void addRow(String id_from_base, String date_time_from_base, String map_from_base, String winner_from_base ) {
+        GamesClass game = new GamesClass(id_from_base, date_time_from_base, map_from_base, winner_from_base);
         gameList.add(game);
 
         gAdapter.notifyDataSetChanged();
@@ -111,7 +130,7 @@ public class GamesRecyclerActivity extends AppCompatActivity {
 
 
     public void addNewGame(View view) {
-        Intent i = new Intent(".NewGameActivity");
+        Intent i = new Intent(".NewGameRecyclerActivity");
         startActivity(i);
     }
 }

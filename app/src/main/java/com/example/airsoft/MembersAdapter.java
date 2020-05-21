@@ -27,8 +27,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
     }
 
 
-    public MembersAdapter(List<MembersClass> moviesList) {
-        this.membersList = moviesList;
+    public MembersAdapter(List<MembersClass> membersList) {
+        this.membersList = membersList;
     }
 
     @Override

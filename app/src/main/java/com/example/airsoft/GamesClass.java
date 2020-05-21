@@ -1,16 +1,23 @@
 package com.example.airsoft;
 
 public class GamesClass {
-    private String date_time, map, winner;
+    private String game_id, date_time, map, winner;
 
     public GamesClass() {
     }
 
-    public GamesClass(String date_time, String map, String winner) {
+    public GamesClass(String game_id, String date_time, String map, String winner) {
+        this.game_id = game_id;
         this.date_time = date_time;
         this.map = map;
         this.winner = winner;
 
+    }
+
+    public String getGame_id() { return game_id; }
+
+    public void setGame_id(String gameID) {
+        this.game_id = gameID;
     }
 
     public String getDate_time() {

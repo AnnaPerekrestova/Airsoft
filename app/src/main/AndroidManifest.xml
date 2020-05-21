@@ -9,8 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GameInfoActivity"></activity>
+        <activity
+            android:name=".NewGameRecyclerActivity"
+            android:label="@string/title_activity_new_game_recycler"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".NewGameRecyclerActivity" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GameInfoActivity" />
         <activity
             android:name=".GamesRecyclerActivity"
             android:label="@string/title_activity_games_recycler"
@@ -31,17 +40,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MemberInfo" >
+        <activity android:name=".MemberInfo">
             <intent-filter>
                 <action android:name=".MemberInfo" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".NewGameActivity">
-            <intent-filter>
-                <action android:name=".NewGameActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

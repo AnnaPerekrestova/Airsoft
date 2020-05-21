@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewGameActivity">
-
-
+    android:scrollbars="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_new_game_recycler"
+    tools:context=".NewGameRecyclerActivity">
     <TextView
         android:id="@+id/game_create"
         android:layout_width="217dp"
@@ -48,38 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentDateTime" />
 
-
-    <Spinner
-        android:id="@+id/maps"
-        android:layout_width="171dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="40dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintStart_toEndOf="@+id/map"
-        app:layout_constraintTop_toBottomOf="@+id/timeButton" />
-
-    <Spinner
-        android:id="@+id/teams"
-        android:layout_width="171dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="28dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintStart_toEndOf="@+id/textView_winner"
-        app:layout_constraintTop_toBottomOf="@+id/maps" />
-
-    <TextView
-        android:id="@+id/textView_winner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="45dp"
-        android:text="@string/Winner"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
-
     <TextView
         android:id="@+id/map"
         android:layout_width="wrap_content"
@@ -91,25 +60,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateButton" />
 
-    <Button
-        android:id="@+id/game_cancel"
+    <Spinner
+        android:id="@+id/maps"
+        android:layout_width="171dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="40dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintStart_toEndOf="@+id/map"
+        app:layout_constraintTop_toBottomOf="@+id/timeButton" />
+
+    <TextView
+        android:id="@+id/textView_winner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="324dp"
-        android:text="@string/cancel"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/Winner"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teams" />
+        app:layout_constraintTop_toBottomOf="@+id/map" />
+    <Spinner
+        android:id="@+id/teams"
+        android:layout_width="171dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="28dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintStart_toEndOf="@+id/textView_winner"
+        app:layout_constraintTop_toBottomOf="@+id/maps" />
 
-    <Button
-        android:id="@+id/game_save"
+
+
+    <TextView
+        android:id="@+id/textView_distribution_by_teams"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="324dp"
-        android:text="@string/save"
-        app:layout_constraintStart_toEndOf="@+id/game_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/teams" />
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/distribution_by_teams"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_winner" />
 
 
+    <ScrollView
+        android:id="@+id/scroll_member_team"
+        android:layout_width="408dp"
+        android:layout_height="217dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_distribution_by_teams"
+        tools:ignore="MissingConstraints">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_new_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/textView_distribution_by_teams"
+            tools:ignore="MissingConstraints" />
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
