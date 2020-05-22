@@ -15,40 +15,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-    private Button buttonMembers;
-    private String st;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message/path");
-        myRef.setValue("Hello, egor!");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                st=value;
-                Log.d("stringtest", "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("egor", "Failed to read value.", error.toException());
-            }
-        });
-
 
     }
 
     public void addListenerOnButton() {
         Button buttonMembers = findViewById(R.id.members);
         Button buttonGames = findViewById(R.id.games);
-        Button rec = findViewById(R.id.recycler_button);
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -64,16 +41,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".GamesRecyclerActivity");
-                        startActivity(i);
-                    }
-                }
-
-        );
-        rec.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(".TestRecycle");
                         startActivity(i);
                     }
                 }

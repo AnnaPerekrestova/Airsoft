@@ -2,6 +2,7 @@ package com.example.airsoft;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,6 +42,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
     Spinner spinnerMaps;
     String selectedTeam;
     String selectedMap;
+    ArrayAdapter<String> adapterTeams;
+    ArrayAdapter<String> adapterMaps;
 
     private List<MemberTeamClass> member_team_List = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -70,18 +73,21 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
 //-----------Выпадающий список для выбора команды-победителя -------------------------------------------------------
         spinnerTeams = (Spinner) findViewById(R.id.teams);
+
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        ArrayAdapter<String> adapterTeams = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getTeamsList());
+
+        adapterTeams = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getTeamsList());
         // Определяем разметку для использования при выборе элемента
         adapterTeams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Применяем адаптер к элементу spinner
-        spinnerTeams.setAdapter(adapterTeams);
+
+
 
 //-----------Выпадающий список для выбора карты --------------------------------------------------------------------
         spinnerMaps = (Spinner) findViewById(R.id.maps);
-        ArrayAdapter<String> adapterMaps = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getMapsList());
+        adapterMaps = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getMapsList());
         adapterMaps.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMaps.setAdapter(adapterMaps);
+
 
 
         AdapterView.OnItemSelectedListener teamSelectedListener = new AdapterView.OnItemSelectedListener() {
@@ -97,12 +103,13 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
             }
         };
-        spinnerTeams.setOnItemSelectedListener(teamSelectedListener);
+        //spinnerTeams.setOnItemSelectedListener(teamSelectedListe);
 
         AdapterView.OnItemSelectedListener mapSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Получаем выбранный объект
+                Toast.makeText(getApplicationContext(),position+ "", Toast.LENGTH_LONG).show();
                 String item = (String)parent.getItemAtPosition(position);
                 selectedMap = item;
             }
@@ -112,7 +119,18 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
             }
         };
-        spinnerTeams.setOnItemSelectedListener(mapSelectedListener);
+        spinnerMaps.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),position+ "", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerMaps.setOnItemSelectedListener(mapSelectedListener);
 
 //-----------Вызовы функций--------------------------------------------------------------------------------------
         add_to_recycler_view();
@@ -120,7 +138,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
     }
 //----------Создание списка команд для выпадающего списка ----------------------------------------------------------
     public List<String> getTeamsList(){
-        final List<String> teamsList = new ArrayList<>();
+        final List<String> teamsList= new ArrayList<String>();
+
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Teams");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -129,6 +148,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                     teamsList.add(postSnapShot.getValue().toString());
                 }
+                spinnerTeams.setAdapter(adapterTeams);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -136,7 +156,6 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 Log.d("Error", "databaseError");
             }
         });
-
         return teamsList;
     }
 //----------Создание списка карт для выпадающего списка ----------------------------------------------------------
@@ -150,6 +169,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                     mapsList.add(postSnapShot.getValue().toString());
                 }
+                adapterMaps.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -281,7 +301,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
         final String winnerTeam = spinnerTeams.getSelectedItem().toString();
                 //getSelectedItem().toString();
-        Toast.makeText(this, winnerTeam+ " is selected!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, gameDateTime+ " is selected!", Toast.LENGTH_SHORT).show();
 //        final String gameMap = ((Spinner) findViewById(R.id.maps)).getSelectedItem().toString();
 //        //final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
