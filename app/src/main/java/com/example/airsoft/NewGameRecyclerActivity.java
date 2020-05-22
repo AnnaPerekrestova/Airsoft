@@ -21,12 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +37,11 @@ import java.util.List;
 public class NewGameRecyclerActivity extends AppCompatActivity {
     TextView currentDateTime;
     Calendar dateAndTime = Calendar.getInstance();
-    String[] teamsstring = {"t1", "t2", "t3", "Волгоград", "Саратов", "Воронеж"};
-    String[] mapsstring = {"map1", "map2", "Вологда", "Волгоград", "Саратов", "Воронеж"};
+    Spinner spinnerTeams;
+    Spinner spinnerMaps;
+    String selectedTeam;
+    String selectedMap;
+
     private List<MemberTeamClass> member_team_List = new ArrayList<>();
     private RecyclerView recyclerView;
     private MemberTeamAdapter mtAdapter;
@@ -48,6 +53,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+//------Вывод RecyclerView ------------------------------------------------------------------------------------
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_new_game);
 
         mtAdapter = new MemberTeamAdapter(member_team_List);
@@ -56,55 +63,195 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mtAdapter);
 
-        add_to_table();
 
-
-        addListenerOnButton();
-
+// ----------------------------------------------------------------------------------------------------------
         currentDateTime = (TextView) findViewById(R.id.currentDateTime);
         setInitialDateTime();
 
-        Spinner spinnerTeams = (Spinner) findViewById(R.id.teams);
+//-----------Выпадающий список для выбора команды-победителя -------------------------------------------------------
+        spinnerTeams = (Spinner) findViewById(R.id.teams);
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        ArrayAdapter<String> adapterTeams = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, teamsstring);
+        ArrayAdapter<String> adapterTeams = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getTeamsList());
         // Определяем разметку для использования при выборе элемента
         adapterTeams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Применяем адаптер к элементу spinner
         spinnerTeams.setAdapter(adapterTeams);
 
-        Spinner spinnerMaps = (Spinner) findViewById(R.id.maps);
-        ArrayAdapter<String> adapterMaps = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mapsstring);
+//-----------Выпадающий список для выбора карты --------------------------------------------------------------------
+        spinnerMaps = (Spinner) findViewById(R.id.maps);
+        ArrayAdapter<String> adapterMaps = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getMapsList());
         adapterMaps.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMaps.setAdapter(adapterMaps);
+
+
+        AdapterView.OnItemSelectedListener teamSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Получаем выбранный объект
+                String item = (String)parent.getItemAtPosition(position);
+                selectedTeam = item;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+        spinnerTeams.setOnItemSelectedListener(teamSelectedListener);
+
+        AdapterView.OnItemSelectedListener mapSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Получаем выбранный объект
+                String item = (String)parent.getItemAtPosition(position);
+                selectedMap = item;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+        spinnerTeams.setOnItemSelectedListener(mapSelectedListener);
+
+//-----------Вызовы функций--------------------------------------------------------------------------------------
+        add_to_recycler_view();
+        addListenerOnButton();
+    }
+//----------Создание списка команд для выпадающего списка ----------------------------------------------------------
+    public List<String> getTeamsList(){
+        final List<String> teamsList = new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Teams");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot==null)return;
+                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                    teamsList.add(postSnapShot.getValue().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+
+        return teamsList;
+    }
+//----------Создание списка карт для выпадающего списка ----------------------------------------------------------
+    public List<String> getMapsList(){
+        final List<String> mapsList = new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Maps");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot==null)return;
+                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                    mapsList.add(postSnapShot.getValue().toString());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+        return mapsList;
     }
 
-    /*Spinner spinner = findViewById(R.id.spinner);
-    String selected = spinner.getSelectedItem().toString();
-Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();*/
 
-    public void add_to_db() {
-        final String gameDateTime = ((TextView) findViewById(R.id.currentDateTime)).getText().toString();
-        final String winnerTeam = ((Spinner) findViewById(R.id.teams)).getSelectedItem().toString();
-        final String gameMap = ((Spinner) findViewById(R.id.maps)).getSelectedItem().toString();
-        //final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference db_gameDateTime;
-        DatabaseReference db_winnerTeam;
-        DatabaseReference db_gameMap;
-        //DatabaseReference db_personArsenal;
 
-        String key = database.getReference("quiz").push().getKey();
-
-        db_gameDateTime = database.getReference("Games/game_id/" + key + "/DateTime");
-        db_winnerTeam = database.getReference("Games/game_id/" + key + "/WinnerTeam");
-        db_gameMap = database.getReference("Games/game_id/" + key + "/Map");
-        //db_personArsenal = database.getReference("Games/games_id/"+key+"/DateTime");
-        db_gameDateTime.setValue(gameDateTime);
-        db_winnerTeam.setValue(winnerTeam);
-        db_gameMap.setValue(gameMap);
-        //db_personArsenal.setValue(personArsenal);
+//----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
+    public void setDate(View v) {
+        new DatePickerDialog(NewGameRecyclerActivity.this, d,
+                dateAndTime.get(Calendar.YEAR),
+                dateAndTime.get(Calendar.MONTH),
+                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                .show();
     }
 
+//---------отображаем диалоговое окно для выбора времени-----------------------------------------------------
+    public void setTime(View v) {
+        new TimePickerDialog(NewGameRecyclerActivity.this, t,
+                dateAndTime.get(Calendar.HOUR_OF_DAY),
+                dateAndTime.get(Calendar.MINUTE), true)
+                .show();
+    }
+
+//------------установка начальных даты и времени----------------------------------------------------------------
+    private void setInitialDateTime() {
+
+        currentDateTime.setText(DateUtils.formatDateTime(this,
+                dateAndTime.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
+                        | DateUtils.FORMAT_SHOW_TIME));
+    }
+
+//-----------установка обработчика выбора времени----------------------------------------------------------
+    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            dateAndTime.set(Calendar.MINUTE, minute);
+            setInitialDateTime();
+        }
+    };
+
+//-----------установка обработчика выбора даты---------------------------------------------------------------
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            dateAndTime.set(Calendar.YEAR, year);
+            dateAndTime.set(Calendar.MONTH, monthOfYear);
+            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setInitialDateTime();
+        }
+    };
+//-----------заполнение recycler_view --------------------------------------------------------------------------------
+    public void add_to_recycler_view() {
+        final List<String> membersIdList = new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
+        databaseRef.child("members_id").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null) return;
+                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                    membersIdList.add(postSnapShot.getKey());
+                }
+                SetData(databaseRef, membersIdList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+    }
+    private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
+        for (final String id : userIdList) {
+            databaseRef.child("members_id").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot2) {
+                    if (dataSnapshot2 == null) return;
+                    String fio = (String) dataSnapshot2.child("Nickname").getValue();
+                    addRow(fio);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Error
+                    Log.d("Error", "databaseError");
+                }
+            });
+        }
+    }
+    private void addRow(String fio_from_base) {
+        MemberTeamClass member = new MemberTeamClass(fio_from_base);
+        member_team_List.add(member);
+        mtAdapter.notifyDataSetChanged();
+    }
+
+//------------слушаем нажатие на кнопки--------------------------------------------------------------------------------
     public void addListenerOnButton() {
         Button button_cancel = findViewById(R.id.game_cancel);
         Button button_save = findViewById(R.id.game_save);
@@ -128,101 +275,48 @@ Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();*/
 
         );
     }
+//----------при нажатии кнопки сохранить добавление введенных данных в БД---------------------------------------------
+    public void add_to_db() {
+        final String gameDateTime = ((TextView) findViewById(R.id.currentDateTime)).getText().toString();
 
-    // отображаем диалоговое окно для выбора даты
-    public void setDate(View v) {
-        new DatePickerDialog(NewGameRecyclerActivity.this, d,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
-                .show();
-    }
+        final String winnerTeam = spinnerTeams.getSelectedItem().toString();
+                //getSelectedItem().toString();
+        Toast.makeText(this, winnerTeam+ " is selected!", Toast.LENGTH_SHORT).show();
+//        final String gameMap = ((Spinner) findViewById(R.id.maps)).getSelectedItem().toString();
+//        //final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference db_gameDateTime;
+//        DatabaseReference db_winnerTeam;
+//        DatabaseReference db_gameMap;
+////        DatabaseReference db_member_team;
+////        DatabaseReference db_member_team_id;
+//
+//        String new_game_id = database.getReference("quiz").push().getKey();
+//
+//        db_gameDateTime = database.getReference("Games/game_id/" + new_game_id + "/DateTime");
+//        db_winnerTeam = database.getReference("Games/game_id/" + new_game_id + "/WinnerTeam");
+//        db_gameMap = database.getReference("Games/game_id/" + new_game_id + "/Map");
+//        //db_personArsenal = database.getReference("Games/games_id/"+key+"/DateTime");
+//        db_gameDateTime.setValue(gameDateTime);
+//        db_winnerTeam.setValue(winnerTeam);
+//        db_gameMap.setValue(gameMap);
+//
 
-    // отображаем диалоговое окно для выбора времени
-    public void setTime(View v) {
-        new TimePickerDialog(NewGameRecyclerActivity.this, t,
-                dateAndTime.get(Calendar.HOUR_OF_DAY),
-                dateAndTime.get(Calendar.MINUTE), true)
-                .show();
-    }
-
-    // установка начальных даты и времени
-    private void setInitialDateTime() {
-
-        currentDateTime.setText(DateUtils.formatDateTime(this,
-                dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
-                        | DateUtils.FORMAT_SHOW_TIME));
-    }
-
-    // установка обработчика выбора времени
-    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            dateAndTime.set(Calendar.MINUTE, minute);
-            setInitialDateTime();
+//        String new_member_team_list_id = database.getReference("quiz").push().getKey();
+//        for (MemberTeamClass i:member_team_List) {
+//            String mem = i.getMember();
+//            String team = i.getTeam();
+//            Toast.makeText(this, team+ " is selected!", Toast.LENGTH_SHORT).show();
+//            db_member_team = database.getReference("Teams/id/"+new_member_team_list_id+mem);
+//            db_member_team.setValue(team);
+//
+//        }
+//        db_member_team_id = database.getReference("Games/game_id/" + new_game_id + "/MemberTeamID");
+//        db_member_team_id.setValue(new_member_team_list_id);
         }
-    };
 
-    // установка обработчика выбора даты
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, monthOfYear);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setInitialDateTime();
-        }
-    };
-
-    public void add_to_table() {
-        final List<String> membersIdList = new ArrayList<>();
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
-        databaseRef.child("members_id").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot == null) return;
-                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                    membersIdList.add(postSnapShot.getKey());
-                }
-                SetData(databaseRef, membersIdList);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
-            }
-        });
     }
 
-    private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
-        for (final String id : userIdList) {
-            databaseRef.child("members_id").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot2) {
-
-                    if (dataSnapshot2 == null) return;
-                    String fio = (String) dataSnapshot2.child("FIO").getValue();
-
-                    addRow(fio);
-                }
 
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Error
-                    Log.d("Error", "databaseError");
-                }
-            });
-        }
-    }
 
-    private void addRow(String fio_from_base) {
-        MemberTeamClass member = new MemberTeamClass(fio_from_base);
-        member_team_List.add(member);
-
-
-        mtAdapter.notifyDataSetChanged();
-    }
-}

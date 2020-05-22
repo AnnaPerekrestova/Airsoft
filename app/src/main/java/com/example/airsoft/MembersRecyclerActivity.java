@@ -133,7 +133,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     public void addNewMember(View view) {
         Intent i = new Intent(".PersonActivity");
         startActivity(i);
-        //finish();
+        finish();
     }
 
 
