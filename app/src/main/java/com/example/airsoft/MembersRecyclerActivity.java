@@ -51,7 +51,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
                 MembersClass selected_member = membersList.get(position);
                 Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
 
-                String id_member = (String) selected_member.getMember_id();
+                String id_member = (String) selected_member.getNickname();
                 Intent intent = new Intent(".MemberInfo");
                 intent.putExtra("id_m", id_member);
                 startActivity(intent);
@@ -66,16 +66,16 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         //addListenerOnButton();
     }
     public void add_to_members_table(){
-        final List<String> membersIdList = new ArrayList<>();
+        final List<String> membersNicksList = new ArrayList<>();
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
-        databaseRef.child("members_id").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.child("members_nicknames").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot==null)return;
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    membersIdList.add(postSnapShot.getKey());
+                    membersNicksList.add(postSnapShot.getKey());
                 }
-                SetData(databaseRef, membersIdList);
+                SetData(databaseRef, membersNicksList);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -85,17 +85,16 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         });
     }
 
-    private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
-        for (final String id: userIdList){
-            databaseRef.child("members_id").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void SetData(DatabaseReference databaseRef, List<String> userNicksList) {
+        for (final String nick: userNicksList){
+            databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
 
                     if(dataSnapshot2==null)return;
                     String fio =  (String)dataSnapshot2.child("FIO").getValue();
-                    String nick = (String)dataSnapshot2.child("Nickname").getValue();
-                    addRow(id,fio,nick);
+                    addRow(nick,fio);
                 }
 
 
@@ -109,25 +108,12 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         }
     }
 
-    private void addRow(String id_from_base, String fio_from_base, String nick_from_base ) {
-        MembersClass member = new MembersClass(id_from_base, fio_from_base, nick_from_base);
+    private void addRow(String nick_from_base, String fio_from_base ) {
+        MembersClass member = new MembersClass(nick_from_base, fio_from_base);
         membersList.add(member);
 
         mAdapter.notifyDataSetChanged();
     }
-//    public void addListenerOnButton() {
-//        Button buttonAddPerson = findViewById(R.id.members_fab);
-//        buttonAddPerson.setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Intent i = new Intent(".PersonActivity");
-//                        startActivity(i);
-//                        finish();
-//                    }
-//                }
-//        );
-//    }
 
 
     public void addNewMember(View view) {

@@ -29,38 +29,49 @@ public class PersonActivity extends AppCompatActivity {
         final String personNickname = ((EditText)findViewById(R.id.nickname)).getText().toString();
         final String personPosition = ((EditText)findViewById(R.id.person_position)).getText().toString();
         final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference db_personFIO;
-        DatabaseReference db_personNickname;
         DatabaseReference db_personPosition;
         DatabaseReference db_personArsenal;
+        DatabaseReference db_personPlayed;
+        DatabaseReference db_personWon;
 
-        String key = database.getReference("quiz").push().getKey();
+        db_personFIO = database.getReference("Members/members_nicknames/"+personNickname+"/FIO");
+        db_personPosition = database.getReference("Members/members_nicknames/"+personNickname+"/Position");
+        db_personArsenal = database.getReference("Members/members_nicknames/"+personNickname+"/Arsenal");
+        db_personPlayed = database.getReference("Members/members_nicknames/"+personNickname+"/Played");
+        db_personWon = database.getReference("Members/members_nicknames/"+personNickname+"/Won");
 
-        db_personFIO = database.getReference("Members/members_id/"+key+"/FIO");
-        db_personNickname= database.getReference("Members/members_id/"+key+"/Nickname");
-        db_personPosition = database.getReference("Members/members_id/"+key+"/Position");
-        db_personArsenal = database.getReference("Members/members_id/"+key+"/Arsenal");
         db_personFIO.setValue(personFIO);
-        db_personNickname.setValue(personNickname);
         db_personPosition.setValue(personPosition);
         db_personArsenal.setValue(personArsenal);
+        db_personPlayed.setValue(0);
+        db_personWon.setValue(0);
     }
 
     public void addListenerOnButton() {
         Button buttonPersonSave = findViewById(R.id.person_save);
         Button buttonPersonCancel = findViewById(R.id.person_cancel);
-
         buttonPersonSave.setOnClickListener(
                 new View.OnClickListener() {
-
-
                     @Override
                     public void onClick(View view) {
-                        to_db();
-                        Intent i = new Intent(".MembersRecyclerActivity");
-                        startActivity(i);
-                        finish();
+                        if (((EditText)findViewById(R.id.person_fio)).getText().toString().equals("")){
+                            Toast.makeText(getApplicationContext(), "Поле ФИО должно быть заполнено", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            if (((EditText)findViewById(R.id.nickname)).getText().toString().equals("")){
+                                Toast.makeText(getApplicationContext(), "Поле Позывной должно быть заполнено", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                to_db();
+                                Intent i = new Intent(".MembersRecyclerActivity");
+                                startActivity(i);
+                                finish();
+                            }
+                        }
+
                     }
                 }
 

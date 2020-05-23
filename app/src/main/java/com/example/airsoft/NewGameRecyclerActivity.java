@@ -220,16 +220,14 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
     };
 //-----------заполнение recycler_view --------------------------------------------------------------------------------
     public void add_to_recycler_view() {
-        final List<String> membersIdList = new ArrayList<>();
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
-        databaseRef.child("members_id").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.child("members_nicknames").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot == null) return;
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                    membersIdList.add(postSnapShot.getKey());
+                    addRow(postSnapShot.getKey());
                 }
-                SetData(databaseRef, membersIdList);
             }
 
             @Override
@@ -238,24 +236,6 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 Log.d("Error", "databaseError");
             }
         });
-    }
-    private void SetData(DatabaseReference databaseRef, List<String> userIdList) {
-        for (final String id : userIdList) {
-            databaseRef.child("members_id").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot2) {
-                    if (dataSnapshot2 == null) return;
-                    String fio = (String) dataSnapshot2.child("Nickname").getValue();
-                    addRow(fio);
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Error
-                    Log.d("Error", "databaseError");
-                }
-            });
-        }
     }
     private void addRow(String fio_from_base) {
         MemberTeamClass member = new MemberTeamClass(fio_from_base);
@@ -300,6 +280,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         DatabaseReference db_gameMap;
         DatabaseReference db_member_team;
         DatabaseReference db_member_team_id;
+        DatabaseReference db_personPlayed;
+        DatabaseReference db_personWon;
 
         String new_game_id = database.getReference("quiz").push().getKey();
 
@@ -320,10 +302,57 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
             db_member_team = database.getReference("MembersTeams/id/"+new_member_team_list_id+"/"+mem);
             db_member_team.setValue(team);
 
+            db_personPlayed = database.getReference("Members/members_nicknames/"+mem+"/Played");
+            db_personWon = database.getReference("Members/members_nicknames/"+mem+"/Won");
+
+            db_personPlayed.setValue(GetValues()[0]+1);
+            if (winnerTeam.equals(team)){
+                db_personPlayed.setValue(GetValues()[1]+1);
+            }
+
         }
         db_member_team_id = database.getReference("Games/game_id/" + new_game_id + "/MemberTeamID");
         db_member_team_id.setValue(new_member_team_list_id);
         }
+    public Integer[] GetValues(){
+        final List<String> membersNicksList = new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
+        databaseRef.child("members_nicknames").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot==null)return;
+                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                    membersNicksList.add(postSnapShot.getKey());
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+        return (GetData(databaseRef, membersNicksList));
+    }
+    private Integer[] GetData(DatabaseReference databaseRef, List<String> userNicksList) {
+        final Integer[] statistic = new Integer[1];
+        for (final String nick: userNicksList){
+            databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot2) {
+                    if(dataSnapshot2==null)return;
+                    statistic[0] =  (Integer) dataSnapshot2.child("Played").getValue();
+                    statistic[1] =  (Integer) dataSnapshot2.child("Won").getValue();
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Error
+                    Log.d("Error", "databaseError");
+                }
+            });
+        }
+        return statistic;
+    }
 
     }
 
