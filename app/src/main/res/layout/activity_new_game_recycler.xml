@@ -13,12 +13,16 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <TextView
+            android:id="@+id/game_create"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/new_game_create"
+            android:textAlignment="center"
+            android:textSize="25sp"
+
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -26,6 +30,7 @@
 
     <!--        android:layout_marginStart="136dp"-->
 <!--        android:layout_marginTop="324dp"-->
+
 
 
     <Button

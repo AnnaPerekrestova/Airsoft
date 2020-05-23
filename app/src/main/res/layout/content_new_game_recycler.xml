@@ -8,121 +8,149 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_new_game_recycler"
     tools:context=".NewGameRecyclerActivity">
-    <TextView
-        android:id="@+id/game_create"
-        android:layout_width="217dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/new_game_create"
-        android:textSize="20sp"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
 
-    <TextView
-        android:id="@+id/currentDateTime"
-        android:layout_width="217dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_create" />
-
-    <Button
-        android:id="@+id/timeButton"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:onClick="setTime"
-        android:text="@string/ChageTime"
-        app:layout_constraintStart_toEndOf="@+id/dateButton"
-        app:layout_constraintTop_toBottomOf="@+id/currentDateTime" />
-
-    <Button
-        android:id="@+id/dateButton"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:onClick="setDate"
-        android:text="@string/ChageDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentDateTime" />
-
-    <TextView
-        android:id="@+id/map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="52dp"
-        android:text="@string/Map"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateButton" />
-
-    <Spinner
-        android:id="@+id/maps"
-        android:layout_width="171dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="40dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintStart_toEndOf="@+id/map"
-        app:layout_constraintTop_toBottomOf="@+id/timeButton"
-        tools:ignore="MissingConstraints"/>
-
-    <TextView
-        android:id="@+id/textView_winner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="45dp"
-        android:text="@string/Winner"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
-    <Spinner
-        android:id="@+id/teams"
-        android:layout_width="171dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="28dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintStart_toEndOf="@+id/textView_winner"
-        app:layout_constraintTop_toBottomOf="@+id/maps"
-        tools:ignore="MissingConstraints"/>
-
-
-
-    <TextView
-        android:id="@+id/textView_distribution_by_teams"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="45dp"
-        android:text="@string/distribution_by_teams"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_winner" />
-
-
-    <ScrollView
-        android:id="@+id/scroll_member_team"
-        android:layout_width="408dp"
-        android:layout_height="217dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="17dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_distribution_by_teams"
-        tools:ignore="MissingConstraints">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_new_game"
+        <TextView
+            android:id="@+id/currentDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/textView_distribution_by_teams"
-            tools:ignore="MissingConstraints" />
+            android:padding="5dp"
+            android:textAlignment="center"
 
-    </ScrollView>
+            android:textSize="18sp"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:padding="5dp"
+
+            >
+
+            <Button
+                android:id="@+id/timeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="setTime"
+                android:text="@string/ChageTime" />
+
+            <Button
+                android:id="@+id/dateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="setDate"
+                android:text="@string/ChageDate" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+
+            android:padding="5dp"
+
+            >
+
+            <TextView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Map"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/maps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:padding="5dp"
+
+            >
+
+            <TextView
+                android:id="@+id/textView_winner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Winner"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/teams"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_distribution_by_teams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:padding="5dp"
+            android:text="@string/distribution_by_teams"
+            android:textAlignment="center"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="22sp"
+
+            />
+
+
+        <ScrollView
+            android:id="@+id/scroll_member_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/game_cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_new_game"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/textView_distribution_by_teams"
+                tools:ignore="MissingConstraints" />
+
+        </ScrollView>
+
+
+
+
+    </LinearLayout>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
