@@ -37,8 +37,8 @@ public class MemberTeamClass {
         return team;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTeam(String Team) {
+        this.team = Team;
     }
 
 

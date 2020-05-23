@@ -73,22 +73,17 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
 //-----------Выпадающий список для выбора команды-победителя -------------------------------------------------------
         spinnerTeams = (Spinner) findViewById(R.id.teams);
-
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-
         adapterTeams = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getTeamsList());
         // Определяем разметку для использования при выборе элемента
         adapterTeams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
+        spinnerTeams.setAdapter(adapterTeams);
 
 //-----------Выпадающий список для выбора карты --------------------------------------------------------------------
         spinnerMaps = (Spinner) findViewById(R.id.maps);
         adapterMaps = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getMapsList());
         adapterMaps.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMaps.setAdapter(adapterMaps);
-
-
 
         AdapterView.OnItemSelectedListener teamSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
@@ -148,7 +143,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                     teamsList.add(postSnapShot.getValue().toString());
                 }
-                spinnerTeams.setAdapter(adapterTeams);
+                adapterTeams.notifyDataSetChanged();//обновление адаптера
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -169,7 +164,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                     mapsList.add(postSnapShot.getValue().toString());
                 }
-                adapterMaps.notifyDataSetChanged();
+                adapterMaps.notifyDataSetChanged();//обновление адаптера
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -179,8 +174,6 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         });
         return mapsList;
     }
-
-
 
 //----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
     public void setDate(View v) {
@@ -216,7 +209,6 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
             setInitialDateTime();
         }
     };
-
 //-----------установка обработчика выбора даты---------------------------------------------------------------
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -298,41 +290,39 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 //----------при нажатии кнопки сохранить добавление введенных данных в БД---------------------------------------------
     public void add_to_db() {
         final String gameDateTime = ((TextView) findViewById(R.id.currentDateTime)).getText().toString();
-
         final String winnerTeam = spinnerTeams.getSelectedItem().toString();
-                //getSelectedItem().toString();
-        Toast.makeText(this, gameDateTime+ " is selected!", Toast.LENGTH_SHORT).show();
-//        final String gameMap = ((Spinner) findViewById(R.id.maps)).getSelectedItem().toString();
-//        //final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference db_gameDateTime;
-//        DatabaseReference db_winnerTeam;
-//        DatabaseReference db_gameMap;
-////        DatabaseReference db_member_team;
-////        DatabaseReference db_member_team_id;
-//
-//        String new_game_id = database.getReference("quiz").push().getKey();
-//
-//        db_gameDateTime = database.getReference("Games/game_id/" + new_game_id + "/DateTime");
-//        db_winnerTeam = database.getReference("Games/game_id/" + new_game_id + "/WinnerTeam");
-//        db_gameMap = database.getReference("Games/game_id/" + new_game_id + "/Map");
-//        //db_personArsenal = database.getReference("Games/games_id/"+key+"/DateTime");
-//        db_gameDateTime.setValue(gameDateTime);
-//        db_winnerTeam.setValue(winnerTeam);
-//        db_gameMap.setValue(gameMap);
-//
+        //Toast.makeText(this, gameDateTime+ " is selected!", Toast.LENGTH_SHORT).show();
+        final String gameMap = ((Spinner) findViewById(R.id.maps)).getSelectedItem().toString();
+        //final String personArsenal = ((EditText)findViewById(R.id.arsenal)).getText().toString();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference db_gameDateTime;
+        DatabaseReference db_winnerTeam;
+        DatabaseReference db_gameMap;
+        DatabaseReference db_member_team;
+        DatabaseReference db_member_team_id;
 
-//        String new_member_team_list_id = database.getReference("quiz").push().getKey();
-//        for (MemberTeamClass i:member_team_List) {
-//            String mem = i.getMember();
-//            String team = i.getTeam();
-//            Toast.makeText(this, team+ " is selected!", Toast.LENGTH_SHORT).show();
-//            db_member_team = database.getReference("Teams/id/"+new_member_team_list_id+mem);
-//            db_member_team.setValue(team);
-//
-//        }
-//        db_member_team_id = database.getReference("Games/game_id/" + new_game_id + "/MemberTeamID");
-//        db_member_team_id.setValue(new_member_team_list_id);
+        String new_game_id = database.getReference("quiz").push().getKey();
+
+        db_gameDateTime = database.getReference("Games/game_id/" + new_game_id + "/DateTime");
+        db_winnerTeam = database.getReference("Games/game_id/" + new_game_id + "/WinnerTeam");
+        db_gameMap = database.getReference("Games/game_id/" + new_game_id + "/Map");
+        //db_personArsenal = database.getReference("Games/games_id/"+key+"/DateTime");
+        db_gameDateTime.setValue(gameDateTime);
+        db_winnerTeam.setValue(winnerTeam);
+        db_gameMap.setValue(gameMap);
+
+
+        String new_member_team_list_id = database.getReference("quiz").push().getKey();
+        for (MemberTeamClass i:member_team_List) {
+            String mem = i.getMember();
+            String team = i.getTeam();
+            Toast.makeText(this, team+ " is selected!", Toast.LENGTH_SHORT).show();
+            db_member_team = database.getReference("MembersTeams/id/"+new_member_team_list_id+"/"+mem);
+            db_member_team.setValue(team);
+
+        }
+        db_member_team_id = database.getReference("Games/game_id/" + new_game_id + "/MemberTeamID");
+        db_member_team_id.setValue(new_member_team_list_id);
         }
 
     }

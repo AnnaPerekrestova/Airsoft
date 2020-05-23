@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class MemberTeamAdapter extends RecyclerView.Adapter<MemberTeamAdapter.MemberTeamHolder> {
     private List<MemberTeamClass> member_team_List;
+    ArrayAdapter<String> adapterTeams;
 
     //ViewHolder описывает представление элемента и метаданные о его месте в RecyclerView.
     public class MemberTeamHolder extends RecyclerView.ViewHolder { //получает макет строки
@@ -54,33 +56,15 @@ public class MemberTeamAdapter extends RecyclerView.Adapter<MemberTeamAdapter.Me
         final MemberTeamClass member_team = member_team_List.get(position);
         holder.member.setText(member_team.getMember());
 
-        //Заполняем список для спиннера (Данные из БД + "Не учавстоввал")
-        final List<String> teamsList = new ArrayList<>();
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Teams");
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot==null)return;
-                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    teamsList.add((String) postSnapShot.getValue());
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
-            }
-        });
-        teamsList.add("Не учавствовал");
-
-        //Создаем адаптер для заполнения спиннера (контекст, в котором выводится спиннер - получаем родительский элемент холдера
-        //разметка по умолчанию для выпадающего списка, список, поторым будет  заполняться спиннер)
-        ArrayAdapter<String> adapterTeams = new ArrayAdapter<String>(holder.itemView.getContext(), android.R.layout.simple_spinner_item, teamsList);
+//------Создаем адаптер для заполнения спиннера (контекст, в котором выводится спиннер - получаем родительский элемент холдера;
+        //разметка по умолчанию для выпадающего списка; список, поторым будет  заполняться спиннер)
+        adapterTeams = new ArrayAdapter<String>(holder.itemView.getContext(), android.R.layout.simple_spinner_item, this.TeamsList());
         // Определяем разметку для использования при выборе элемента
         adapterTeams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Применяем адаптер к элементу spinner
         holder.team.setAdapter(adapterTeams);
 
+//------Добавляем слушатель выбора элемента в спиннере -----------------------------------------------------------------
         AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,14 +73,36 @@ public class MemberTeamAdapter extends RecyclerView.Adapter<MemberTeamAdapter.Me
                 String item = (String)parent.getItemAtPosition(position);
                 member_team.setTeam(item);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         };
         holder.team.setOnItemSelectedListener(itemSelectedListener);
+    }
+ //   ----- Заполняем список для спиннера (Данные из БД + "Не учавстоввал") ----------------------------------------------
 
+    public List<String> TeamsList(){
+        final List<String> teamsList= new ArrayList<String>();
+
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Teams");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot==null)return;
+                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                    teamsList.add(postSnapShot.getValue().toString());
+                }
+                adapterTeams.notifyDataSetChanged();//обновление адаптера
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+        teamsList.add("Не учавствовал");
+        return teamsList;
     }
 
     @Override
