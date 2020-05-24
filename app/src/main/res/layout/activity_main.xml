@@ -8,6 +8,15 @@
     tools:context=".Activities.MainActivity">
 
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:alpha="0.8"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,11 +29,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo_clean" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/textView"
@@ -32,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bastardos_inmortales"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="36sp"
                 tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -63,36 +81,41 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5">
 
-                    <Button
-                        android:id="@+id/stats"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/games"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/Statistic"
-                        app:layout_constraintTop_toBottomOf="@+id/games"
-                        tools:layout_editor_absoluteX="27dp" />
 
                     <Button
                         android:id="@+id/members"
+                        style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-
+                        android:layout_marginTop="16dp"
                         android:text="@string/team_list"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="-57dp" />
 
                     <Button
                         android:id="@+id/games"
+                        style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-
                         android:text="@string/plays_results"
                         app:layout_constraintTop_toBottomOf="@+id/members"
                         tools:layout_editor_absoluteX="39dp" />
+
+                    <Button
+                        android:id="@+id/stats"
+                        style="@style/buttonStyleBorderSand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/games"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Statistic"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/games" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

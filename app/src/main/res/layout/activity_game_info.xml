@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Activities.GameInfoActivity">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:alpha="0.6"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="@string/GameInfo"
+                android:textColor="#000000"
                 android:textAlignment="center"
                 android:textSize="25sp"
 
@@ -49,6 +59,7 @@
                 android:text="@string/GameDataTime_text"
                 android:textAlignment="center"
                 android:textSize="18sp"
+                android:textColor="#000000"
                 android:layout_weight="1"
                 />
             <TextView
@@ -59,6 +70,7 @@
                 android:text="time"
                 android:textAlignment="center"
                 android:textSize="18sp"
+                android:textColor="#000000"
                 android:layout_weight="1"
                 />
 
@@ -81,16 +93,18 @@
                 android:layout_weight="1"
                 android:text="@string/Map"
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#000000"/>
 
             <TextView
-            android:id="@+id/game_map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="map"
-            android:textAlignment="center"
-            android:textSize="18sp" />
+                android:id="@+id/game_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="map"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="#000000"/>
 
         </LinearLayout>
 
@@ -108,7 +122,8 @@
                 android:layout_weight="1"
                 android:text="@string/winner"
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/game_winner"
@@ -117,7 +132,8 @@
                 android:layout_weight="1"
                 android:text="winner"
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#000000"/>
         </LinearLayout>
 
         <TextView
@@ -129,7 +145,7 @@
             android:padding="5dp"
             android:text="@string/distribution_by_teams"
             android:textAlignment="center"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="#000000"
             android:textSize="22sp"
 
             />
