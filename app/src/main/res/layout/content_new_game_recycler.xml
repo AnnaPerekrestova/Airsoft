@@ -7,7 +7,7 @@
     android:scrollbars="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_new_game_recycler"
-    tools:context=".NewGameRecyclerActivity">
+    tools:context=".Activities.NewGameRecyclerActivity">
 
 
     <LinearLayout

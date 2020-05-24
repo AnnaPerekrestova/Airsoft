@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Adapters;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.airsoft.Classes.GamesClass;
+import com.example.airsoft.R;
 
 import java.util.List;
 

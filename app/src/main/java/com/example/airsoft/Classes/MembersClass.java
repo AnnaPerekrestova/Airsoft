@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Classes;
 
 public class MembersClass {
     private String nickname, fio;

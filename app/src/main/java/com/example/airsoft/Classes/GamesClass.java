@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Classes;
 
 public class GamesClass {
     private String game_id, date_time, map, winner;

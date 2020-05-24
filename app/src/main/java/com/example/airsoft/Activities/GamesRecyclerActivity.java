@@ -1,10 +1,12 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.airsoft.Adapters.GamesAdapter;
+import com.example.airsoft.Classes.GamesClass;
+import com.example.airsoft.R;
+import com.example.airsoft.RecyclerTouchListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,7 +51,8 @@ public class GamesRecyclerActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 GamesClass selected_game = gameList.get(position);
                 Toast.makeText(getApplicationContext(), selected_game.getGame_id() + " is selected!", Toast.LENGTH_SHORT).show();
-
+                Intent i = new Intent(".GameInfoActivity");
+                startActivity(i);
 //                String id_member = (String) selected_member.getMember_id();
 //                Intent intent = new Intent(".MemberInfo");
 //                intent.putExtra("id_m", id_member);

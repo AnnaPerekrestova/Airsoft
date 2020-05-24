@@ -1,8 +1,12 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.airsoft.Adapters.MembersAdapter;
+import com.example.airsoft.Classes.MembersClass;
+import com.example.airsoft.R;
+import com.example.airsoft.RecyclerTouchListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;

@@ -1,13 +1,13 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.airsoft.Adapters.MemberTeamAdapter;
+import com.example.airsoft.Classes.MemberTeamClass;
+import com.example.airsoft.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -363,13 +363,16 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         db_personWon = database.getReference("Members/members_nicknames/" + nick + "/Won");
 
         int new_played = played+1;
-        Log.i("Played_after",""+ new_played);
+        Log.i("Played_after",""+ new_played + " "+ played);
         Toast.makeText(getApplicationContext(), nick+new_played + " old", Toast.LENGTH_SHORT).show();
         db_personPlayed.setValue(new_played);
+        Log.d("Played_tjhglktuh" , winnerTeam+" "+team);
 
-        if (Objects.equals(winnerTeam,team)) {
+        if (team.equals(winnerTeam)) {
+            Log.d("Played_ok" , "ok");
+
             int new_won = won+1;
-            db_personPlayed.setValue(new_won);
+            db_personWon.setValue(new_won);
         }
 //        Log.i("Played_func",""+ stat_played);
     }

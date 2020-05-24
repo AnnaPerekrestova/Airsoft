@@ -46,4 +46,5 @@
     <string name="distribution_by_teams">Распределение по командам:</string>
     <string name="FIO_must_be_filled_in">Поле ФИО должно быть заполнено</string>
     <string name="Nickname_must_be_filled_in">Поле Позывной должно быть заполнено</string>
+    <string name="GameDataTime_text">Дата и время игры</string>
 </resources>

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".NewGameRecyclerActivity"
+            android:name=".Activities.NewGameRecyclerActivity"
             android:label="@string/title_activity_new_game_recycler"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,9 +19,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameInfoActivity" />
+        <activity android:name=".Activities.GameInfoActivity" android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".GameInfoActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+             </intent-filter>
+
+        </activity>
         <activity
-            android:name=".GamesRecyclerActivity"
+            android:name=".Activities.GamesRecyclerActivity"
             android:label="@string/title_activity_games_recycler"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MembersRecyclerActivity"
+            android:name=".Activities.MembersRecyclerActivity"
             android:label="@string/title_activity_members_recycler"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -40,21 +46,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MemberInfo">
+        <activity android:name=".Activities.MemberInfo">
             <intent-filter>
                 <action android:name=".MemberInfo" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GamesActivity">
-            <intent-filter>
-                <action android:name=".GamesActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".PersonActivity">
+        <activity android:name=".Activities.PersonActivity">
             <intent-filter>
                 <action android:name=".PersonActivity" />
 
@@ -68,7 +67,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

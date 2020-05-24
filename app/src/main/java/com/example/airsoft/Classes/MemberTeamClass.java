@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Classes;
 
 import android.util.Log;
 

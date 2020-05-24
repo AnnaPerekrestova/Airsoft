@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_members_recycler"
-    tools:context=".MembersRecyclerActivity">
+    tools:context=".Activities.MembersRecyclerActivity">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_members"
         android:layout_width="match_parent"
