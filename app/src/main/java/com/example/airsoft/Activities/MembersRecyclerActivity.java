@@ -37,8 +37,8 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_members_recycler);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
 
