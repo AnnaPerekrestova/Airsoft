@@ -88,7 +88,6 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private void SetData(DatabaseReference databaseRef, List<String> userNicksList) {
         for (final String nick: userNicksList){
             databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
 
@@ -96,9 +95,6 @@ public class MembersRecyclerActivity extends AppCompatActivity {
                     String fio =  (String)dataSnapshot2.child("FIO").getValue();
                     addRow(nick,fio);
                 }
-
-
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Error
@@ -107,15 +103,12 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             });
         }
     }
-
     private void addRow(String nick_from_base, String fio_from_base ) {
         MembersClass member = new MembersClass(nick_from_base, fio_from_base);
         membersList.add(member);
 
         mAdapter.notifyDataSetChanged();
     }
-
-
     public void addNewMember(View view) {
         Intent i = new Intent(".PersonActivity");
         startActivity(i);

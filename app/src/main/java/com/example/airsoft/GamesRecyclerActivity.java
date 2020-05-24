@@ -132,5 +132,6 @@ public class GamesRecyclerActivity extends AppCompatActivity {
     public void addNewGame(View view) {
         Intent i = new Intent(".NewGameRecyclerActivity");
         startActivity(i);
+        finish();
     }
 }
