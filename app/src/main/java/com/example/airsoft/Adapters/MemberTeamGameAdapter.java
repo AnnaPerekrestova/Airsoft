@@ -26,9 +26,8 @@ import java.util.List;
 public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAdapter.MemberTeamHolder> {
     //private List<MemberTeamClass> member_team_List;
     ArrayAdapter<String> adapterTeams;
-    private String[] used_teams;
-    private String id;
-    List<List<String>> f = new ArrayList<>();
+
+    private List<String[]> used_teams = new ArrayList<>();
 
 
     //ViewHolder описывает представление элемента и метаданные о его месте в RecyclerView.
@@ -40,9 +39,9 @@ public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAd
         }
     }
 
-    public MemberTeamGameAdapter(String[] used_teams, String id) { //адаптер получает значения
+    public MemberTeamGameAdapter(List<String[]> used_teams) { //адаптер получает значения
         this.used_teams= used_teams;
-        this.id= id;
+
 
     }
 
@@ -50,7 +49,7 @@ public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAd
     public MemberTeamGameAdapter.MemberTeamHolder onCreateViewHolder(ViewGroup parent, int viewType) {// создает новвый объект
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.members_team_list_row_game_info, parent, false);
-        f= GetMembersOfUsedTeams(id);
+        //f= GetMembersOfUsedTeams(id);
         return new MemberTeamGameAdapter.MemberTeamHolder(itemView); //новый объект будет использоваться для отображения элементов при помощи адапрера
     }
 
@@ -58,108 +57,19 @@ public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAd
     public void onBindViewHolder(final MemberTeamGameAdapter.MemberTeamHolder holder, int position) {
 //        GetLists();
         ArrayAdapter<String> list_adapter = new ArrayAdapter<String>(holder.itemView.getContext(),
-                android.R.layout.simple_list_item_1, f.get(position)) ;
-        holder.listView.setAdapter(list_adapter);
-
-//        for (List<String> team_list:member_list){
-//            String s = team_list.toString();
-//            Log.i("list",s);
-//            ArrayAdapter<String> list_adapter = new ArrayAdapter<String>(holder.itemView.getContext(),
-//                    android.R.layout.simple_list_item_1, team_list) ;
-//            holder.listView.setAdapter(list_adapter);
-        }
-
-//        List<String> team_list = (List<String>) member_list.get(position);
-//        String s = team_list.toString();
-//        Log.i("list",s);
-//        ArrayAdapter<String> list_adapter = new ArrayAdapter<String>(holder.itemView.getContext(),
-//                android.R.layout.simple_list_item_1, team_list) ;
-//        holder.listView.setAdapter(list_adapter);
-
-
-//    }
-    private List<List<String>> GetMembersOfUsedTeams(String member_team_id) {
-        final List<MemberTeamClass> member_team_list = new ArrayList<>();
-        final List<List<String>> list_of_teams = new ArrayList<>();
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("MembersTeams");
-        databaseRef.child("id").child(member_team_id).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot==null)return;
-                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    String member = postSnapShot.getKey();
-                    String team = postSnapShot.getValue().toString();
-
-                    MemberTeamClass mt = new MemberTeamClass();
-                    mt.setMember(member);
-                    mt.setTeam(team);
-                    member_team_list.add(mt);
-
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
-            }
-        });
-        return GetLists(member_team_list);
-
-    }
-
-//    public List<List<String>> GetLists(){
-//        List<List<String>> member_list = new ArrayList<>();
-//        List<MemberTeamClass> member_team_List=GetMembersOfUsedTeams(game_id);
-//        for (String t:used_teams ){
-//            if (!t.equals("")) {
-//                List<String> selected_team_list= new ArrayList<String>();
-//                selected_team_list.add(t);
-//
-//                for (MemberTeamClass el: member_team_List) {
-//                    String member = el.getMember();
-//                    String team = el.getTeam();
-//                    if (team.equals(t)) {
-//                        selected_team_list.add(member);
-//                    }
-//                }
-//                member_list.add(selected_team_list);
-//            }
-//        }
-//      return member_list;
-//    }
-    public List<List<String>> GetLists(List<MemberTeamClass> member_team_List){
-        List<List<String>> member_list = new ArrayList<>();
-        for (String t:used_teams ){
-            if (!t.equals("")) {
-                List<String> selected_team_list= new ArrayList<String>();
-                selected_team_list.add(t);
-
-                for (MemberTeamClass el: member_team_List) {
-                    String member = el.getMember();
-                    String team = el.getTeam();
-                    if (team.equals(t)) {
-                        selected_team_list.add(member);
-                    }
-                }
-                member_list.add(selected_team_list);
-            }
-        }
-        return member_list;
-    }
-
-
+                android.R.layout.simple_list_item_1, used_teams.get(position)) ;
+        holder.listView.setAdapter(list_adapter);}
 
 
     @Override
     public int getItemCount() {
-        int len = 0;
-        for (String i: used_teams){
-            if (!i.equals("")){
-                len++;
-            }
-        }
-        return len;
+//        int len = 0;
+//        for (String i: used_teams){
+//            if (!i.equals("")){
+//                len++;
+//            }
+//        }
+        return used_teams.size();
     }
 }
 

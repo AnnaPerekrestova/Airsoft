@@ -63,6 +63,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
     DatabaseReference db_personPlayed;
     DatabaseReference db_personWon;
     DatabaseReference db_usedTeams;
+    List<String> used_teams = new ArrayList<String>();
 
     private List<MemberTeamClass> member_team_List = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -315,7 +316,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
 
         String new_member_team_list_id = database.getReference("quiz").push().getKey();
-        List<String> used_teams = new ArrayList<String>();
+
 
         for (MemberTeamClass i : member_team_List) {
             Log.i("Played_new_member","new in list");
@@ -332,9 +333,10 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 }
 
             }
+            DistributionByTeams(new_member_team_list_id);
 
-            db_member_team = database.getReference("MembersTeams/id/" + new_member_team_list_id + "/" + mem);
-            db_member_team.setValue(team);
+//            db_member_team = database.getReference("MembersTeams/id/" + new_member_team_list_id + "/" + mem);
+//            db_member_team.setValue(team);
 
             //Наращивем значения Учавствовал и Выиграл для игроков
             IncreaseStats_GetValues(mem,team);
@@ -343,6 +345,24 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         db_usedTeams.setValue(used_teams.toString());
         db_member_team_id = database.getReference("Games/game_id/" + new_game_id + "/MemberTeamID");
         db_member_team_id.setValue(new_member_team_list_id);
+
+    }
+
+    public void DistributionByTeams(String id){
+        for (String i:used_teams){
+            List<String> i_members = new ArrayList<>();
+            i_members.add(i);
+            for (MemberTeamClass m : member_team_List) {
+                String member = m.getMember();
+                String team = m.getTeam();
+                if (team.equals(i)){
+                    i_members.add(member);
+                }
+            }
+            db_member_team = database.getReference("MembersTeams/id/" + id + "/" + i);
+            db_member_team.setValue(i_members.toString());
+        }
+
 
     }
 

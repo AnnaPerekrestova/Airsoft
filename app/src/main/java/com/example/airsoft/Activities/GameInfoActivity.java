@@ -37,6 +37,7 @@ public class GameInfoActivity extends AppCompatActivity {
     String[] used_teams;
     public MemberTeamGameAdapter adapter;
     public List<MemberTeamClass> member_team_list =new  ArrayList<>();
+    List<String[]> list_of_teams = new ArrayList<>();
 
     //String[] membersteam1 = { "player1", "player2", "player5"};
     //String[] membersteam2 = { "player3", "player4", "player6"};
@@ -49,29 +50,42 @@ public class GameInfoActivity extends AppCompatActivity {
         game_id= intent.getStringExtra("game_id");
         member_team_id = intent.getStringExtra("member_team_id");
         used_teams_string = intent.getStringExtra("used_teams");
-        used_teams = used_teams_string.split("[,\\]\\[]");
 
-
-        adapter = new MemberTeamGameAdapter(used_teams, member_team_id);
+        adapter = new MemberTeamGameAdapter(list_of_teams);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL,false);;
         rv.setLayoutManager(mLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(adapter);
 
-        //GetMembersOfUsedTeams();
+        GetMembersOfUsedTeams(member_team_id);
         //Log.i("mt",""+member_team_list.toString());
     }
+    private void GetMembersOfUsedTeams(String member_team_id) {
+        //final List<String> member_team_list = new ArrayList<>();
+        //final List<String[]> list_of_teams = new ArrayList<>();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("MembersTeams");
+        databaseRef.child("id").child(member_team_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null) return;
+                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                    //String team = postSnapShot.getKey();
+                    String members = postSnapShot.getValue().toString();
+                    String[] s =members.split("[,\\]\\[]");
 
+                    list_of_teams.add(s);
+                }
+                adapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
 
-
-    private void FillList(String member, String team) {
-
-
-        adapter.notifyDataSetChanged();
     }
-
-
 
 
 }
