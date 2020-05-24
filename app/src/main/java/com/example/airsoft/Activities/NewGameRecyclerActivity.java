@@ -62,6 +62,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
     DatabaseReference db_member_team_id;
     DatabaseReference db_personPlayed;
     DatabaseReference db_personWon;
+    DatabaseReference db_countTeams;
 
     private List<MemberTeamClass> member_team_List = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -307,7 +308,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         db_gameDateTime = database.getReference("Games/game_id/" + new_game_id + "/DateTime");
         db_winnerTeam = database.getReference("Games/game_id/" + new_game_id + "/WinnerTeam");
         db_gameMap = database.getReference("Games/game_id/" + new_game_id + "/Map");
-        //db_personArsenal = database.getReference("Games/games_id/"+key+"/DateTime");
+        db_countTeams = database.getReference("Games/games_id/"+new_game_id+"/CountTeams");
         db_gameDateTime.setValue(gameDateTime);
         db_winnerTeam.setValue(winnerTeam);
         db_gameMap.setValue(gameMap);

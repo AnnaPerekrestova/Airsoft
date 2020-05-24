@@ -134,26 +134,10 @@
 
             />
 
-
-        <ScrollView
-            android:id="@+id/scroll_member_team"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/game_info_teams"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/game_cancel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
-
-            </LinearLayout>
-        </ScrollView>
+            android:layout_height="match_parent" />
 
 
     </LinearLayout>
