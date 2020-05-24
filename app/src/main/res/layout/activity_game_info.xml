@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:alpha="0.6"
+        style="@style/background_multicam"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/multicam" />
 

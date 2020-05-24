@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".Activities.NewGameRecyclerActivity">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        style="@style/background_multicam"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
         android:layout_width="match_parent"
@@ -38,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
+        style="@style/buttonStyleBorderSand"
         android:layout_gravity="bottom"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -48,6 +58,7 @@
         android:layout_marginStart="31dp"
         android:layout_marginTop="324dp"
         android:text="@string/save"
+        style="@style/buttonStyleBorderSand"
         android:layout_gravity="bottom|end"
 
          />

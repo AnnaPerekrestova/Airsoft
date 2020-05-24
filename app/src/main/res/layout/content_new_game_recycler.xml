@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textAlignment="center"
-
+            android:textColor="@color/black"
             android:textSize="18sp"
 
             />
@@ -44,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="setTime"
-                android:text="@string/ChageTime" />
+                android:text="@string/ChageTime"
+                style="@style/buttonStyleBorderSand"/>
 
             <Button
                 android:id="@+id/dateButton"
@@ -52,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="setDate"
-                android:text="@string/ChageDate" />
+                android:text="@string/ChageDate"
+                style="@style/buttonStyleBorderSand"/>
         </LinearLayout>
 
         <LinearLayout
@@ -72,7 +74,8 @@
                 android:layout_weight="1"
                 android:text="@string/Map"
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
             <Spinner
                 android:id="@+id/maps"
@@ -100,7 +103,8 @@
                 android:layout_weight="1"
                 android:text="@string/Winner"
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
             <Spinner
                 android:id="@+id/teams"
@@ -120,7 +124,7 @@
             android:padding="5dp"
             android:text="@string/distribution_by_teams"
             android:textAlignment="center"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@color/black"
             android:textSize="22sp"
 
             />

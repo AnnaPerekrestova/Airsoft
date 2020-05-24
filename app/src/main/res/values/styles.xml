@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorYellow</item>
         <item name="colorPrimaryDark">@color/colorYellow</item>
         <item name="colorAccent">@color/colorYellow</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -24,4 +25,8 @@
         <item name="android:background">@color/colorYellow</item>
     </style>
 
+    <style name="background_multicam">
+        <item name="android:alpha">0.4</item>
+
+    </style>
 </resources>
