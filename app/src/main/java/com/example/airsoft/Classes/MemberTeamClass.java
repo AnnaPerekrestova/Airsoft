@@ -14,7 +14,7 @@ import java.util.List;
 public class MemberTeamClass {
     private String member;
     private String team;
-
+//    private String usedTeams;
 
     public MemberTeamClass() {
     }
@@ -22,6 +22,7 @@ public class MemberTeamClass {
     public MemberTeamClass(String member) {
         this.member = member;
         this.team = team;
+        //this.usedTeams = usedTeams;
 
     }
 
@@ -40,6 +41,12 @@ public class MemberTeamClass {
     public void setTeam(String Team) {
         this.team = Team;
     }
+
+//    public String getUsedTeams() {return usedTeams; }
+//
+//    public void setUsedTeams(String usedTeams) {
+//        this.usedTeams = usedTeams;
+//    }
 
 
 }

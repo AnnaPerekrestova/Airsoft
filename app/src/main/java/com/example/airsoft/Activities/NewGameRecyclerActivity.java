@@ -62,7 +62,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
     DatabaseReference db_member_team_id;
     DatabaseReference db_personPlayed;
     DatabaseReference db_personWon;
-    DatabaseReference db_countTeams;
+    DatabaseReference db_usedTeams;
 
     private List<MemberTeamClass> member_team_List = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -151,7 +151,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         addListenerOnButton();
     }
 
-    //----------Создание списка команд для выпадающего списка ----------------------------------------------------------
+//----------Создание списка команд для выпадающего списка ----------------------------------------------------------
     public List<String> getTeamsList() {
         final List<String> teamsList = new ArrayList<String>();
 
@@ -175,7 +175,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         return teamsList;
     }
 
-    //----------Создание списка карт для выпадающего списка ----------------------------------------------------------
+//----------Создание списка карт для выпадающего списка ----------------------------------------------------------
     public List<String> getMapsList() {
         final List<String> mapsList = new ArrayList<>();
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Maps");
@@ -198,7 +198,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         return mapsList;
     }
 
-    //----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
+//----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
     public void setDate(View v) {
         new DatePickerDialog(NewGameRecyclerActivity.this, d,
                 dateAndTime.get(Calendar.YEAR),
@@ -207,7 +207,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 .show();
     }
 
-    //---------отображаем диалоговое окно для выбора времени-----------------------------------------------------
+//---------отображаем диалоговое окно для выбора времени-----------------------------------------------------
     public void setTime(View v) {
         new TimePickerDialog(NewGameRecyclerActivity.this, t,
                 dateAndTime.get(Calendar.HOUR_OF_DAY),
@@ -224,7 +224,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                         | DateUtils.FORMAT_SHOW_TIME));
     }
 
-    //-----------установка обработчика выбора времени----------------------------------------------------------
+//-----------установка обработчика выбора времени----------------------------------------------------------
     TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -232,7 +232,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
             setInitialDateTime();
         }
     };
-    //-----------установка обработчика выбора даты---------------------------------------------------------------
+//-----------установка обработчика выбора даты---------------------------------------------------------------
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateAndTime.set(Calendar.YEAR, year);
@@ -242,7 +242,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         }
     };
 
-    //-----------заполнение recycler_view --------------------------------------------------------------------------------
+//-----------заполнение recycler_view --------------------------------------------------------------------------------
     public void add_to_recycler_view() {
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
         databaseRef.child("members_nicknames").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -268,7 +268,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         mtAdapter.notifyDataSetChanged();
     }
 
-    //------------слушаем нажатие на кнопки--------------------------------------------------------------------------------
+//------------слушаем нажатие на кнопки--------------------------------------------------------------------------------
     public void addListenerOnButton() {
         Button button_cancel = findViewById(R.id.game_cancel);
         Button button_save = findViewById(R.id.game_save);
@@ -289,14 +289,13 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                         Intent i = new Intent(".GamesRecyclerActivity");
                         startActivity(i);
                         finish();
-
                     }
                 }
 
         );
     }
 
-    //----------при нажатии кнопки сохранить добавление введенных данных в БД---------------------------------------------
+//----------при нажатии кнопки сохранить добавление введенных данных в БД---------------------------------------------
     public void add_to_db() {
         Log.i("Played_add_to_db","add");
         gameDateTime = ((TextView) findViewById(R.id.currentDateTime)).getText().toString();
@@ -308,35 +307,48 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         db_gameDateTime = database.getReference("Games/game_id/" + new_game_id + "/DateTime");
         db_winnerTeam = database.getReference("Games/game_id/" + new_game_id + "/WinnerTeam");
         db_gameMap = database.getReference("Games/game_id/" + new_game_id + "/Map");
-        db_countTeams = database.getReference("Games/games_id/"+new_game_id+"/CountTeams");
+        db_usedTeams = database.getReference("Games/game_id/"+new_game_id+"/UsedTeams");
+
         db_gameDateTime.setValue(gameDateTime);
         db_winnerTeam.setValue(winnerTeam);
         db_gameMap.setValue(gameMap);
 
 
         String new_member_team_list_id = database.getReference("quiz").push().getKey();
+        List<String> used_teams = new ArrayList<String>();
 
         for (MemberTeamClass i : member_team_List) {
             Log.i("Played_new_member","new in list");
             String mem = i.getMember();
             String team = i.getTeam();
+            if (!team.equals("Не участвовал")){
+                if (used_teams.isEmpty()){
+                    used_teams.add(team);
+                }
+                else {
+                    if (!used_teams.contains(team)){
+                        used_teams.add(team);
+                    }
+                }
+
+            }
 
             db_member_team = database.getReference("MembersTeams/id/" + new_member_team_list_id + "/" + mem);
             db_member_team.setValue(team);
-            GetValues(mem,team);
-//            int played = GetValues(mem);
 
-
+            //Наращивем значения Учавствовал и Выиграл для игроков
+            IncreaseStats_GetValues(mem,team);
         }
+        Log.i("Played_used_teams",used_teams.toString()+ " ");
+        db_usedTeams.setValue(used_teams.toString());
         db_member_team_id = database.getReference("Games/game_id/" + new_game_id + "/MemberTeamID");
         db_member_team_id.setValue(new_member_team_list_id);
 
     }
 
 
-
-    public void GetValues(final String nick, final String team) {
-        //final int[] statistic = new int[2];
+//----------Получаем старые значения статистики и наращиваем------------------------------------------------------------------------
+    public void IncreaseStats_GetValues(final String nick, final String team) {
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
         databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -344,10 +356,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 if (dataSnapshot == null) return;
                 int played = Integer.parseInt(dataSnapshot.child("Played").getValue().toString()) ;
                 int won = Integer.parseInt(dataSnapshot.child("Won").getValue().toString()) ;
-                //Log.i("Played_func",""+ played);
 
-                GetStats(played,won,nick,team);
-                
+                IncreaseStats(played,won,nick,team);
             }
 
             @Override
@@ -356,26 +366,23 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 Log.d("Error", "databaseError");
             }
         });
-        //Log.i("Played_betw",""+ stat_played);
-
     }
-    private void GetStats(int played, int won, String nick, String team) {
+//----------Наращивем значения Учавствовал и Выиграл для игроков-----------------------------------------------
+    private void IncreaseStats(int played, int won, String nick, String team) {
         db_personPlayed = database.getReference("Members/members_nicknames/" + nick + "/Played");
         db_personWon = database.getReference("Members/members_nicknames/" + nick + "/Won");
 
-        int new_played = played+1;
-        Log.i("Played_after",""+ new_played + " "+ played);
-        Toast.makeText(getApplicationContext(), nick+new_played + " old", Toast.LENGTH_SHORT).show();
-        db_personPlayed.setValue(new_played);
-        Log.d("Played_tjhglktuh" , winnerTeam+" "+team);
+        if (!team.equals("Не участвовал")){
+            int new_played = played+1;
+            db_personPlayed.setValue(new_played);
 
-        if (team.equals(winnerTeam)) {
-            Log.d("Played_ok" , "ok");
+            if (team.equals(winnerTeam)) {
+                Log.d("Played_ok" , "ok");
 
-            int new_won = won+1;
-            db_personWon.setValue(new_won);
+                int new_won = won+1;
+                db_personWon.setValue(new_won);
+            }
         }
-//        Log.i("Played_func",""+ stat_played);
     }
 
 

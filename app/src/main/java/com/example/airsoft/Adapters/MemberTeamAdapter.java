@@ -99,7 +99,7 @@ public class MemberTeamAdapter extends RecyclerView.Adapter<MemberTeamAdapter.Me
                 Log.d("Error", "databaseError");
             }
         });
-        teamsList.add("Не учавствовал");
+        teamsList.add("Не участвовал");
         return teamsList;
     }
 
