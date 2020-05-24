@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="@string/GameInfo"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textAlignment="center"
                 android:textSize="25sp"
 
