@@ -1,14 +1,13 @@
 package com.example.airsoft.Classes;
 
 public class MembersClass {
-    private String nickname, fio;
+    private String nickname, fio, statistic;
 
     public MembersClass() {
     }
 
-    public MembersClass(String fio, String nickname) {
+    public MembersClass(String nickname) {
         this.nickname = nickname;
-        this.fio = fio;
 
     }
 
@@ -26,6 +25,14 @@ public class MembersClass {
 
     public void setFio(String FIO) {
         this.fio = FIO;
+    }
+
+    public String getStatistic() {
+        return statistic;
+    }
+
+    public void setStatistic(String statistic) {
+        this.statistic = statistic;
     }
 
 }

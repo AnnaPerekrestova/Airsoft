@@ -142,7 +142,8 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         }
     }
     private void addRow(String nick_from_base, String fio_from_base ) {
-        MembersClass member = new MembersClass(fio_from_base, nick_from_base );
+        MembersClass member = new MembersClass( nick_from_base );
+        member.setFio(fio_from_base);
         membersList.add(member);
 
         mAdapter.notifyDataSetChanged();
