@@ -35,18 +35,17 @@ public class GamesRecyclerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games_recycler);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_games);
-
+//--------Создаем адаптер для RecyclerView------------------------------------------------------------------------
         gAdapter = new GamesAdapter(gameList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(gAdapter);
 
-        add_to_games_table();
+        add_to_games_view();
+        //-------обрабатываем нажатие на строку-----------------------------------------------------------------------------------
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -55,6 +54,10 @@ public class GamesRecyclerActivity extends AppCompatActivity {
                 Intent i = new Intent(".GameInfoActivity");
                 i.putExtra("game_id", selected_game.getGame_id());
                 i.putExtra("member_team_id", selected_game.getMemberTeamID());
+                i.putExtra("date_time", selected_game.getDate_time());
+                i.putExtra("map", selected_game.getMap());
+                i.putExtra("winner", selected_game.getWinner());
+
                 i.putExtra("used_teams", selected_game.getUsedTeams());
                 //i.putExtra("list", GetMembersOfUsedTeams(selected_game.getMemberTeamID()));
                 startActivity(i);
@@ -65,10 +68,9 @@ public class GamesRecyclerActivity extends AppCompatActivity {
 
             }
         }));
-        //addListenerOnButton();
     }
-//
-    public void add_to_games_table(){
+//------Получаем данные для добавления в список-------------------------------------------------------------------------
+    public void add_to_games_view(){
         final List<String> gameIdList = new ArrayList<>();
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Games");
         databaseRef.child("game_id").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,30 +113,14 @@ public class GamesRecyclerActivity extends AppCompatActivity {
             });
         }
     }
-
+//---------------Добавляем строку ресайклер вью и обновляем адаптер ------------------------------------------------------------------
     private void addRow(String id_from_base, String date_time_from_base, String map_from_base, String winner_from_base, String used_teams_from_base, String m_t_id_from_base ) {
         GamesClass game = new GamesClass(id_from_base, date_time_from_base, map_from_base, winner_from_base,used_teams_from_base,m_t_id_from_base);
         gameList.add(game);
 
         gAdapter.notifyDataSetChanged();
     }
-//    public void addListenerOnButton() {
-//        Button buttonAddPerson = findViewById(R.id.members_fab);
-//        buttonAddPerson.setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Intent i = new Intent(".PersonActivity");
-//                        startActivity(i);
-//                        finish();
-//                    }
-//                }
-//        );
-//    }
-
-
-
-
+//---------Функция при нажатии на кнопку Сохранить -------------------------------------------------------------------------------------
     public void addNewGame(View view) {
         Intent i = new Intent(".NewGameRecyclerActivity");
         startActivity(i);

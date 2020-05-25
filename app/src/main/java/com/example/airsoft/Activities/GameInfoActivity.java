@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.airsoft.Adapters.GamesAdapter;
 import com.example.airsoft.Adapters.MemberTeamGameAdapter;
@@ -39,8 +40,6 @@ public class GameInfoActivity extends AppCompatActivity {
     public List<MemberTeamClass> member_team_list =new  ArrayList<>();
     List<String[]> list_of_teams = new ArrayList<>();
 
-    //String[] membersteam1 = { "player1", "player2", "player5"};
-    //String[] membersteam2 = { "player3", "player4", "player6"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +50,18 @@ public class GameInfoActivity extends AppCompatActivity {
         member_team_id = intent.getStringExtra("member_team_id");
         used_teams_string = intent.getStringExtra("used_teams");
 
+        String datetime = intent.getStringExtra("date_time");
+        TextView dt =findViewById(R.id.GameDataTime);
+        dt.setText(datetime);
+        String map = intent.getStringExtra("map");
+        TextView m =findViewById(R.id.game_map);
+        m.setText(map);
+        String winner = intent.getStringExtra("winner");
+        TextView w =findViewById(R.id.game_winner);
+        w.setText(winner);
+
+
+//-------Создаем адаптер для ресайклер вью вида GridLayout с двумя колонками---------------------------------------------------------------------------
         adapter = new MemberTeamGameAdapter(list_of_teams);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL,false);;
         rv.setLayoutManager(mLayoutManager);
@@ -60,9 +71,8 @@ public class GameInfoActivity extends AppCompatActivity {
         GetMembersOfUsedTeams(member_team_id);
         //Log.i("mt",""+member_team_list.toString());
     }
+    //----Получаем список списков строк для получения информации о том, кто в какой команде----------------------
     private void GetMembersOfUsedTeams(String member_team_id) {
-        //final List<String> member_team_list = new ArrayList<>();
-        //final List<String[]> list_of_teams = new ArrayList<>();
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("MembersTeams");
         databaseRef.child("id").child(member_team_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
