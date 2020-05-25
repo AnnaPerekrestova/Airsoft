@@ -26,15 +26,13 @@ public class MemberInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_info);
-
-
-
+//-----Получаем значения переданные через intent------------------------------------------------------------
         Intent intent = getIntent();
         String nick = intent.getStringExtra("id_m");
-
+//------Заполняем информацию о никнейме---------------------------------------------------------------------
         txt_nickname = (TextView) findViewById(R.id.member_nickname);
         txt_nickname.setText("Позывной: " + nick);
-
+//------Заполняем остальную информацию----------------------------------------------------------------------
         Get_member_info(nick);
 
 
@@ -42,7 +40,7 @@ public class MemberInfo extends AppCompatActivity {
 
 
     }
-
+//-----Мполучаем информацию об игроке из БД и заполняем ею элементы----------------------------------------------------
     private void Get_member_info(String nick) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
         databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -54,7 +52,7 @@ public class MemberInfo extends AppCompatActivity {
                 String fio = (String) dataSnapshotInfo.child("FIO").getValue();
                 String arsenal = (String) dataSnapshotInfo.child("Arsenal").getValue();
                 String position = (String) dataSnapshotInfo.child("Position").getValue();
-
+                //заполняем элементы активности
                 Fill_member_info(arsenal, fio, position);
 
             }
@@ -68,7 +66,7 @@ public class MemberInfo extends AppCompatActivity {
             }
         });
     }
-
+//--------заполняем элементы активности-----------------------------------
     private void Fill_member_info(String ars, String fio, String pos) {
         txt_fio = (TextView) findViewById(R.id.member_fio);
         txt_arsenal = (TextView) findViewById(R.id.member_arsenal);

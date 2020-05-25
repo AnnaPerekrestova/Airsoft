@@ -31,14 +31,12 @@ import java.util.List;
 public class GameInfoActivity extends AppCompatActivity {
     private RecyclerView rv;
     Intent intent;
-//    String game_id = i.getStringExtra("game_id");
     String member_team_id;
     String game_id;
     String used_teams_string;
-    String[] used_teams;
     public MemberTeamGameAdapter adapter;
     public List<MemberTeamClass> member_team_list =new  ArrayList<>();
-    List<String[]> list_of_teams = new ArrayList<>();
+    List<List<String>> list_of_teams = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +44,11 @@ public class GameInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_info);
         rv = findViewById(R.id.game_info_teams);
         intent = getIntent();
+        //-----Получаем значения переданные через intent----------------------------------------------------------------
         game_id= intent.getStringExtra("game_id");
         member_team_id = intent.getStringExtra("member_team_id");
         used_teams_string = intent.getStringExtra("used_teams");
-
+//--------Заполняем текст вью соответствующими значениями---------------------------------------------------------------
         String datetime = intent.getStringExtra("date_time");
         TextView dt =findViewById(R.id.GameDataTime);
         dt.setText(datetime);
@@ -61,17 +60,16 @@ public class GameInfoActivity extends AppCompatActivity {
         w.setText(winner);
 
 
-//-------Создаем адаптер для ресайклер вью вида GridLayout с двумя колонками---------------------------------------------------------------------------
+//-------Создаем адаптер для RecyclerView вида GridLayout с двумя колонками (list_of_teams заполняется в функции GetMembersOfUsedTeams)---------------------------------------------------------------------------
         adapter = new MemberTeamGameAdapter(list_of_teams);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL,false);;
         rv.setLayoutManager(mLayoutManager);
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(adapter);
-
+//------Заполняем список списков строк (распределение по командам) для адаптера ---------------------------------------------
         GetMembersOfUsedTeams(member_team_id);
-        //Log.i("mt",""+member_team_list.toString());
     }
-    //----Получаем список списков строк для получения информации о том, кто в какой команде----------------------
+//----Получаем список списков строк для получения информации о том, кто в какой команде-------------------------------------------
     private void GetMembersOfUsedTeams(String member_team_id) {
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("MembersTeams");
         databaseRef.child("id").child(member_team_id).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -82,8 +80,14 @@ public class GameInfoActivity extends AppCompatActivity {
                     //String team = postSnapShot.getKey();
                     String members = postSnapShot.getValue().toString();
                     String[] s =members.split("[,\\]\\[]");
+                    List<String> list = new ArrayList<>();
+                    for (String i: s){
+                        if (!i.equals("")){
+                            list.add(i);
+                        }
+                    }
 
-                    list_of_teams.add(s);
+                    list_of_teams.add(list);
                 }
                 adapter.notifyDataSetChanged();
             }

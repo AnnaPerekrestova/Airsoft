@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAdapter.MemberTeamHolder> {
-    ArrayAdapter<String> adapterTeams;
-
-    private List<String[]> used_teams = new ArrayList<>();
+    private List<List<String>> used_teams = new ArrayList<>();
     //ViewHolder описывает представление элемента и метаданные о его месте в RecyclerView.
     public class MemberTeamHolder extends RecyclerView.ViewHolder { //получает макет строки
         public ListView listView;
@@ -36,7 +34,7 @@ public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAd
         }
     }
 
-    public MemberTeamGameAdapter(List<String[]> used_teams) { //адаптер получает значения
+    public MemberTeamGameAdapter(List<List<String> > used_teams) { //адаптер получает значения
         this.used_teams= used_teams;
     }
 

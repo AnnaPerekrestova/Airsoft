@@ -24,9 +24,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
             super(view);
             date_time = (TextView) view.findViewById(R.id.recycler_date_time_game_row);
             map = (TextView) view.findViewById(R.id.recycler_map_game_row);
-            winner = (Button) view.findViewById(R.id.recycler_winner_game_row);
-
-        }
+                    }
     }
 
 
@@ -47,20 +45,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
         GamesClass game = gamesList.get(position);
         holder.date_time.setText(game.getDate_time());
         holder.map.setText(game.getMap());
-        holder.winner.setText(game.getWinner());
-        holder.winner.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                }
-
-        );
-//        holder.winner
-
     }
-
 
     @Override
     public int getItemCount() {
