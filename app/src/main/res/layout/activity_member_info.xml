@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="ТЕСТ ФИО"
+            android:text="@string/FIO"
             android:textColor="@color/black"
             android:textSize="20dp"/>
 
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="ТЕСТ ПОЗЫВНОЙ"
+            android:text="@string/nickname"
             android:textColor="@color/black"
             android:textSize="20dp"/>
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="ТЕСТ должность"
+            android:text="@string/position"
             android:textColor="@color/black"
             android:textSize="20dp"/>
 
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="TEST arsenal"
+            android:text="@string/weapons_inf"
             android:textColor="@color/black"
             android:textSize="20dp"/>
 

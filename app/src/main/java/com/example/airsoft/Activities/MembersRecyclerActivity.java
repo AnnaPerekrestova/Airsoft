@@ -8,6 +8,7 @@ import com.example.airsoft.Adapters.MembersAdapter;
 import com.example.airsoft.Classes.MembersClass;
 import com.example.airsoft.R;
 import com.example.airsoft.RecyclerTouchListener;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +41,8 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_members_recycler);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
+//------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
+        recyclerView.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));
 
         mAdapter = new MembersAdapter(membersList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

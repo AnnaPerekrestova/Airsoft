@@ -21,6 +21,7 @@
         android:layout_weight="1"
         tools:layout_editor_absoluteX="16dp"
         android:contextClickable="false"
+        android:clickable="false"
 
         tools:layout_editor_absoluteY="30dp"
         />

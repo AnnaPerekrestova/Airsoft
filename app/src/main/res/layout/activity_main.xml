@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-                        android:text="@string/team_list"
+                        android:text="@string/Members"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="-57dp" />
 
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-                        android:text="@string/plays_results"
+                        android:text="@string/Games"
                         app:layout_constraintTop_toBottomOf="@+id/members"
                         tools:layout_editor_absoluteX="39dp" />
 

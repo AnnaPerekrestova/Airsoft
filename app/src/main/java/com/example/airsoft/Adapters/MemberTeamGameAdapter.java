@@ -50,7 +50,10 @@ public class MemberTeamGameAdapter extends RecyclerView.Adapter<MemberTeamGameAd
 //---------Для каждого объекта RecyclerView создаем адаптер для listView и заполняем его соответствующим элементом из списка списка строк-----
         ArrayAdapter<String> list_adapter = new ArrayAdapter<String>(holder.itemView.getContext(),
                 android.R.layout.simple_list_item_1, used_teams.get(position)) ;
-        holder.listView.setAdapter(list_adapter);}
+        holder.listView.setClickable(false);
+        holder.listView.setAdapter(list_adapter);
+
+    }
 
 
     @Override

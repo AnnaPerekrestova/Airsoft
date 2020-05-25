@@ -19,6 +19,7 @@ import com.example.airsoft.Classes.GamesClass;
 import com.example.airsoft.Classes.MemberTeamClass;
 import com.example.airsoft.Classes.MembersClass;
 import com.example.airsoft.R;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,8 @@ public class GameInfoActivity extends AppCompatActivity {
         String winner = intent.getStringExtra("winner");
         TextView w =findViewById(R.id.game_winner);
         w.setText(winner);
-
+//------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
+        rv.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));
 
 //-------Создаем адаптер для RecyclerView вида GridLayout с двумя колонками (list_of_teams заполняется в функции GetMembersOfUsedTeams)---------------------------------------------------------------------------
         adapter = new MemberTeamGameAdapter(list_of_teams);

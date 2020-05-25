@@ -8,6 +8,7 @@ import com.example.airsoft.Classes.GamesClass;
 import com.example.airsoft.Classes.MemberTeamClass;
 import com.example.airsoft.R;
 import com.example.airsoft.RecyclerTouchListener;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +38,10 @@ public class GamesRecyclerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_games_recycler);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_games);
+//------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
+        recyclerView.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));
+
+
 //--------Создаем адаптер для RecyclerView------------------------------------------------------------------------
         gAdapter = new GamesAdapter(gameList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -50,7 +55,6 @@ public class GamesRecyclerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 GamesClass selected_game = gameList.get(position);
-                Toast.makeText(getApplicationContext(), selected_game.getGame_id() + " is selected!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(".GameInfoActivity");
                 i.putExtra("game_id", selected_game.getGame_id());
                 i.putExtra("member_team_id", selected_game.getMemberTeamID());
@@ -59,7 +63,6 @@ public class GamesRecyclerActivity extends AppCompatActivity {
                 i.putExtra("winner", selected_game.getWinner());
 
                 i.putExtra("used_teams", selected_game.getUsedTeams());
-                //i.putExtra("list", GetMembersOfUsedTeams(selected_game.getMemberTeamID()));
                 startActivity(i);
             }
 
