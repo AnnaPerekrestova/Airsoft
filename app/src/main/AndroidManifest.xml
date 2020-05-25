@@ -10,6 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.StatisticActivity"
+            android:label="@string/title_activity_statistic"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".StatisticActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Activities.NewGameRecyclerActivity"
             android:label="@string/title_activity_new_game_recycler"
             android:theme="@style/AppTheme.NoActionBar">
@@ -19,12 +29,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.GameInfoActivity" android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".Activities.GameInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".GameInfoActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-             </intent-filter>
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.GamesRecyclerActivity"
@@ -46,30 +58,28 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MemberInfo">
+        <activity
+            android:name=".Activities.MemberInfo"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".MemberInfo" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.PersonActivity"
+        <activity
+            android:name=".Activities.NewMemberActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name=".PersonActivity" />
+                <action android:name=".NewMemberActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MembersActivity">
-            <intent-filter>
-                <action android:name=".MembersActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">>
+        <activity
+            android:name=".Activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

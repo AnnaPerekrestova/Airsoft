@@ -1,5 +1,6 @@
 package com.example.airsoft.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,8 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,8 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
     private String id;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference db_actually;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +55,47 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 MembersClass selected_member = membersList.get(position);
-                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
 
-                String id_member = (String) selected_member.getNickname();
+                String nick = (String) selected_member.getNickname();
+//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(".MemberInfo");
-                intent.putExtra("id_m", id_member);
+                intent.putExtra("id_m", nick);
                 startActivity(intent);
             }
 
             @Override
             public void onLongClick(View view, int position) {
+                MembersClass selected_member = membersList.get(position);
+                final String id_member_to_del = (String) selected_member.getNickname();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MembersRecyclerActivity.this);
+                builder.setTitle("Удаление игрока");
+                builder.setMessage("Вы действительно хотите удалить выбранного игрока?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Удалить", new DialogInterface.OnClickListener() { // Кнопка Удалить
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), id_member_to_del + " Удален из команды", Toast.LENGTH_SHORT).show();
+                        DatabaseReference db_actually;
+                        db_actually = database.getReference("Members/members_nicknames/" + id_member_to_del + "/Actually");
+                        db_actually.setValue(0);
+                        dialog.dismiss();
+                        Intent i = new Intent(".MembersRecyclerActivity");
+                        startActivity(i);
+                        finish();
+                        // Отпускает диалоговое окно
+                    }
 
+                });
+                builder.setNegativeButton("Оставить", new DialogInterface.OnClickListener() { // Кнопка Оставить
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); // Отпускает диалоговое окно
+                    }
+
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         }));
         add_to_members_table();
@@ -76,7 +109,9 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot==null)return;
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    membersNicksList.add(postSnapShot.getKey());
+                    if (postSnapShot.child("Actually").getValue().toString().equals("1")) {
+                        membersNicksList.add(postSnapShot.getKey());
+                    }
                 }
                 SetData(databaseRef, membersNicksList);
             }
@@ -107,13 +142,13 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         }
     }
     private void addRow(String nick_from_base, String fio_from_base ) {
-        MembersClass member = new MembersClass(nick_from_base, fio_from_base);
+        MembersClass member = new MembersClass(fio_from_base, nick_from_base );
         membersList.add(member);
 
         mAdapter.notifyDataSetChanged();
     }
     public void addNewMember(View view) {
-        Intent i = new Intent(".PersonActivity");
+        Intent i = new Intent(".NewMemberActivity");
         startActivity(i);
         finish();
     }

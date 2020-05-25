@@ -48,7 +48,8 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="ТЕСТ ФИО"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/member_nickname"
@@ -56,15 +57,17 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="ТЕСТ ПОЗЫВНОЙ"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/member_position"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="ТЕСТ position должность"
-            android:textColor="@color/black" />
+            android:text="ТЕСТ должность"
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/member_arsenal"
@@ -72,15 +75,10 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="TEST arsenal"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/textView_id_member"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:text="id_member"
-            android:textColor="@color/black" />
+
 
     </LinearLayout>
 

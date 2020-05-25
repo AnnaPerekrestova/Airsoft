@@ -152,7 +152,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         addListenerOnButton();
     }
 
-//----------Создание списка команд для выпадающего списка ----------------------------------------------------------
+    //----------Создание списка команд для выпадающего списка ----------------------------------------------------------
     public List<String> getTeamsList() {
         final List<String> teamsList = new ArrayList<String>();
 
@@ -176,7 +176,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         return teamsList;
     }
 
-//----------Создание списка карт для выпадающего списка ----------------------------------------------------------
+    //----------Создание списка карт для выпадающего списка ----------------------------------------------------------
     public List<String> getMapsList() {
         final List<String> mapsList = new ArrayList<>();
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Maps");
@@ -199,7 +199,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         return mapsList;
     }
 
-//----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
+    //----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
     public void setDate(View v) {
         new DatePickerDialog(NewGameRecyclerActivity.this, d,
                 dateAndTime.get(Calendar.YEAR),
@@ -208,7 +208,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 .show();
     }
 
-//---------отображаем диалоговое окно для выбора времени-----------------------------------------------------
+    //---------отображаем диалоговое окно для выбора времени-----------------------------------------------------
     public void setTime(View v) {
         new TimePickerDialog(NewGameRecyclerActivity.this, t,
                 dateAndTime.get(Calendar.HOUR_OF_DAY),
@@ -225,7 +225,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                         | DateUtils.FORMAT_SHOW_TIME));
     }
 
-//-----------установка обработчика выбора времени----------------------------------------------------------
+    //-----------установка обработчика выбора времени----------------------------------------------------------
     TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -233,7 +233,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
             setInitialDateTime();
         }
     };
-//-----------установка обработчика выбора даты---------------------------------------------------------------
+    //-----------установка обработчика выбора даты---------------------------------------------------------------
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateAndTime.set(Calendar.YEAR, year);
@@ -243,7 +243,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         }
     };
 
-//-----------заполнение recycler_view --------------------------------------------------------------------------------
+    //-----------заполнение recycler_view --------------------------------------------------------------------------------
     public void add_to_recycler_view() {
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
         databaseRef.child("members_nicknames").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -269,7 +269,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         mtAdapter.notifyDataSetChanged();
     }
 
-//------------слушаем нажатие на кнопки--------------------------------------------------------------------------------
+    //------------слушаем нажатие на кнопки--------------------------------------------------------------------------------
     public void addListenerOnButton() {
         Button button_cancel = findViewById(R.id.game_cancel);
         Button button_save = findViewById(R.id.game_save);
@@ -278,6 +278,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         finish();
+                        Intent i = new Intent(".GamesRecyclerActivity");
+                        startActivity(i);
                     }
                 }
 
@@ -287,16 +289,17 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         add_to_db();
+                        finish();
                         Intent i = new Intent(".GamesRecyclerActivity");
                         startActivity(i);
-                        finish();
+
                     }
                 }
 
         );
     }
 
-//----------при нажатии кнопки сохранить добавление введенных данных в БД---------------------------------------------
+    //----------при нажатии кнопки сохранить добавление введенных данных в БД---------------------------------------------
     public void add_to_db() {
         Log.i("Played_add_to_db","add");
         gameDateTime = ((TextView) findViewById(R.id.currentDateTime)).getText().toString();
@@ -316,7 +319,6 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
 
         String new_member_team_list_id = database.getReference("quiz").push().getKey();
-
 
         for (MemberTeamClass i : member_team_List) {
             Log.i("Played_new_member","new in list");
@@ -386,6 +388,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 Log.d("Error", "databaseError");
             }
         });
+        //Log.i("Played_betw",""+ stat_played);
+
     }
 //----------Наращивем значения Учавствовал и Выиграл для игроков-----------------------------------------------
     private void IncreaseStats(int played, int won, String nick, String team) {
@@ -403,6 +407,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
                 db_personWon.setValue(new_won);
             }
         }
+//        Log.i("Played_func",""+ stat_played);
     }
 
 

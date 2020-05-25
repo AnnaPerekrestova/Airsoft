@@ -48,4 +48,5 @@
     <string name="Nickname_must_be_filled_in">Поле Позывной должно быть заполнено</string>
     <string name="GameDataTime_text">Дата и время игры</string>
     <string name="AddNewPlayer">Добавление нового игрока</string>
+    <string name="title_activity_statistic">StatisticActivity</string>
 </resources>

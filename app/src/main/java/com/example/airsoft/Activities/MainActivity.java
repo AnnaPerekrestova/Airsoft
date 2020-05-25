@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public void addListenerOnButton() {
         Button buttonMembers = findViewById(R.id.members);
         Button buttonGames = findViewById(R.id.games);
+        Button buttonStatistic = findViewById(R.id.stats);
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -42,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".GamesRecyclerActivity");
+                        startActivity(i);
+                    }
+                }
+
+        );
+        buttonStatistic.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".StatisticActivity");
                         startActivity(i);
                     }
                 }

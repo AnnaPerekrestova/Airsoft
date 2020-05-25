@@ -30,12 +30,12 @@ public class MemberInfo extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String Member_id = intent.getStringExtra("id_m");
+        String nick = intent.getStringExtra("id_m");
 
-        txt_id_member = (TextView) findViewById(R.id.textView_id_member);
-        txt_id_member.setText(Member_id);
+        txt_nickname = (TextView) findViewById(R.id.member_nickname);
+        txt_nickname.setText("Позывной: " + nick);
 
-        Get_member_info(Member_id);
+        Get_member_info(nick);
 
 
 
@@ -43,20 +43,19 @@ public class MemberInfo extends AppCompatActivity {
 
     }
 
-    private void Get_member_info(String memb_id) {
+    private void Get_member_info(String nick) {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
-        databaseRef.child("members_id").child(memb_id).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshotInfo) {
 
                 if (dataSnapshotInfo == null) return;
                 String fio = (String) dataSnapshotInfo.child("FIO").getValue();
-                String nick = (String) dataSnapshotInfo.child("Nickname").getValue();
                 String arsenal = (String) dataSnapshotInfo.child("Arsenal").getValue();
                 String position = (String) dataSnapshotInfo.child("Position").getValue();
 
-                Fill_member_info(arsenal, fio, nick, position);
+                Fill_member_info(arsenal, fio, position);
 
             }
 
@@ -70,16 +69,14 @@ public class MemberInfo extends AppCompatActivity {
         });
     }
 
-    private void Fill_member_info(String ars, String fio, String nick, String pos) {
+    private void Fill_member_info(String ars, String fio, String pos) {
         txt_fio = (TextView) findViewById(R.id.member_fio);
         txt_arsenal = (TextView) findViewById(R.id.member_arsenal);
         txt_position = (TextView) findViewById(R.id.member_position);
-        txt_nickname = (TextView) findViewById(R.id.member_nickname);
 
-        txt_arsenal.setText(ars);
-        txt_fio.setText(fio);
-        txt_nickname.setText(nick);
-        txt_position.setText(pos);
+        txt_arsenal.setText("Снаряжение: "+ars);
+        txt_fio.setText("ФИО: " + fio);
+        txt_position.setText("Должность: " + pos);
 
     }
 

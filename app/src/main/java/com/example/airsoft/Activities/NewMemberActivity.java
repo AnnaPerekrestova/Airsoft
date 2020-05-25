@@ -2,7 +2,6 @@ package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,14 +13,12 @@ import com.example.airsoft.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-public class PersonActivity extends AppCompatActivity {
+public class NewMemberActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_person);
+        setContentView(R.layout.activity_new_member);
         addListenerOnButton();
     }
     //String fio,String nickname,String Position, String arsenal
@@ -37,18 +34,21 @@ public class PersonActivity extends AppCompatActivity {
         DatabaseReference db_personArsenal;
         DatabaseReference db_personPlayed;
         DatabaseReference db_personWon;
+        DatabaseReference db_actually;
 
         db_personFIO = database.getReference("Members/members_nicknames/"+personNickname+"/FIO");
         db_personPosition = database.getReference("Members/members_nicknames/"+personNickname+"/Position");
         db_personArsenal = database.getReference("Members/members_nicknames/"+personNickname+"/Arsenal");
         db_personPlayed = database.getReference("Members/members_nicknames/"+personNickname+"/Played");
         db_personWon = database.getReference("Members/members_nicknames/"+personNickname+"/Won");
+        db_actually = database.getReference("Members/members_nicknames/"+personNickname+"/Actually");
 
         db_personFIO.setValue(personFIO);
         db_personPosition.setValue(personPosition);
         db_personArsenal.setValue(personArsenal);
         db_personPlayed.setValue(0);
         db_personWon.setValue(0);
+        db_actually.setValue(1);
     }
 
     public void addListenerOnButton() {
@@ -78,9 +78,12 @@ public class PersonActivity extends AppCompatActivity {
 
         );
         buttonPersonCancel.setOnClickListener(
+
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Intent i = new Intent(".MembersRecyclerActivity");
+                        startActivity(i);
                         finish();
                     }
                 }
