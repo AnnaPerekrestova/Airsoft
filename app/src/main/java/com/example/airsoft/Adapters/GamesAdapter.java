@@ -48,8 +48,19 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.MyViewHolder
         holder.date_time.setText(game.getDate_time());
         holder.map.setText(game.getMap());
         holder.winner.setText(game.getWinner());
+        holder.winner.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                }
+
+        );
+//        holder.winner
 
     }
+
 
     @Override
     public int getItemCount() {
