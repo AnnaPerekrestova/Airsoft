@@ -2,7 +2,6 @@ package com.example.airsoft.Classes;
 
 public class MembersClass {
     private String nickname, fio, statistic;
-
     public MembersClass() {
     }
 

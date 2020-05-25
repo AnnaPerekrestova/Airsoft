@@ -31,17 +31,13 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private List<MembersClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
-    private String id;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference db_actually;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_members_recycler);
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
 
