@@ -165,7 +165,8 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot == null) return;
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                    teamsList.add(postSnapShot.getValue().toString());
+
+                        teamsList.add(postSnapShot.getValue().toString());
                 }
                 adapterTeams.notifyDataSetChanged();//обновление адаптера
             }
@@ -254,7 +255,9 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot == null) return;
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                    addRow(postSnapShot.getKey());
+                    if (postSnapShot.child("Actually").getValue().toString().equals("1")) {
+                        addRow(postSnapShot.getKey());
+                    }
                 }
             }
 
