@@ -51,4 +51,6 @@
     <string name="title_activity_statistic">StatisticActivity</string>
     <string name="Members">Список игроков</string>
     <string name="Games">Список игр</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">password</string>
 </resources>
