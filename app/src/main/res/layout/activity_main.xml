@@ -9,7 +9,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/background_pic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -30,7 +30,7 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/team_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
             android:layout_marginBottom="5dp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/text_team_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/bastardos_inmortales"
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Members"
+                        android:text="команда"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="-57dp" />
 
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Games"
+                        android:text="игры"
                         app:layout_constraintTop_toBottomOf="@+id/members"
                         tools:layout_editor_absoluteX="39dp" />
 
@@ -114,6 +114,18 @@
                         android:text="@string/Statistic"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/games" />
+
+                    <Button
+                        android:id="@+id/news"
+                        style="@style/buttonStyleBorderSand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stats"
+                        android:layout_marginTop="16dp"
+                        android:text="новости"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/stats" />
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
