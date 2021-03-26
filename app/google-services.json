@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "620888862471",
-    "firebase_url": "https://airsoft-d62a1.firebaseio.com",
-    "project_id": "airsoft-d62a1",
-    "storage_bucket": "airsoft-d62a1.appspot.com"
+    "project_number": "250721428412",
+    "project_id": "airsoft2-61c4f",
+    "storage_bucket": "airsoft2-61c4f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:620888862471:android:40fa94d1f0fcb1728ddfa2",
+        "mobilesdk_app_id": "1:250721428412:android:a2dd1c16703af393a081b9",
         "android_client_info": {
           "package_name": "com.example.airsoft"
         }
       },
       "oauth_client": [
         {
-          "client_id": "620888862471-ae08sf31hg1l9856khkh57qabg8811rt.apps.googleusercontent.com",
+          "client_id": "250721428412-ick6ll6j0th0fkr89paqvnb8ml3amakd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoQj69mtzfFnFYyoGYIFra3PiHpRjYZsY"
+          "current_key": "AIzaSyA9nBeJiU_Ik4VzZD2rU11TmZScKSd8KYo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "620888862471-ae08sf31hg1l9856khkh57qabg8811rt.apps.googleusercontent.com",
+              "client_id": "250721428412-ick6ll6j0th0fkr89paqvnb8ml3amakd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

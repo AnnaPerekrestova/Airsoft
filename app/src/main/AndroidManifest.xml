@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
         <activity
             android:name=".Activities.CreatingTeam"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,6 +50,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".CalendarActivity"
+            android:label="Calendar"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".CalendarActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Activities.StatisticActivity"
             android:label="@string/title_activity_statistic"

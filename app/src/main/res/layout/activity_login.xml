@@ -46,7 +46,7 @@
                     android:layout_weight="0.5">
 
                     <EditText
-                        android:id="@+id/mail"
+                        android:id="@+id/email"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                         android:layout_marginTop="16dp"
                         android:hint="@string/password"
                         android:inputType="textPassword"
-                        app:layout_constraintTop_toBottomOf="@+id/mail"
+                        app:layout_constraintTop_toBottomOf="@+id/email"
                         tools:layout_editor_absoluteX="39dp" />
 
                     <Button
