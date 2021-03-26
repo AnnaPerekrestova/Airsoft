@@ -94,13 +94,7 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         currentDateTime = (TextView) findViewById(R.id.currentDateTime);
         setInitialDateTime();
 
-//-----------Выпадающий список для выбора команды-победителя -------------------------------------------------------
-        spinnerTeams = (Spinner) findViewById(R.id.teams);
-        // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        adapterTeams = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getTeamsList());
-        // Определяем разметку для использования при выборе элемента
-        adapterTeams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTeams.setAdapter(adapterTeams);
+
 
 //-----------Выпадающий список для выбора карты --------------------------------------------------------------------
         spinnerMaps = (Spinner) findViewById(R.id.maps);
@@ -155,30 +149,6 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
         addListenerOnButton();
     }
 
-    //----------Создание списка команд для выпадающего списка ----------------------------------------------------------
-    public List<String> getTeamsList() {
-        final List<String> teamsList = new ArrayList<String>();
-
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Teams");
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot == null) return;
-                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-
-                        teamsList.add(postSnapShot.getValue().toString());
-                }
-                adapterTeams.notifyDataSetChanged();//обновление адаптера
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
-            }
-        });
-        return teamsList;
-    }
 
     //----------Создание списка карт для выпадающего списка ----------------------------------------------------------
     public List<String> getMapsList() {

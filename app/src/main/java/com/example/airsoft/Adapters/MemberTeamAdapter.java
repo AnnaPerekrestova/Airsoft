@@ -4,9 +4,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ServiceWorkerClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,16 +27,16 @@ import java.util.List;
 
 public class MemberTeamAdapter extends RecyclerView.Adapter<MemberTeamAdapter.MemberTeamHolder> {
     private List<MemberTeamClass> member_team_List;
-    ArrayAdapter<String> adapterTeams;
 
     //ViewHolder описывает представление элемента и метаданные о его месте в RecyclerView.
     public class MemberTeamHolder extends RecyclerView.ViewHolder { //получает макет строки
         public TextView member;
         public Spinner team;
+        public Switch playF;                                                                           // что я написал?
         public MemberTeamHolder(View view) {
             super(view);
             member = (TextView) view.findViewById(R.id.recycler_member_team_row);
-            team = (Spinner) view.findViewById(R.id.member_team);
+
         }
     }
 
@@ -53,55 +56,17 @@ public class MemberTeamAdapter extends RecyclerView.Adapter<MemberTeamAdapter.Me
     public void onBindViewHolder(final MemberTeamAdapter.MemberTeamHolder holder, int position) {
         final MemberTeamClass member_team = member_team_List.get(position);
         holder.member.setText(member_team.getMember());
-
-//------Создаем адаптер для заполнения спиннера (контекст, в котором выводится спиннер - получаем родительский элемент холдера;
-        //разметка по умолчанию для выпадающего списка; список, поторым будет  заполняться спиннер)
-        adapterTeams = new ArrayAdapter<String>(holder.itemView.getContext(), android.R.layout.simple_spinner_item, this.TeamsList());
-        // Определяем разметку для использования при выборе элемента
-        adapterTeams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Применяем адаптер к элементу spinner
-        holder.team.setAdapter(adapterTeams);
-
-//------Добавляем слушатель выбора элемента в спиннере -----------------------------------------------------------------
-        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                // Получаем выбранный объект
-                String item = (String)parent.getItemAtPosition(position);
-                member_team.setTeam(item);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        };
-        holder.team.setOnItemSelectedListener(itemSelectedListener);
     }
- //   ----- Заполняем список для спиннера (Данные из БД + "Не учавстоввал") ----------------------------------------------
 
-    public List<String> TeamsList(){
-        final List<String> teamsList= new ArrayList<String>();
-
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Teams");
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot==null)return;
-                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    teamsList.add(postSnapShot.getValue().toString());
-                }
-                adapterTeams.notifyDataSetChanged();//обновление адаптера
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
-            }
-        });
-        teamsList.add("Не участвовал");
-        return teamsList;
+//    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            // do something when check is selected
+        } else {
+            //do something when unchecked
+        }
     }
+
 
     @Override
     public int getItemCount() {

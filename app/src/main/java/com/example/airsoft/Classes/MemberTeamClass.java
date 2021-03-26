@@ -1,6 +1,7 @@
 package com.example.airsoft.Classes;
 
 import android.util.Log;
+import android.widget.Switch;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,16 +14,11 @@ import java.util.List;
 
 public class MemberTeamClass {
     private String member;
-    private String team;
-//    private String usedTeams;
-
-    public MemberTeamClass() {
-    }
+    private Boolean playF;
 
     public MemberTeamClass(String member) {
         this.member = member;
-        this.team = team;
-        //this.usedTeams = usedTeams;
+        this.playF = playF;
 
     }
 
@@ -34,19 +30,12 @@ public class MemberTeamClass {
         this.member = Member;
     }
 
-    public String getTeam() {
-        return team;
+    public Boolean getPlay() {
+        return playF;
     }
 
-    public void setTeam(String Team) {
-        this.team = Team;
+    public void setPlayf(Boolean playF) {
+        this.playF = playF;
     }
-
-//    public String getUsedTeams() {return usedTeams; }
-//
-//    public void setUsedTeams(String usedTeams) {
-//        this.usedTeams = usedTeams;
-//    }
-
 
 }

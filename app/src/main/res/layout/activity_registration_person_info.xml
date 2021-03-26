@@ -45,6 +45,19 @@
             android:layout_marginTop="10dp"/>
 
         <EditText
+            android:id="@+id/date_of_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:gravity="start|top"
+            android:hint="Дата рождения"
+            android:inputType="date"
+            android:padding="15dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
             android:id="@+id/nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +83,9 @@
             android:padding="15dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
+
+
+
 
     </LinearLayout>
 

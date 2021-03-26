@@ -33,8 +33,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_members_recycler" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/members_fab"
         android:layout_width="wrap_content"
@@ -44,5 +42,9 @@
         android:onClick="addNewMember"
         app:srcCompat="@android:drawable/ic_input_add"
         tools:ignore="OnClick" />
+
+    <include layout="@layout/content_members_recycler" />
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

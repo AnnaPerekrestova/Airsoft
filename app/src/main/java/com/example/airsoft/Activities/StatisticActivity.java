@@ -80,11 +80,8 @@ public class StatisticActivity extends AppCompatActivity {
 
                     if(dataSnapshot2==null)return;
                     int played = Integer.parseInt  (dataSnapshot2.child("Played").getValue().toString()) ;
-                    int won = Integer.parseInt  (dataSnapshot2.child("Won").getValue().toString()) ;
-                    double percent = Math.round(((double)won/(double) played)*100) ;
-                    int percent_int = (int) percent;
-                    String per_str = Integer.toString(percent_int);
-                    addRow(nick,per_str);
+                    String games = Integer.toString(played);
+                    addRow(nick, games);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
