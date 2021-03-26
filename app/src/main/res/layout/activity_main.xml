@@ -74,6 +74,13 @@
 
                     >
 
+                    <ImageButton
+                        android:id="@+id/delog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/abc_vector_test"
+                        tools:layout_editor_absoluteX="17dp"
+                        tools:layout_editor_absoluteY="31dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,6 +133,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/stats" />
 
+                    <Button
+                        android:id="@+id/calendar"
+                        style="@style/buttonStyleBorderSand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stats"
+                        android:layout_marginTop="16dp"
+                        android:text="календарь"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/news" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
