@@ -35,13 +35,15 @@
             android:id="@+id/enter_team_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Введите название команды"
+            android:text="Введите данные команды"
             android:textColor="@color/black"
             android:textSize="19dp"
             tools:ignore="Autofill,LabelFor"
             android:padding="15dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
+
+
 
 
         <EditText
@@ -55,12 +57,61 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
+        <EditText
+            android:id="@+id/team_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:hint="Город команды"
+            android:padding="15dp"
+            android:textColor="@color/black"
+            tools:ignore="Autofill,LabelFor" />
+
+
         <Button
             android:id="@+id/create_team_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/buttonStyleBorderSand"
             android:text="Создать команду"
+            android:padding="15dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/connecting_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:padding="15dp"
+            android:visibility="invisible"
+            android:text="Ваша команда успешно создана! Поделитесть этим ключем с сокомандниками:"
+            android:textColor="@color/black"
+            android:textSize="19dp"
+            tools:ignore="Autofill,LabelFor" />
+        <EditText
+            android:id="@+id/new_team_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:hint="key"
+            android:focusable = "false"
+            android:longClickable="false"
+            android:cursorVisible="false"
+            android:visibility="invisible"
+            android:padding="15dp"
+            android:textColor="@color/black"
+            tools:ignore="Autofill,LabelFor" />
+        <Button
+            android:id="@+id/create_team_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/buttonStyleBorderSand"
+            android:text="Далее"
+            android:visibility="invisible"
             android:padding="15dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>

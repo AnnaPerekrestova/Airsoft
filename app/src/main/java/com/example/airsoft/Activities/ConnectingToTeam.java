@@ -26,8 +26,10 @@ public class ConnectingToTeam extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         Intent i = new Intent(".MainActivity");
                         startActivity(i);
+                        finish();
                     }
                 }
 
@@ -36,7 +38,7 @@ public class ConnectingToTeam extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".GamesRecyclerActivity");
+                        Intent i = new Intent(".CreatingTeam");
                         startActivity(i);
                     }
                 }

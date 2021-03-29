@@ -11,8 +11,7 @@
         android:theme="@style/AppTheme">
         <service
             android:name=".NotificationService"
-            android:enabled="true"
-            android:exported="true" >
+            android:enabled="true" >
         </service>
         <activity
             android:name=".Activities.CreatingTeam"
