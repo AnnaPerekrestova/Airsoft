@@ -36,6 +36,8 @@ public class GamesRecyclerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games_recycler);
+        Toast.makeText(GamesRecyclerActivity.this, "Вы успешно присоединены к команде!",
+                Toast.LENGTH_SHORT).show();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_games);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------

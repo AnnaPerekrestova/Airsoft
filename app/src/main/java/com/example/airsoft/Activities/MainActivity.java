@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.airsoft.NotificationService;
 import com.example.airsoft.R;
@@ -27,6 +28,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
+    private String team_key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,45 @@ public class MainActivity extends AppCompatActivity {
                 new Intent(MainActivity.this, NotificationService.class));
 
         addListenerOnButton();
+
+        //--------Получаем пользователя и на основе этого выводим название команды----------------
+        String userId =FirebaseAuth.getInstance().getUid();
+
+
+
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        databaseRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+
+                team_key = snapshot.child("TeamKey").getValue().toString();
+
+                final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("TeamInfo");
+                databaseRef.child(team_key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot == null) return;
+
+
+                        ((TextView) findViewById(R.id.text_team_name)).setText(snapshot.child("TeamName").getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        }
+
+        );
 
 
 //--------------получение токена для отправки пушей------------------------------------------
@@ -80,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".MembersRecyclerActivity");
+                        i.putExtra("team_key", team_key);
                         startActivity(i);
                     }
                 }

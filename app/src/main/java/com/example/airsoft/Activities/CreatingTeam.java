@@ -47,21 +47,12 @@ public class CreatingTeam extends AppCompatActivity {
 
                             EditText key = (EditText)findViewById(R.id.new_team_key);
                             key.selectAll();
-
-
-
-
                         }
                         else {
                             //------если не заполнено, то просим заполнить-----------------------------------
                             Toast.makeText(CreatingTeam.this, "Заполните поля!",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-
-
-
-
                     }
                 }
 
