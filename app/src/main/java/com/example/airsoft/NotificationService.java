@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +29,7 @@ public class NotificationService extends Service {
     private NotificationManager notificationManager;
     private static final int NOTIFY_ID = 101;
     private static final String CHANNEL_ID = "CHANNEL_ID";
+    String team_key;
 
 //    // Идентификатор уведомления
 //    private static final int NOTIFY_ID = 101;
@@ -44,9 +46,6 @@ public class NotificationService extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(LOG_TAG, "onStartCommand");
-
-
-
 
         someTask();
         return super.onStartCommand(intent, flags, startId);
@@ -72,61 +71,91 @@ public class NotificationService extends Service {
     private void someTask() {
         Log.d(LOG_TAG, "some_task");
 //---------смотрим на изменения в бд событий в календаре. при появлении нового - вкидываем пуш------------------------
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Calendar");
-        databaseRef.child("events_id").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
+        String userID = FirebaseAuth.getInstance().getUid();
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        databaseRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(LOG_TAG, "changed");
-                if (dataSnapshot == null) return;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+                else {
+                    team_key = snapshot.child("TeamKey").getValue().toString();
 
-                Log.d(LOG_TAG, "changed "+ dataSnapshot.child("Date").getValue().toString());
+
+                    final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Calendar");
+                    databaseRef.child(team_key).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Log.d(LOG_TAG, "changed");
+                            if (dataSnapshot == null) return;
+
+                            Log.d(LOG_TAG, "changed " + dataSnapshot.child("Date").getValue().toString());
 
 //------------------создаем объект, который откроет нам активность календаря при нажатии на уведомление--------------------
-                Intent notificationIntent = new Intent(".CalendarActivity");
-                PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,
-                        0, notificationIntent,
-                        PendingIntent.FLAG_CANCEL_CURRENT);
+                            Intent notificationIntent = new Intent(".CalendarActivity");
+                            PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,
+                                    0, notificationIntent,
+                                    PendingIntent.FLAG_CANCEL_CURRENT);
 //--------------получаем значение даты изменненного дочернего эл-та-----------------------------------------------
-                String date = dataSnapshot.child("Date").getValue().toString();
+                            String date = dataSnapshot.child("Date").getValue().toString();
 //---------------создаем менеджер уведомлений-------------------------------------------------------------
-                notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 //---------------создаем конструктор уведомления--------------------------------------------------------------
-                NotificationCompat.Builder notificationBuilder =
-                        new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                                .setAutoCancel(false)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setWhen(System.currentTimeMillis())
-                                .setContentIntent(contentIntent)
-                                .setContentTitle("Новое")
-                                .setContentText("Добавлено новое мероприятие на "+date)
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                            NotificationCompat.Builder notificationBuilder =
+                                    new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                                            .setAutoCancel(false)
+                                            .setSmallIcon(R.mipmap.ic_launcher)
+                                            .setWhen(System.currentTimeMillis())
+                                            .setContentIntent(contentIntent)
+                                            .setContentTitle("Новое")
+                                            .setContentText("Добавлено новое мероприятие на " + date)
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-                createChannelIfNeeded(notificationManager);
-                notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+                            createChannelIfNeeded(notificationManager);
+                            notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Error
+                            Log.d("Error", "databaseError");
+                        }
+                    });
+                }
 
             }
+
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
-            }
         });
+
     }
-}
+
+
+
+
+
+
+
+   }

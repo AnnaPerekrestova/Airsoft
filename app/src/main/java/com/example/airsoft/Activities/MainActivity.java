@@ -34,14 +34,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //-----Получаем значения переданные через intent------------------------------------------------------------
+        Intent intent = getIntent();
+        team_key = intent.getStringExtra("team_key");
+
         startService(
                 new Intent(MainActivity.this, NotificationService.class));
 
         addListenerOnButton();
 
-        //--------Получаем пользователя и на основе этого выводим название команды----------------
+//        //--------Получаем пользователя и на основе этого выводим название команды----------------
         String userId =FirebaseAuth.getInstance().getUid();
-
+//
 //---------получаем по uid ключ команды, к которой присоеденен юзер, записываем в team_key, получам название команды---------------
 
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
@@ -58,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot == null) return;
                         //----выводим название команды:--------
-                        ((TextView) findViewById(R.id.text_team_name)).setText(snapshot.child("TeamName").getValue().toString());
+                        else {
+                            ((TextView) findViewById(R.id.text_team_name)).setText(snapshot.child("TeamName").getValue().toString());
+                        }
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -73,6 +80,25 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         );
+////---------получаем по uid ключ команды, к которой присоеденен юзер, записываем в team_key, получам название команды---------------
+//         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("TeamInfo");
+//         databaseRef.child(team_key).addListenerForSingleValueEvent(new ValueEventListener() {
+//             @Override
+//             public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                 if (snapshot == null) return;
+//                     //----выводим название команды:--------
+//                 else {
+//                     ((TextView) findViewById(R.id.text_team_name)).setText(snapshot.child("TeamName").getValue().toString());
+//                 }
+//
+//             }
+//             @Override
+//             public void onCancelled(@NonNull DatabaseError error) {
+//
+//             }
+//         });
+
+
 
 //--------------получение токена для отправки пушей------------------------------------------
 
