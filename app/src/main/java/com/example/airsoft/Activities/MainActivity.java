@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         //--------Получаем пользователя и на основе этого выводим название команды----------------
         String userId =FirebaseAuth.getInstance().getUid();
 
-
+//---------получаем по uid ключ команды, к которой присоеденен юзер, записываем в team_key, получам название команды---------------
 
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
         databaseRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -57,17 +57,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot == null) return;
-
-
+                        //----выводим название команды:--------
                         ((TextView) findViewById(R.id.text_team_name)).setText(snapshot.child("TeamName").getValue().toString());
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
-
             }
 
             @Override
@@ -75,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
         );
-
 
 //--------------получение токена для отправки пушей------------------------------------------
 
@@ -88,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         })
-
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -106,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 //--------------------------------------------------------------------------------------------------
     public void addListenerOnButton() {
@@ -153,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".CalendarActivity");
+                        i.putExtra("team_key", team_key);
                         startActivity(i);
                     }
                 }
@@ -169,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                         builder.setPositiveButton("Да", new DialogInterface.OnClickListener() { // Кнопка Удалить
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //---выход из аккаунта------------------------------
                                 FirebaseAuth.getInstance().signOut();
                                 finish();
                                 // Отпускает диалоговое окно
@@ -184,16 +178,8 @@ public class MainActivity extends AppCompatActivity {
                         });
                         AlertDialog dialog = builder.create();
                         dialog.show();
-
-
-
-
-
                     }
                 }
         );
-
-
     }
-
 }

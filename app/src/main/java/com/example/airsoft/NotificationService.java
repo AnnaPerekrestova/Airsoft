@@ -2,6 +2,7 @@ package com.example.airsoft;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -70,36 +71,43 @@ public class NotificationService extends Service {
     }
     private void someTask() {
         Log.d(LOG_TAG, "some_task");
-
+//---------смотрим на изменения в бд событий в календаре. при появлении нового - вкидываем пуш------------------------
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Calendar");
         databaseRef.child("events_id").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(LOG_TAG, "changed");
                 if (dataSnapshot == null) return;
 
                 Log.d(LOG_TAG, "changed "+ dataSnapshot.child("Date").getValue().toString());
 
+//------------------создаем объект, который откроет нам активность календаря при нажатии на уведомление--------------------
+                Intent notificationIntent = new Intent(".CalendarActivity");
+                PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,
+                        0, notificationIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+//--------------получаем значение даты изменненного дочернего эл-та-----------------------------------------------
                 String date = dataSnapshot.child("Date").getValue().toString();
+//---------------создаем менеджер уведомлений-------------------------------------------------------------
                 notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
+//---------------создаем конструктор уведомления--------------------------------------------------------------
                 NotificationCompat.Builder notificationBuilder =
                         new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                                 .setAutoCancel(false)
                                 .setSmallIcon(R.mipmap.ic_launcher)
                                 .setWhen(System.currentTimeMillis())
-                                //.setContentIntent(new Intent(".CalendarActivity"))
+                                .setContentIntent(contentIntent)
                                 .setContentTitle("Новое")
                                 .setContentText("Добавлено новое мероприятие на "+date)
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                 createChannelIfNeeded(notificationManager);
                 notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
 

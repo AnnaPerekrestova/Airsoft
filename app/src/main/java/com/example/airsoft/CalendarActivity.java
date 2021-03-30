@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,12 +24,18 @@ public class CalendarActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     private static final int NOTIFY_ID = 123;
     private static final String CHANNEL_ID = "button";
-
+    String team_key;
     //NotificationCompat.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+
+        //-----Получаем значения переданные через intent------------------------------------------------------------
+        Intent intent = getIntent();
+        team_key = intent.getStringExtra("team_key");
+
         // Связываемся с нашим календариком:
         mCalendarView = (CalendarView)findViewById(R.id.calendarView);
 
@@ -49,8 +56,8 @@ public class CalendarActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 String new_event_id = database.getReference("quiz").push().getKey();
 
-                DatabaseReference db_eventDate = database.getReference("Calendar/events_id/" + new_event_id + "/Date");
-                DatabaseReference db_eventDescription = database.getReference("Calendar/events_id/" + new_event_id + "/Description");
+                DatabaseReference db_eventDate = database.getReference("Calendar/"+team_key+"/" + new_event_id + "/Date");
+                DatabaseReference db_eventDescription = database.getReference("Calendar/"+team_key+"/" + new_event_id + "/Description");
 
                 db_eventDate.setValue(dayOfMonth+"-"+month+"-"+year);
                 db_eventDescription.setValue("Тренировка");

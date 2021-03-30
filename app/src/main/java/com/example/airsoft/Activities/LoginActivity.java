@@ -49,15 +49,13 @@ public class LoginActivity extends AppCompatActivity {
                 // [END_EXCLUDE]
             }
         };
-
-
-
         addListenerOnButton();
     }
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+        Log.d("state", "onStart    " + FirebaseAuth.getInstance().getUid());
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUILogIn(currentUser);
     }
@@ -71,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void addListenerOnButton() {
-
-
         Button logIn = findViewById(R.id.logIn);
         Button registration = findViewById(R.id.registration);
 
@@ -100,12 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                                                     Toast.LENGTH_SHORT).show();
                                             updateUILogIn(null);
                                         }
-
                                         // ...
                                     }
                                 });
-
-
                     }
                 });
 
@@ -146,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUILogIn(FirebaseUser user) {
         if (user != null) {
+            Log.d("state", "updateUILogIn    " + FirebaseAuth.getInstance().getUid());
             Intent i = new Intent(".MainActivity");
             startActivity(i);
 
@@ -158,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUIRegistration(FirebaseUser user) {
         if (user != null) {
+            Log.d("state", "updateUIRegistration   " + FirebaseAuth.getInstance().getUid());
             Intent i = new Intent(".RegistrationPersonInfo");
             startActivity(i);
 
