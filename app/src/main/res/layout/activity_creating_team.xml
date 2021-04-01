@@ -57,10 +57,12 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
+
         <EditText
             android:id="@+id/team_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:hint="Город команды"

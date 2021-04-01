@@ -45,6 +45,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5">
 
+
+                    <TextView
+                        android:id="@+id/textView_new_user"
+                        style="@style/buttonStyleBorderSand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Введите данные для входа или регистрации:"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
                     <EditText
                         android:id="@+id/email"
                         style="@style/buttonStyleBorderSand"
@@ -54,8 +66,9 @@
                         android:layout_marginTop="16dp"
                         android:hint="@string/e_mail"
                         android:inputType="textEmailAddress"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:layout_editor_absoluteX="-57dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_new_user"
+
                          />
 
 
@@ -68,8 +81,9 @@
                         android:layout_marginTop="16dp"
                         android:hint="@string/password"
                         android:inputType="textPassword"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/email"
-                        tools:layout_editor_absoluteX="39dp" />
+                         />
 
                     <Button
                         android:id="@+id/logIn"
@@ -82,14 +96,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/password" />
 
+
                     <Button
                         android:id="@+id/registration"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/password"
                         android:layout_marginTop="16dp"
-                        android:text="Зарегаться"
+                        android:text="Регистрация"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/logIn" />
 
@@ -102,6 +116,8 @@
                     android:layout_weight="1">
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
