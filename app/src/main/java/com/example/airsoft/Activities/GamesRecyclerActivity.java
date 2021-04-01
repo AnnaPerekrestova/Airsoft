@@ -37,6 +37,7 @@ public class GamesRecyclerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games_recycler);
 
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_games);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
         recyclerView.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));

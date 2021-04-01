@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.app.AlertDialog;
@@ -32,13 +33,22 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private List<MembersClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
+    String team_key;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_members_recycler);
+
+
+        //-----Получаем значения переданные через intent------------------------------------------------------------
+        Intent intent = getIntent();
+        team_key = intent.getStringExtra("team_key");
+
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
@@ -101,18 +111,19 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         //addListenerOnButton();
     }
     public void add_to_members_table(){
-        final List<String> membersNicksList = new ArrayList<>();
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Members");
-        databaseRef.child("members_nicknames").addListenerForSingleValueEvent(new ValueEventListener() {
+        final List<String> membersIDList = new ArrayList<>();
+        final DatabaseReference databaseReference =FirebaseDatabase.getInstance().getReference("PersonInfo");
+        final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(team_key);
+        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot==null)return;
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    if (postSnapShot.child("Actually").getValue().toString().equals("1")) {
-                        membersNicksList.add(postSnapShot.getKey());
-                    }
+
+                        membersIDList.add(postSnapShot.getKey());
+
                 }
-                SetData(databaseRef, membersNicksList);
+                SetData(databaseReference, membersIDList);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -122,15 +133,16 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         });
     }
 
-    private void SetData(DatabaseReference databaseRef, List<String> userNicksList) {
-        for (final String nick: userNicksList){
-            databaseRef.child("members_nicknames").child(nick).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void SetData(DatabaseReference databaseRef, List<String> userIDList) {
+        for (final String id: userIDList){
+            databaseRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
 
                     if(dataSnapshot2==null)return;
                     String fio =  (String)dataSnapshot2.child("FIO").getValue();
-                    addRow(nick,fio);
+                    String nickname =  (String)dataSnapshot2.child("Nickname").getValue();
+                    addRow(nickname,fio);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
