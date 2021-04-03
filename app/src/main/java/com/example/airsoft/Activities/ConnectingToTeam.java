@@ -52,7 +52,6 @@ public class ConnectingToTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".CreatingTeam");
-                        finish();
                         startActivity(i);
                     }
                 }

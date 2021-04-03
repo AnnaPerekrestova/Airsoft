@@ -17,6 +17,15 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/multicam" />
 
+    <ImageButton
+        android:id="@+id/delog"
+        style="@style/buttonStyleBorderSand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_set_as" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +36,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1.4">
 
             <ImageView
                 android:id="@+id/team_logo"
@@ -47,7 +56,7 @@
                 android:id="@+id/text_team_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bastardos_inmortales"
+                android:text="название команды"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="36sp"
@@ -56,8 +65,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,13 +84,7 @@
 
                     >
 
-                    <ImageButton
-                        android:id="@+id/delog"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/abc_vector_test"
-                        tools:layout_editor_absoluteX="17dp"
-                        tools:layout_editor_absoluteY="31dp" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

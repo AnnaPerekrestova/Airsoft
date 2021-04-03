@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle("Выход из системы");
-                        builder.setMessage("Вы действительно хотите выйти из системы?");
+                        builder.setMessage("Вы действительно хотите выйти из аккаунта?");
                         builder.setCancelable(false);
                         builder.setPositiveButton("Да", new DialogInterface.OnClickListener() { // Кнопка Удалить
                             @Override
@@ -191,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
                                 //---выход из аккаунта------------------------------
                                 FirebaseAuth.getInstance().signOut();
                                 finish();
-                                Intent i = new Intent(".LoginActivity");
-                                startActivity(i);
                                 // Отпускает диалоговое окно
                             }
 
