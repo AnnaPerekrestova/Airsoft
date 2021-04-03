@@ -45,7 +45,7 @@
             android:layout_marginTop="10dp"/>
 
         <EditText
-            android:id="@+id/date_of_birth"
+            android:id="@+id/birthday_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -57,10 +57,22 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
+
+        <Switch
+            android:id="@+id/switch_to_org"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:gravity="start|top"
+            android:padding="15dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Я организатор игр" />
+
         <EditText
 
             android:id="@+id/nickname_reg"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -98,13 +110,6 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
-        <EditText
-            android:id="@+id/birthday_reg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Дата рождения"
-            android:inputType="date" />
 
 
     </LinearLayout>

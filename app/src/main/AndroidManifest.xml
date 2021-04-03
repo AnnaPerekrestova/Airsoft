@@ -9,10 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.SearchNewGameActivity"></activity>
+        <activity android:name=".Activities.PlannedGamesActivity" />
+        <activity android:name=".Activities.PreviousGamesActivity" />
+        <activity android:name=".Activities.GamesViewSelectActivity" />
+
         <service
             android:name=".NotificationService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true" />
+
         <activity
             android:name=".Activities.CreatingTeam"
             android:theme="@style/AppTheme.NoActionBar">
@@ -49,7 +54,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CalendarActivity"
             android:label="Calendar"
@@ -60,7 +64,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.StatisticActivity"
             android:label="@string/title_activity_statistic"

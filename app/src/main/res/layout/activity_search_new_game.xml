@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SearchNewGameActivity">
+
+    <ImageView
+        android:id="@+id/background_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        style="@style/background_multicam"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam" />
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/search_new_game_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Поиск игр"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

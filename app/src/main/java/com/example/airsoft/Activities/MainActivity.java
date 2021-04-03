@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".GamesRecyclerActivity");
+                        Intent i = new Intent(".GamesViewSelectActivity");
                         startActivity(i);
                     }
                 }
