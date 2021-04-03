@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.CreatingTeam">
+    tools:context=".ConnectingToOrgTeam">
 
     <ImageView
         android:id="@+id/background_pic"
@@ -27,11 +27,11 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <TextView
-                android:id="@+id/team_create"
+                android:id="@+id/connect_to_org_team"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="Создание команды"
+                android:text="Соединение с оргкомитетом"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="25sp"
@@ -41,10 +41,10 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
-            android:id="@+id/enter_team_name"
+            android:id="@+id/org_team_in_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Введите данные команды"
+            android:text="Если ваш оргкомитет есть в приложении, то введите ключ:"
             android:textColor="@color/black"
             android:textSize="19dp"
             tools:ignore="Autofill,LabelFor"
@@ -56,80 +56,39 @@
 
 
         <EditText
-            android:id="@+id/team_name"
+            android:id="@+id/org_team_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название команды"
+            android:hint="Введите ключ здесь"
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor"
             android:padding="15dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
-
-        <EditText
-            android:id="@+id/team_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:hint="Город команды"
-            android:padding="15dp"
-            android:textColor="@color/black"
-            tools:ignore="Autofill,LabelFor" />
-
-
         <Button
-            android:id="@+id/create_team_button"
+            android:id="@+id/button_connect_to_org_team"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/buttonStyleBorderSand"
-            android:text="Создать команду"
+            android:text="Присоедениться к своему оргкомитету"
             android:padding="15dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/connecting_members"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:padding="15dp"
-            android:visibility="invisible"
-            android:text="Ваша команда успешно создана! Поделитесть этим ключем с сокомандниками:"
-            android:textColor="@color/black"
-            android:textSize="19dp"
-            tools:ignore="Autofill,LabelFor" />
-        <EditText
-            android:id="@+id/new_team_key"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:hint="key"
-            android:focusable = "false"
-            android:longClickable="false"
-            android:cursorVisible="false"
-            android:visibility="invisible"
-            android:padding="15dp"
-            android:textColor="@color/black"
-            tools:ignore="Autofill,LabelFor" />
         <Button
-            android:id="@+id/create_team_next"
+            android:id="@+id/create_org_team"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/buttonStyleBorderSand"
-            android:text="Далее"
-            android:visibility="invisible"
+            android:text="Создать оргкомитет в приложении"
             android:padding="15dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"/>
-
+            android:layout_marginTop="100dp"/>
 
 
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

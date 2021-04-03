@@ -174,8 +174,8 @@ public class LoginActivity extends AppCompatActivity {
 //            Log.d("state", "updateUILogIn    " + FirebaseAuth.getInstance().getUid());
             Intent i = new Intent(".MainActivity");
 //            i.putExtra("team_key", team_key);
+            finish();
             startActivity(i);
-
             // User is signed in
         } else {
             // No user is signed in
@@ -189,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
 //            get_team_key();
             Intent i = new Intent(".RegistrationPersonInfo");
 //            i.putExtra("team_key", team_key);
+            finish();
             startActivity(i);
 
             // User is signed in

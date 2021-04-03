@@ -191,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                                 //---выход из аккаунта------------------------------
                                 FirebaseAuth.getInstance().signOut();
                                 finish();
+                                Intent i = new Intent(".LoginActivity");
+                                startActivity(i);
                                 // Отпускает диалоговое окно
                             }
 

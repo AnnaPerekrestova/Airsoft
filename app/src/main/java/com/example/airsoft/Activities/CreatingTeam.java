@@ -62,8 +62,9 @@ public class CreatingTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".MainActivity");
-                        startActivity(i);
                         finish();
+                        startActivity(i);
+
                     }
                 }
         );

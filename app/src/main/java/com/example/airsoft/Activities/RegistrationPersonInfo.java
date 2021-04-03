@@ -2,20 +2,28 @@ package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.airsoft.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class RegistrationPersonInfo extends AppCompatActivity {
 
@@ -63,20 +71,36 @@ public class RegistrationPersonInfo extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (f==false) {
+                        //проверка ввода ФИО
+                        if (((EditText)findViewById(R.id.person_fio_reg)).getText().toString().length() > 0) {
+                            //Проверка флага отвечающего за выбор организатора\игрока
+                            if (f == false) {
+                                if (((EditText)findViewById(R.id.nickname_reg)).getText().toString().length() > 0) {
 
-                            //-------------записываем информацию об игроке в бд----------------------
-                            to_db_player();
+                                    //-------------записываем информацию об игроке в бд----------------------
+                                    to_db_player();
 
-                            //-------переходим в подключение к команде-------------
-                            Intent i = new Intent(".ConnectingToTeam");
-                            startActivity(i);
+                                    //-------переходим в подключение к команде-------------
+                                    Intent i = new Intent(".ConnectingToTeam");
+                                    finish();
+                                    startActivity(i);
+                                }
+                                else{
+                                    Toast.makeText(RegistrationPersonInfo.this, "Введите позывной",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                to_db_org();
+//                                      переходим в подключение к оргкомитету
+                                Intent i = new Intent(".ConnectingToOrgTeam");
+                                finish();
+                                startActivity(i);
+
+                            }
                         }
-                        else{
-                            to_db_org();
-
-                            Intent i = new Intent(".MainActivity");
-                            startActivity(i);
+                        else {
+                            Toast.makeText(RegistrationPersonInfo.this, "Введите ФИО",
+                                    Toast.LENGTH_SHORT).show();
 
                         }
                     }

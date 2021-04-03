@@ -52,6 +52,7 @@ public class ConnectingToTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".CreatingTeam");
+                        finish();
                         startActivity(i);
                     }
                 }
@@ -61,7 +62,32 @@ public class ConnectingToTeam extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+//--------generate random key-------------------------------------------------------------------------
+                        String new_team_key = database.getReference("quiz").push().getKey();
+
+                        DatabaseReference db_teamName;
+                        DatabaseReference db_teamCity;
+
+
+                        db_teamName = database.getReference("TeamInfo/"+new_team_key+"/TeamName");
+                        db_teamCity = database.getReference("TeamInfo/"+new_team_key+"/TeamCity");
+
+                        db_teamName.setValue("default_team_name");
+                        db_teamCity.setValue("default_team_city");
+
+                        String userId=FirebaseAuth.getInstance().getUid();
+
+//----------записываем сгенерированный ключ в соответствующее поле в информацию о пользователе------------------------
+                        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+                        DatabaseReference user_person_info = databaseRef.child(userId);
+                        user_person_info.child("TeamKey").setValue(new_team_key);
+
+
+
                         Intent i = new Intent(".MainActivity");
+                        finish();
                         startActivity(i);
                     }
                 }
