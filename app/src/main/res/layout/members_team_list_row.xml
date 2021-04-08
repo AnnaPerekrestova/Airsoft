@@ -28,14 +28,14 @@
             android:layout_weight="1"
             />
 
-        <Spinner
+        <Switch
             android:id="@+id/member_team"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
             android:textSize="16dp"
-            tools:ignore="MissingConstraints"
             android:layout_weight="1"/>
+
+
     </LinearLayout>
 
 

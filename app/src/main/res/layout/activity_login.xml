@@ -6,12 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".Activities.LoginActivity">
 
+    <ImageView
+        android:id="@+id/background_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        style="@style/background_multicam"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+
 
 
 
@@ -45,6 +55,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5">
 
+
+                    <TextView
+                        android:id="@+id/textView_new_user"
+                        style="@style/buttonStyleBorderSand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Введите данные для входа или регистрации:"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
                     <EditText
                         android:id="@+id/email"
                         style="@style/buttonStyleBorderSand"
@@ -53,10 +75,11 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
                         android:hint="@string/e_mail"
+                        android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:layout_editor_absoluteX="-57dp"
-                         />
+                        android:maxLength="25"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_new_user" />
 
 
                     <EditText
@@ -67,9 +90,11 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
                         android:hint="@string/password"
+                        android:imeOptions="actionDone"
                         android:inputType="textPassword"
-                        app:layout_constraintTop_toBottomOf="@+id/email"
-                        tools:layout_editor_absoluteX="39dp" />
+                        android:maxLength="16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/email" />
 
                     <Button
                         android:id="@+id/logIn"
@@ -82,16 +107,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/password" />
 
+
                     <Button
                         android:id="@+id/registration"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/password"
                         android:layout_marginTop="16dp"
-                        android:text="Зарегаться"
+                        android:text="Регистрация"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/logIn" />
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,6 +128,8 @@
                     android:layout_weight="1">
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,10 +9,56 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".ConnectingToOrgTeam">
+            <intent-filter>
+                <action android:name=".ConnectingToOrgTeam" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activities.SearchNewGameActivity">
+            <intent-filter>
+                <action android:name=".SearchNewGameActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activities.PlannedGamesActivity">
+            <intent-filter>
+                <action android:name=".PlannedGamesActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activities.PreviousGamesActivity">
+            <intent-filter>
+                <action android:name=".PreviousGamesActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activities.GamesViewSelectActivity">
+            <intent-filter>
+                <action android:name=".GamesViewSelectActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".NotificationService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true" />
+
         <activity
             android:name=".Activities.CreatingTeam"
             android:theme="@style/AppTheme.NoActionBar">
@@ -49,7 +95,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CalendarActivity"
             android:label="Calendar"
@@ -60,7 +105,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.StatisticActivity"
             android:label="@string/title_activity_statistic"

@@ -52,6 +52,15 @@
             android:textSize="20dp"/>
 
         <TextView
+            android:id="@+id/member_date_of_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Дата рождения"
+            android:textColor="@color/black"
+            android:textSize="20dp"/>
+
+        <TextView
             android:id="@+id/member_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -2,11 +2,20 @@ package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.airsoft.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,14 +23,47 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+
 public class RegistrationPersonInfo extends AppCompatActivity {
+
+    private boolean f = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_person_info);
+
+        final EditText nickname_reg = findViewById(R.id.nickname_reg);
+        final EditText person_position_reg = findViewById(R.id.person_position_reg);
+        final EditText arsenal_reg = findViewById(R.id.arsenal_reg);
+
+        final Switch switch_to_org = findViewById(R.id.switch_to_org);
+
+        switch_to_org.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked){
+                    nickname_reg.setVisibility(View.INVISIBLE);
+                    person_position_reg.setVisibility(View.INVISIBLE);
+                    arsenal_reg.setVisibility(View.INVISIBLE);
+                    nickname_reg.setText("");
+                    person_position_reg.setText("");
+                    arsenal_reg.setText("");
+                    f = true;
+                }else{
+                    nickname_reg.setVisibility(View.VISIBLE);
+                    person_position_reg.setVisibility(View.VISIBLE);
+                    arsenal_reg.setVisibility(View.VISIBLE);
+                    f = false;
+                }
+            }
+        });
         addListenerOnButton();
     }
+
+
 
     public void addListenerOnButton() {
         Button next = findViewById(R.id.person_info_done);
@@ -29,19 +71,47 @@ public class RegistrationPersonInfo extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //проверка ввода ФИО
+                        if (((EditText)findViewById(R.id.person_fio_reg)).getText().toString().length() > 0) {
+                            //Проверка флага отвечающего за выбор организатора\игрока
+                            if (f == false) {
+                                if (((EditText)findViewById(R.id.nickname_reg)).getText().toString().length() > 0) {
 
-                        //-------------записываем информацию об игроке в бд----------------------
-                        to_db();
+                                    //-------------записываем информацию об игроке в бд----------------------
+                                    to_db_player();
 
-                        //-------переходим в подключение к команде-------------
-                        Intent i = new Intent(".ConnectingToTeam");
-                        startActivity(i);
+                                    //-------переходим в подключение к команде-------------
+                                    Intent i = new Intent(".ConnectingToTeam");
+                                    finish();
+                                    startActivity(i);
+                                }
+                                else{
+                                    Toast.makeText(RegistrationPersonInfo.this, "Введите позывной",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                to_db_org();
+//                                      переходим в подключение к оргкомитету
+                                Intent i = new Intent(".ConnectingToOrgTeam");
+                                finish();
+                                startActivity(i);
+
+                            }
+                        }
+                        else {
+                            Toast.makeText(RegistrationPersonInfo.this, "Введите ФИО",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                 }
 
         );
     }
-    public void to_db(){
+
+
+
+    public void to_db_player(){
         final String personFIO = ((EditText)findViewById(R.id.person_fio_reg)).getText().toString();
         final String personNickname = ((EditText)findViewById(R.id.nickname_reg)).getText().toString();
         final String personBirthday = ((EditText)findViewById(R.id.birthday_reg)).getText().toString();
@@ -59,11 +129,11 @@ public class RegistrationPersonInfo extends AppCompatActivity {
 //        DatabaseReference db_personWon;
 //        DatabaseReference db_actually;
 
-        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
-        db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
-        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
-        db_personPosition = database.getReference("PersonInfo/"+personUID+"/Position");
-        db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
+        db_personFIO = database.getReference("PlayerInfo/"+personUID+"/FIO");
+        db_personNickname = database.getReference("PlayerInfo/"+personUID+"/Nickname");
+        db_personBirthday = database.getReference("PlayerInfo/"+personUID+"/Birthday");
+        db_personPosition = database.getReference("PlayerInfo/"+personUID+"/Position");
+        db_personArsenal = database.getReference("PlayerInfo/"+personUID+"/Arsenal");
 //        db_personPlayed = database.getReference("PersonInfo/"+personUID+"/Played");
 //        db_personWon = database.getReference("Members/members_nicknames/"+personNickname+"/Won");
 //        db_actually = database.getReference("Members/members_nicknames/"+personNickname+"/Actually");
@@ -76,6 +146,24 @@ public class RegistrationPersonInfo extends AppCompatActivity {
 //        db_personPlayed.setValue(0);
 //        db_personWon.setValue(0);
 //        db_actually.setValue(1);
+    }
+
+    public void to_db_org(){
+        final String personFIO = ((EditText)findViewById(R.id.person_fio_reg)).getText().toString();
+        final String personBirthday = ((EditText)findViewById(R.id.birthday_reg)).getText().toString();
+        final String personUID = FirebaseAuth.getInstance().getUid();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference db_personFIO;
+        DatabaseReference db_personBirthday;
+
+        db_personFIO = database.getReference("OrgInfo/"+personUID+"/FIO");
+        db_personBirthday = database.getReference("OrgInfo/"+personUID+"/Birthday");
+
+        db_personFIO.setValue(personFIO);
+        db_personBirthday.setValue(personBirthday);
+
+
     }
 
 }

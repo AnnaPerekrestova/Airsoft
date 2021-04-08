@@ -45,7 +45,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.MyViewHolder
         MembersClass member = membersList.get(position);
         holder.nickname.setText(member.getNickname());
         String per_str = (String) member.getStatistic();
-        holder.percent.setText(per_str+"%");
+        holder.percent.setText(per_str);
 
     }
 

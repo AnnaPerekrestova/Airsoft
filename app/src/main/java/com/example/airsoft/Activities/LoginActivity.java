@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Selection;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void addListenerOnButton() {
-        Button logIn = findViewById(R.id.logIn);
+        final Button logIn = findViewById(R.id.logIn);
         Button registration = findViewById(R.id.registration);
 
 //------------------войти - попадаем на главную страницу------------------------------------------------------------
@@ -86,25 +89,36 @@ public class LoginActivity extends AppCompatActivity {
                         String email = ((EditText)findViewById(R.id.email)).getText().toString();
                         String password = ((EditText)findViewById(R.id.password)).getText().toString();
 
-                        mAuth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task){
-                                        if (task.isSuccessful()) {
-                                            // Sign in success, update UI with the signed-in user's information
-                                            Toast.makeText(LoginActivity.this, "Вы успешно вошли в систему!",
-                                                    Toast.LENGTH_SHORT).show();
-                                            FirebaseUser user = mAuth.getCurrentUser();
-                                            updateUILogIn(user);
-                                        } else {
-                                            // If sign in fails, display a message to the user.
-                                            Toast.makeText(LoginActivity.this, "Ошибка аутентификации",
-                                                    Toast.LENGTH_SHORT).show();
-                                            updateUILogIn(null);
+                        if (email.length() < 5) {
+                            Toast.makeText(LoginActivity.this, "Введите почту",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        else if (password.length() < 6) {
+                            Toast.makeText(LoginActivity.this, "Введите пароль",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            mAuth.signInWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // Sign in success, update UI with the signed-in user's information
+                                                Toast.makeText(LoginActivity.this, "Вы успешно вошли в систему!",
+                                                        Toast.LENGTH_SHORT).show();
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                updateUILogIn(user);
+                                            } else {
+                                                // If sign in fails, display a message to the user.
+                                                Toast.makeText(LoginActivity.this, "Ошибка аутентификации",
+                                                        Toast.LENGTH_SHORT).show();
+                                                updateUILogIn(null);
+                                            }
+                                            // ...
                                         }
-                                        // ...
-                                    }
-                                });
+                                    });
+                        }
                     }
                 });
 
@@ -117,28 +131,39 @@ public class LoginActivity extends AppCompatActivity {
                     public void onClick(View view) {
 
                         String email = ((EditText)findViewById(R.id.email)).getText().toString();
-                        String password = ((EditText)findViewById(R.id.password)).getText().toString();;
+                        String password = ((EditText)findViewById(R.id.password)).getText().toString();
 
-                        mAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            // Sign in success, update UI with the signed-in user's information
-                                            Toast.makeText(LoginActivity.this, "Вы успешно зарегестрированы в системе!",
-                                                    Toast.LENGTH_SHORT).show();
-                                            FirebaseUser user = mAuth.getCurrentUser();
-                                            updateUIRegistration(user);
-                                        } else {
-                                            // If sign in fails, display a message to the user.
+                        if (email.length() < 5) {
+                            Toast.makeText(LoginActivity.this, "Для регистрации введите почту и пароль",
+                                    Toast.LENGTH_SHORT).show();
+                        }
 
-                                            Toast.makeText(LoginActivity.this, "Ошибка регистрации",
-                                                    Toast.LENGTH_SHORT).show();
-                                            updateUIRegistration(null);
+                        else if (password.length() < 6) {
+                            Toast.makeText(LoginActivity.this, "Пароль должен содержать не менее 6 символов",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            mAuth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // Sign in success, update UI with the signed-in user's information
+                                                Toast.makeText(LoginActivity.this, "Вы успешно зарегестрированы в системе!",
+                                                        Toast.LENGTH_SHORT).show();
+                                                FirebaseUser user = mAuth.getCurrentUser();
+                                                updateUIRegistration(user);
+                                            } else {
+                                                // If sign in fails, display a message to the user.
+
+                                                Toast.makeText(LoginActivity.this, "Ошибка регистрации",
+                                                        Toast.LENGTH_SHORT).show();
+                                                updateUIRegistration(null);
+                                            }
+
                                         }
-
-                                    }
-                                });
+                                    });
+                        }
                     }
                 });
     }
@@ -150,7 +175,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent i = new Intent(".MainActivity");
 //            i.putExtra("team_key", team_key);
             startActivity(i);
-
             // User is signed in
         } else {
             // No user is signed in
