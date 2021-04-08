@@ -63,6 +63,7 @@
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor"
             android:padding="15dp"
+            android:imeOptions="actionNext"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
@@ -71,10 +72,10 @@
             android:id="@+id/team_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:hint="Город команды"
+            android:imeOptions="actionDone"
             android:padding="15dp"
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor" />

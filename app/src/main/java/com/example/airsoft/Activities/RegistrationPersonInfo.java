@@ -117,6 +117,7 @@ public class RegistrationPersonInfo extends AppCompatActivity {
         final String personBirthday = ((EditText)findViewById(R.id.birthday_reg)).getText().toString();
         final String personPosition = ((EditText)findViewById(R.id.person_position_reg)).getText().toString();
         final String personArsenal = ((EditText)findViewById(R.id.arsenal_reg)).getText().toString();
+        final boolean personOrg = false;
         final String personUID = FirebaseAuth.getInstance().getUid();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -125,15 +126,17 @@ public class RegistrationPersonInfo extends AppCompatActivity {
         DatabaseReference db_personArsenal;
         DatabaseReference db_personBirthday;
         DatabaseReference db_personNickname;
+        DatabaseReference db_personOrg;
 //        DatabaseReference db_personPlayed;
 //        DatabaseReference db_personWon;
 //        DatabaseReference db_actually;
 
-        db_personFIO = database.getReference("PlayerInfo/"+personUID+"/FIO");
-        db_personNickname = database.getReference("PlayerInfo/"+personUID+"/Nickname");
-        db_personBirthday = database.getReference("PlayerInfo/"+personUID+"/Birthday");
-        db_personPosition = database.getReference("PlayerInfo/"+personUID+"/Position");
-        db_personArsenal = database.getReference("PlayerInfo/"+personUID+"/Arsenal");
+        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
+        db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
+        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
+        db_personPosition = database.getReference("PersonInfo/"+personUID+"/Position");
+        db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
+        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
 //        db_personPlayed = database.getReference("PersonInfo/"+personUID+"/Played");
 //        db_personWon = database.getReference("Members/members_nicknames/"+personNickname+"/Won");
 //        db_actually = database.getReference("Members/members_nicknames/"+personNickname+"/Actually");
@@ -143,6 +146,7 @@ public class RegistrationPersonInfo extends AppCompatActivity {
         db_personBirthday.setValue(personBirthday);
         db_personPosition.setValue(personPosition);
         db_personArsenal.setValue(personArsenal);
+        db_personOrg.setValue(personOrg);
 //        db_personPlayed.setValue(0);
 //        db_personWon.setValue(0);
 //        db_actually.setValue(1);
@@ -151,18 +155,21 @@ public class RegistrationPersonInfo extends AppCompatActivity {
     public void to_db_org(){
         final String personFIO = ((EditText)findViewById(R.id.person_fio_reg)).getText().toString();
         final String personBirthday = ((EditText)findViewById(R.id.birthday_reg)).getText().toString();
+        final boolean personOrg = true;
         final String personUID = FirebaseAuth.getInstance().getUid();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference db_personFIO;
         DatabaseReference db_personBirthday;
+        DatabaseReference db_personOrg;
 
-        db_personFIO = database.getReference("OrgInfo/"+personUID+"/FIO");
-        db_personBirthday = database.getReference("OrgInfo/"+personUID+"/Birthday");
+        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
+        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
+        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
 
         db_personFIO.setValue(personFIO);
         db_personBirthday.setValue(personBirthday);
-
+        db_personOrg.setValue(personOrg);
 
     }
 

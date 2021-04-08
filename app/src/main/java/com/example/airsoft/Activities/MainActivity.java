@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //-----Получаем значения переданные через intent------------------------------------------------------------
-        Intent intent = getIntent();
-        team_key = intent.getStringExtra("team_key");
+
 
         startService(
                 new Intent(MainActivity.this, NotificationService.class));

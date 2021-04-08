@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.CreatingOrgcomActivity">
+
+    <ImageView
+        android:id="@+id/background_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        style="@style/background_multicam"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <TextView
+            android:id="@+id/orgcom_create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Создание оргкомитета"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/enter_orgcom_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Введите данные оргкомитета"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        tools:ignore="Autofill,LabelFor"
+        android:padding="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"/>
+
+
+
+
+    <EditText
+        android:id="@+id/orgcom_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Название оргкомитета"
+        android:textColor="@color/black"
+        tools:ignore="Autofill,LabelFor"
+        android:padding="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"/>
+
+
+    <EditText
+        android:id="@+id/orgcom_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:hint="Город оргкомитета"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        tools:ignore="Autofill,LabelFor" />
+
+
+    <Button
+        android:id="@+id/create_orgcom_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/buttonStyleBorderSand"
+        android:text="Создать оргкомитет"
+        android:padding="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/connecting_members_to_orgcom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="15dp"
+        android:visibility="invisible"
+        android:text="Ваш оргкомитет успешно создан! Поделитесть этим ключем с другими участниками:"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        tools:ignore="Autofill,LabelFor" />
+    <EditText
+        android:id="@+id/new_orgcom_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:hint="key"
+        android:focusable = "false"
+        android:longClickable="false"
+        android:cursorVisible="false"
+        android:visibility="invisible"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        tools:ignore="Autofill,LabelFor" />
+    <Button
+        android:id="@+id/create_orgcom_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/buttonStyleBorderSand"
+        android:text="Далее"
+        android:visibility="invisible"
+        android:padding="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

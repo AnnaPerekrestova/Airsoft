@@ -9,45 +9,50 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.MainOrgcomActivity">
+            <intent-filter>
+                <action android:name=".MainOrgcomActivity" />
 
-        <activity
-            android:name=".ConnectingToOrgTeam">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.CreatingOrgcomActivity">
+            <intent-filter>
+                <action android:name=".CreatingOrgcomActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Activities.ConnectingToOrgTeam">
             <intent-filter>
                 <action android:name=".ConnectingToOrgTeam" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".Activities.SearchNewGameActivity">
+        <activity android:name=".Activities.SearchNewGameActivity">
             <intent-filter>
                 <action android:name=".SearchNewGameActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".Activities.PlannedGamesActivity">
+        <activity android:name=".Activities.PlannedGamesActivity">
             <intent-filter>
                 <action android:name=".PlannedGamesActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".Activities.PreviousGamesActivity">
+        <activity android:name=".Activities.PreviousGamesActivity">
             <intent-filter>
                 <action android:name=".PreviousGamesActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".Activities.GamesViewSelectActivity">
+        <activity android:name=".Activities.GamesViewSelectActivity">
             <intent-filter>
                 <action android:name=".GamesViewSelectActivity" />
 

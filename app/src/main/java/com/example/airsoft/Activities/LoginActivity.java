@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.airsoft.R;
+import com.example.data.FirebaseData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -132,12 +133,12 @@ public class LoginActivity extends AppCompatActivity {
 
                         String email = ((EditText)findViewById(R.id.email)).getText().toString();
                         String password = ((EditText)findViewById(R.id.password)).getText().toString();
-
+//                        проверка ввода почты
                         if (email.length() < 5) {
                             Toast.makeText(LoginActivity.this, "Для регистрации введите почту и пароль",
                                     Toast.LENGTH_SHORT).show();
                         }
-
+//                            проверка ввода пароля
                         else if (password.length() < 6) {
                             Toast.makeText(LoginActivity.this, "Пароль должен содержать не менее 6 символов",
                                     Toast.LENGTH_SHORT).show();
@@ -170,11 +171,27 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUILogIn(FirebaseUser user) {
         if (user != null) {
-//            get_team_key();
+            FirebaseData fbData = new FirebaseData().getInstance();
+            fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
+                @Override
+                public void onOrgFlagChanged(boolean orgFlag) {
+                    if (orgFlag == true){
+                        Intent i = new Intent(".MainOrgcomActivity");
+
+                        startActivity(i);
+                    }
+                    if (orgFlag == false){
+                        Intent i = new Intent(".MainActivity");
+
+                        startActivity(i);
+                    }
+                }
+            });
+
+
+
 //            Log.d("state", "updateUILogIn    " + FirebaseAuth.getInstance().getUid());
-            Intent i = new Intent(".MainActivity");
-//            i.putExtra("team_key", team_key);
-            startActivity(i);
+
             // User is signed in
         } else {
             // No user is signed in
@@ -185,9 +202,8 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUIRegistration(FirebaseUser user) {
         if (user != null) {
             Log.d("state", "updateUIRegistration   " + FirebaseAuth.getInstance().getUid());
-//            get_team_key();
             Intent i = new Intent(".RegistrationPersonInfo");
-//            i.putExtra("team_key", team_key);
+
             startActivity(i);
 
             // User is signed in

@@ -57,6 +57,14 @@ public class FirebaseData {
         void onTeamIdChanged(String teamKey);
         void onTeamNameChanged(String teamName);
     }
+    public interface orgcomCallback {
+        void onOrgcomIdChanged(String orgcomKey);
+        void onOrgcomNameChanged(String orgcomName);
+    }
+
+    public interface orgFlagCallback {
+        void onOrgFlagChanged(boolean orgFlag);
+    }
 
     public interface teamMembersUIDListCallback {
         void onTeamMembersUIDListChanged(List<String> teamMembersUIDList);
@@ -92,10 +100,37 @@ public class FirebaseData {
 
     }
 
+
+    public void getOrgFlag(final orgFlagCallback callback){
+        getUserUID(new FirebaseData.userCallback() {
+            @Override
+            public void onUserUIDChanged(String userUID) {
+                DatabaseReference databaseRef = database.getReference("PersonInfo");
+                databaseRef.child(userUID).addValueEventListener(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         if (snapshot == null) return;
+                         callback.onOrgFlagChanged((boolean) snapshot.child("OrgFlag").getValue());
+                     }
+
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError error) {
+                         System.out.println("Unable to attach listener");
+                     }
+                 }
+                );
+            }
+        });
+
+    }
+
+
+
+
     public void getTeamName(final teamCallback callback){
 
 
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        final DatabaseReference databaseRef = database.getReference("PersonInfo");
         databaseRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 
           @Override
@@ -103,7 +138,6 @@ public class FirebaseData {
               if (snapshot == null) return;
               else{
                   String teamID = snapshot.child("TeamKey").getValue().toString();
-
                   final DatabaseReference databaseRef = database.getReference("TeamInfo");
                   databaseRef.child(teamID).addListenerForSingleValueEvent(new ValueEventListener() {
                       @Override
@@ -127,6 +161,44 @@ public class FirebaseData {
     );
 
     }
+
+
+    public void getOrgcomName(final orgcomCallback callback){
+
+
+        final DatabaseReference databaseRef = database.getReference("PersonInfo");
+        databaseRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                  if (snapshot == null) return;
+                  else{
+                      String orgcomID = snapshot.child("OrgcomKey").getValue().toString();
+
+                      final DatabaseReference databaseRef = database.getReference("OrgcomInfo");
+                      databaseRef.child(orgcomID).addListenerForSingleValueEvent(new ValueEventListener() {
+                          @Override
+                          public void onDataChange(@NonNull DataSnapshot snapshot) {
+                              if (snapshot == null) return;
+                                  //----выводим название команды:--------
+                              else {
+                                  callback.onOrgcomNameChanged(snapshot.child("OrgcomName").getValue().toString());
+                              }
+                          }
+                          @Override
+                          public void onCancelled(@NonNull DatabaseError error) {
+                          }
+                      });
+                  }
+              }
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+              }
+          }
+        );
+
+    }
+
 
     public void getTeamMembersUIDList(final teamMembersUIDListCallback callback){
         final List<String> membersUIDList = new ArrayList<>();

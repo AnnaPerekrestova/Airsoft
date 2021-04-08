@@ -68,6 +68,20 @@
             android:layout_marginTop="10dp"/>
 
         <EditText
+            android:id="@+id/birthday_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:gravity="start|top"
+            android:hint="Дата рождения"
+            android:inputType="date"
+            android:padding="15dp"
+            android:imeOptions="actionDone"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
 
             android:id="@+id/nickname_reg"
             android:layout_width="match_parent"
@@ -82,19 +96,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"/>
 
-        <EditText
-            android:id="@+id/birthday_reg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textColor="@color/black"
-            android:gravity="start|top"
-            android:hint="Дата рождения"
-            android:inputType="date"
-            android:padding="15dp"
-            android:imeOptions="actionNext"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"/>
+
 
 
         <EditText
