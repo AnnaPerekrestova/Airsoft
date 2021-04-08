@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUILogIn(FirebaseUser user) {
         if (user != null) {
-            get_team_key();
+//            get_team_key();
 //            Log.d("state", "updateUILogIn    " + FirebaseAuth.getInstance().getUid());
             Intent i = new Intent(".MainActivity");
 //            i.putExtra("team_key", team_key);
@@ -197,29 +197,29 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //---------получаем по uid ключ команды, к которой присоеденен юзер, записываем в team_key---------------
-    private void get_team_key(){
-
-        String userID = FirebaseAuth.getInstance().getUid();
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
-        databaseRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-
-             @Override
-             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 if (snapshot == null) return;
-                 else{
-                     team_key = snapshot.child("TeamKey").getValue().toString();
-                 }
-             }
-
-             @Override
-             public void onCancelled(@NonNull DatabaseError error) {
-
-             }
-         }
-        );
-
-    }
+//    //---------получаем по uid ключ команды, к которой присоеденен юзер, записываем в team_key---------------
+//    private void get_team_key(){
+//
+//        String userID = FirebaseAuth.getInstance().getUid();
+//        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+//        databaseRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//             @Override
+//             public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                 if (snapshot == null) return;
+//                 else{
+//                     team_key = snapshot.child("TeamKey").getValue().toString();
+//                 }
+//             }
+//
+//             @Override
+//             public void onCancelled(@NonNull DatabaseError error) {
+//
+//             }
+//         }
+//        );
+//
+//    }
 
 
 }

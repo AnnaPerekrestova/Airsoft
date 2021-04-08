@@ -9,6 +9,7 @@ import com.example.airsoft.Classes.MembersClass;
 import com.example.airsoft.R;
 import com.example.airsoft.RecyclerTouchListener;
 import com.example.airsoft.RecyclerViewDecorator;
+import com.example.data.FirebaseData;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,22 +34,15 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private List<MembersClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
-    String team_key;
+//    String team_key;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-
+    FirebaseData fbData = new FirebaseData().getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_members_recycler);
-
-
-        //-----Получаем значения переданные через intent------------------------------------------------------------
-        Intent intent = getIntent();
-        team_key = intent.getStringExtra("team_key");
-
-
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
@@ -75,83 +69,100 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
-                MembersClass selected_member = membersList.get(position);
-                final String id_member_to_del = (String) selected_member.getNickname();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MembersRecyclerActivity.this);
-                builder.setTitle("Удаление игрока");
-                builder.setMessage("Вы действительно хотите удалить выбранного игрока?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Удалить", new DialogInterface.OnClickListener() { // Кнопка Удалить
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), id_member_to_del + " Удален из команды", Toast.LENGTH_SHORT).show();
-                        DatabaseReference db_actually;
-                        db_actually = database.getReference("Members/members_nicknames/" + id_member_to_del + "/Actually");
-                        db_actually.setValue(0);
-                        dialog.dismiss();
-                        Intent i = new Intent(".MembersRecyclerActivity");
-                        startActivity(i);
-                        finish();
-                        // Отпускает диалоговое окно
-                    }
 
-                });
-                builder.setNegativeButton("Оставить", new DialogInterface.OnClickListener() { // Кнопка Оставить
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss(); // Отпускает диалоговое окно
-                    }
-
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
             }
+
+//            @Override
+//            public void onLongClick(View view, int position) {
+//                MembersClass selected_member = membersList.get(position);
+//                final String id_member_to_del = (String) selected_member.getNickname();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MembersRecyclerActivity.this);
+//                builder.setTitle("Удаление игрока");
+//                builder.setMessage("Вы действительно хотите удалить выбранного игрока?");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("Удалить", new DialogInterface.OnClickListener() { // Кнопка Удалить
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getApplicationContext(), id_member_to_del + " Удален из команды", Toast.LENGTH_SHORT).show();
+//                        DatabaseReference db_actually;
+//                        db_actually = database.getReference("Members/members_nicknames/" + id_member_to_del + "/Actually");
+//                        db_actually.setValue(0);
+//                        dialog.dismiss();
+//                        Intent i = new Intent(".MembersRecyclerActivity");
+//                        startActivity(i);
+//                        finish();
+//                        // Отпускает диалоговое окно
+//                    }
+//
+//                });
+//                builder.setNegativeButton("Оставить", new DialogInterface.OnClickListener() { // Кнопка Оставить
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss(); // Отпускает диалоговое окно
+//                    }
+//
+//                });
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+//            }
         }));
         add_to_members_table();
         //addListenerOnButton();
     }
     public void add_to_members_table(){
-        final List<String> membersIDList = new ArrayList<>();
-        final DatabaseReference databaseReference =FirebaseDatabase.getInstance().getReference("PersonInfo");
-        final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(team_key);
-        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot==null)return;
-                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+        fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback(){
 
-                        membersIDList.add(postSnapShot.getKey());
-
-                }
-                SetData(databaseReference, membersIDList);
-            }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
+            public void onTeamMemberDataChanged(String fio, String nickname) {
+                addRow(nickname,fio);
             }
         });
+
+
+//        final List<String> membersIDList = new ArrayList<>();
+//        final DatabaseReference databaseReference =FirebaseDatabase.getInstance().getReference("PersonInfo");
+//        final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(team_key);
+//        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot==null)return;
+//                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+//
+//                        membersIDList.add(postSnapShot.getKey());
+//
+//                }
+//                SetData(databaseReference, membersIDList);
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // Error
+//                Log.d("Error", "databaseError");
+//            }
+//        });
     }
 
-    private void SetData(DatabaseReference databaseRef, List<String> userIDList) {
-        for (final String id: userIDList){
-            databaseRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot2) {
+    private void SetData() {
 
-                    if(dataSnapshot2==null)return;
-                    String fio =  (String)dataSnapshot2.child("FIO").getValue();
-                    String nickname =  (String)dataSnapshot2.child("Nickname").getValue();
-                    addRow(nickname,fio);
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Error
-                    Log.d("Error", "databaseError");
-                }
-            });
-        }
+
+//        for (final String id: userIDList){
+//            databaseRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot2) {
+//
+//                    if(dataSnapshot2==null)return;
+//                    String fio =  (String)dataSnapshot2.child("FIO").getValue();
+//                    String nickname =  (String)dataSnapshot2.child("Nickname").getValue();
+//                    addRow(nickname,fio);
+//                }
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // Error
+//                    Log.d("Error", "databaseError");
+//                }
+//            });
+//        }
     }
+
     private void addRow(String nick_from_base, String fio_from_base ) {
         MembersClass member = new MembersClass( nick_from_base );
         member.setFio(fio_from_base);
