@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.airsoft.R;
+import com.example.data.FirebaseData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,10 +35,11 @@ public class ConnectingToOrgTeam extends AppCompatActivity {
 //----------------------считываем введенный ключ--------------------------------------------------------------
                         String key = ((EditText)findViewById(R.id.orgcom_key)).getText().toString();
                         //--вносим изменения в бд (присоединяем персон к команде)-----------------------------
-                        to_bd(key);
+                        FirebaseData fbData = new FirebaseData().getInstance();
+                        fbData.setOrgcomKey(key);
                         //--высвечиваем уведомление о причоединении к команде---------------------------------
 
-                        Toast.makeText(ConnectingToOrgTeam.this, "Вы успешно присоединены к команде!",
+                        Toast.makeText(ConnectingToOrgTeam.this, "Вы успешно присоединены к оргкомитету!",
                                 Toast.LENGTH_SHORT).show();
                         //--уходим на главную активность------------------------------------------------------
                         Intent i = new Intent(".MainOrgcomActivity");
@@ -58,15 +60,6 @@ public class ConnectingToOrgTeam extends AppCompatActivity {
                 }
 
         );
-
-    }
-    private void to_bd(String key){
-        String userId= FirebaseAuth.getInstance().getUid();
-
-//----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
-        DatabaseReference user_person_info = databaseRef.child(userId);
-        user_person_info.child("OrgcomKey").setValue(key);
     }
 }
 

@@ -71,8 +71,17 @@ public class FirebaseData {
 
     }
     public interface teamMembersDataCallback{
-        void onTeamMemberDataChanged(String nickname, String fio);
+        void onTeamMemberDataChanged(String playerUID ,String nickname, String fio);
     }
+
+    public interface personInfoCallback{
+        void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal);
+        void onOrgInfoChanged(String fio, String birthday);
+    }
+
+
+
+
 
     public void getUserUID(userCallback callback){
         callback.onUserUIDChanged(FirebaseAuth.getInstance().getUid());
@@ -246,7 +255,7 @@ public class FirebaseData {
                             String fio =  (String)dataSnapshot2.child("FIO").getValue();
                             String nickname =  (String)dataSnapshot2.child("Nickname").getValue();
                             //addRow(nickname,fio);
-                            callback.onTeamMemberDataChanged(nickname,fio);
+                            callback.onTeamMemberDataChanged(id,nickname,fio);
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -259,5 +268,147 @@ public class FirebaseData {
         });
 
     }
+    public void setTeamKey(String teamKey){
+        String userUID= FirebaseAuth.getInstance().getUid();
 
+        //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        DatabaseReference user_person_info = databaseRef.child(userUID);
+        user_person_info.child("TeamKey").setValue(teamKey);
+    }
+
+    public void setOrgcomKey(String orgcomKey){
+        String userId= FirebaseAuth.getInstance().getUid();
+
+        //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        DatabaseReference user_person_info = databaseRef.child(userId);
+        user_person_info.child("OrgcomKey").setValue(orgcomKey);
+    }
+
+    public void creatingPlayer(String fio, String nickname, String birthday, String position, String arsenal, boolean orgFlag){
+        String personUID = FirebaseAuth.getInstance().getUid();
+
+        DatabaseReference db_personFIO;
+        DatabaseReference db_personPosition;
+        DatabaseReference db_personArsenal;
+        DatabaseReference db_personBirthday;
+        DatabaseReference db_personNickname;
+        DatabaseReference db_personOrg;
+
+        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
+        db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
+        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
+        db_personPosition = database.getReference("PersonInfo/"+personUID+"/Position");
+        db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
+        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
+
+        db_personFIO.setValue(fio);
+        db_personNickname.setValue(nickname);
+        db_personBirthday.setValue(birthday);
+        db_personPosition.setValue(position);
+        db_personArsenal.setValue(arsenal);
+        db_personOrg.setValue(orgFlag);
+    }
+
+    public void creatingOrg(String fio, String birthday, boolean orgFlag){
+        final String personUID = FirebaseAuth.getInstance().getUid();
+
+        DatabaseReference db_personFIO;
+        DatabaseReference db_personBirthday;
+        DatabaseReference db_personOrg;
+
+        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
+        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
+        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
+
+        db_personFIO.setValue(fio);
+        db_personBirthday.setValue(birthday);
+        db_personOrg.setValue(orgFlag);
+    }
+
+    public String creatingOrgcom(String orgcomName,String orgcomCity){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //--------generate random key-------------------------------------------------------------------------
+        String newOrgcomKey = database.getReference("quiz").push().getKey();
+
+        DatabaseReference db_orgcomName;
+        DatabaseReference db_orgcomCity;
+
+
+        db_orgcomName = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomName");
+        db_orgcomCity = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomCity");
+
+        db_orgcomName.setValue(orgcomName);
+        db_orgcomCity.setValue(orgcomCity);
+
+        String userId= FirebaseAuth.getInstance().getUid();
+
+        //----------записываем сгенерированный ключ в соответствующее поле в информацию о пользователе------------------------
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        DatabaseReference user_person_info = databaseRef.child(userId);
+        user_person_info.child("OrgcomKey").setValue(newOrgcomKey);
+
+        return (newOrgcomKey);
+    }
+
+    public String creatingTeam(String teamName,String teamCity){
+
+        //--------generate random key-------------------------------------------------------------------------
+        String newTeamKey = database.getReference("quiz").push().getKey();
+
+        DatabaseReference db_teamName;
+        DatabaseReference db_teamCity;
+
+
+        db_teamName = database.getReference("TeamInfo/"+newTeamKey+"/TeamName");
+        db_teamCity = database.getReference("TeamInfo/"+newTeamKey+"/TeamCity");
+
+        db_teamName.setValue(teamName);
+        db_teamCity.setValue(teamCity);
+
+        String userId=FirebaseAuth.getInstance().getUid();
+
+        //----------записываем сгенерированный ключ в соответствующее поле в информацию о пользователе------------------------
+        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        DatabaseReference user_person_info = databaseRef.child(userId);
+        user_person_info.child("TeamKey").setValue(newTeamKey);
+        return(newTeamKey);
+    }
+
+    public void getPersonInfo(final personInfoCallback callback, String personUID){
+        DatabaseReference databaseRef = database.getReference("PersonInfo");
+        databaseRef.child(personUID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshotInfo) {
+
+                if (dataSnapshotInfo == null) return;
+                if ((boolean)dataSnapshotInfo.child("OrgFlag").getValue()== true){
+                    String fio = (String) dataSnapshotInfo.child("FIO").getValue();
+                    String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
+                    callback.onOrgInfoChanged(fio,birthday);
+                }
+                if ((boolean)dataSnapshotInfo.child("OrgFlag").getValue()== false){
+                    String fio = (String) dataSnapshotInfo.child("FIO").getValue();
+                    String arsenal = (String) dataSnapshotInfo.child("Arsenal").getValue();
+                    String position = (String) dataSnapshotInfo.child("Position").getValue();
+                    String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
+                    String nickname = (String) dataSnapshotInfo.child("Nickname").getValue();
+                    callback.onPlayerInfoChanged(fio,nickname,birthday,position,arsenal);
+
+                }
+
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+    }
 }

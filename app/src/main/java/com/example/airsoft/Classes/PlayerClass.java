@@ -1,13 +1,19 @@
 package com.example.airsoft.Classes;
 
-public class MembersClass {
-    private String nickname, fio, statistic;
-    public MembersClass() {
+public class PlayerClass {
+    private String playerUID, nickname, fio, statistic;
+
+    public PlayerClass(String playerUID) {
+        this.playerUID = playerUID;
+
     }
 
-    public MembersClass(String nickname) {
-        this.nickname = nickname;
+    public String getPlayerUID() {
+        return playerUID;
+    }
 
+    public void setPlayerUID(String playerUID) {
+        this.playerUID = playerUID;
     }
 
     public String getNickname() {

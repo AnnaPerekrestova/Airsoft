@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.airsoft.Classes.MembersClass;
+import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.R;
 
 import java.util.List;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHolder> {
 
-    private List<MembersClass> membersList;
+    private List<PlayerClass> membersList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView nickname, fio;
@@ -28,7 +28,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
     }
 
 
-    public MembersAdapter(List<MembersClass> membersList) {
+    public MembersAdapter(List<PlayerClass> membersList) {
         this.membersList = membersList;
     }
 
@@ -42,7 +42,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        MembersClass member = membersList.get(position);
+        PlayerClass member = membersList.get(position);
         holder.nickname.setText(member.getNickname());
         holder.fio.setText(member.getFio());
 

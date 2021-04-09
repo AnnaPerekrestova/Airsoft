@@ -1,14 +1,10 @@
 package com.example.airsoft.Activities;
 
-import android.mtp.MtpConstants;
 import android.os.Bundle;
 
-import com.example.airsoft.Adapters.MembersAdapter;
 import com.example.airsoft.Adapters.StatsAdapter;
-import com.example.airsoft.Classes.MembersClass;
+import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,19 +12,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StatisticActivity extends AppCompatActivity {
-    private List<MembersClass> membersList = new ArrayList<>();
+    private List<PlayerClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private StatsAdapter statsAdapter;
 
@@ -92,7 +86,7 @@ public class StatisticActivity extends AppCompatActivity {
         }
     }
     private void addRow(String nick_from_base, String percent_str ) {
-        MembersClass member = new MembersClass(nick_from_base );
+        PlayerClass member = new PlayerClass(nick_from_base );
         member.setStatistic(percent_str);
         membersList.add(member);
 

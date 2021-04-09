@@ -9,15 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.airsoft.Adapters.GamesAdapter;
 import com.example.airsoft.Adapters.MemberTeamGameAdapter;
-import com.example.airsoft.Classes.GamesClass;
 import com.example.airsoft.Classes.MemberTeamClass;
-import com.example.airsoft.Classes.MembersClass;
 import com.example.airsoft.R;
 import com.example.airsoft.RecyclerViewDecorator;
 import com.google.firebase.database.DataSnapshot;

@@ -160,7 +160,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.MemberInfo"
+            android:name=".Activities.PlayerInfo"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".MemberInfo" />

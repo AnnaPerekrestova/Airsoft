@@ -7,14 +7,14 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.airsoft.Classes.MembersClass;
+import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.R;
 
 import java.util.List;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.MyViewHolder> {
 
-    private List<MembersClass> membersList;
+    private List<PlayerClass> membersList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView nickname, percent;
@@ -28,7 +28,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.MyViewHolder
     }
 
 
-    public StatsAdapter(List<MembersClass> membersList) {
+    public StatsAdapter(List<PlayerClass> membersList) {
         this.membersList = membersList;
     }
 
@@ -42,7 +42,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(StatsAdapter.MyViewHolder holder, int position) {
-        MembersClass member = membersList.get(position);
+        PlayerClass member = membersList.get(position);
         holder.nickname.setText(member.getNickname());
         String per_str = (String) member.getStatistic();
         holder.percent.setText(per_str);

@@ -1,33 +1,22 @@
 package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.airsoft.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Calendar;
+import com.example.data.FirebaseData;
 
 public class RegistrationPersonInfo extends AppCompatActivity {
 
     private boolean f = false;
+    FirebaseData fbData = new FirebaseData().getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +67,7 @@ public class RegistrationPersonInfo extends AppCompatActivity {
                                 if (((EditText)findViewById(R.id.nickname_reg)).getText().toString().length() > 0) {
 
                                     //-------------записываем информацию об игроке в бд----------------------
-                                    to_db_player();
+                                    playerToDB();
 
                                     //-------переходим в подключение к команде-------------
                                     Intent i = new Intent(".ConnectingToTeam");
@@ -90,7 +79,7 @@ public class RegistrationPersonInfo extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                to_db_org();
+                                orgToDB();
 //                                      переходим в подключение к оргкомитету
                                 Intent i = new Intent(".ConnectingToOrgTeam");
                                 finish();
@@ -111,66 +100,24 @@ public class RegistrationPersonInfo extends AppCompatActivity {
 
 
 
-    public void to_db_player(){
+    public void playerToDB(){
         final String personFIO = ((EditText)findViewById(R.id.person_fio_reg)).getText().toString();
         final String personNickname = ((EditText)findViewById(R.id.nickname_reg)).getText().toString();
         final String personBirthday = ((EditText)findViewById(R.id.birthday_reg)).getText().toString();
         final String personPosition = ((EditText)findViewById(R.id.person_position_reg)).getText().toString();
         final String personArsenal = ((EditText)findViewById(R.id.arsenal_reg)).getText().toString();
-        final boolean personOrg = false;
-        final String personUID = FirebaseAuth.getInstance().getUid();
+        final boolean personOrgFlag = false;
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference db_personFIO;
-        DatabaseReference db_personPosition;
-        DatabaseReference db_personArsenal;
-        DatabaseReference db_personBirthday;
-        DatabaseReference db_personNickname;
-        DatabaseReference db_personOrg;
-//        DatabaseReference db_personPlayed;
-//        DatabaseReference db_personWon;
-//        DatabaseReference db_actually;
+        fbData.creatingPlayer(personFIO,personNickname,personBirthday,personPosition,personArsenal,personOrgFlag);
 
-        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
-        db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
-        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
-        db_personPosition = database.getReference("PersonInfo/"+personUID+"/Position");
-        db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
-        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
-//        db_personPlayed = database.getReference("PersonInfo/"+personUID+"/Played");
-//        db_personWon = database.getReference("Members/members_nicknames/"+personNickname+"/Won");
-//        db_actually = database.getReference("Members/members_nicknames/"+personNickname+"/Actually");
-
-        db_personFIO.setValue(personFIO);
-        db_personNickname.setValue(personNickname);
-        db_personBirthday.setValue(personBirthday);
-        db_personPosition.setValue(personPosition);
-        db_personArsenal.setValue(personArsenal);
-        db_personOrg.setValue(personOrg);
-//        db_personPlayed.setValue(0);
-//        db_personWon.setValue(0);
-//        db_actually.setValue(1);
     }
 
-    public void to_db_org(){
+    public void orgToDB(){
         final String personFIO = ((EditText)findViewById(R.id.person_fio_reg)).getText().toString();
         final String personBirthday = ((EditText)findViewById(R.id.birthday_reg)).getText().toString();
-        final boolean personOrg = true;
-        final String personUID = FirebaseAuth.getInstance().getUid();
+        final boolean personOrgFlag = true;
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference db_personFIO;
-        DatabaseReference db_personBirthday;
-        DatabaseReference db_personOrg;
-
-        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
-        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
-        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
-
-        db_personFIO.setValue(personFIO);
-        db_personBirthday.setValue(personBirthday);
-        db_personOrg.setValue(personOrg);
-
+        fbData.creatingOrg(personFIO, personBirthday,personOrgFlag);
     }
 
 }

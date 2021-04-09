@@ -1,41 +1,28 @@
 package com.example.airsoft.Activities;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.airsoft.Adapters.MembersAdapter;
-import com.example.airsoft.Classes.MembersClass;
+import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.R;
 import com.example.airsoft.RecyclerTouchListener;
 import com.example.airsoft.RecyclerViewDecorator;
 import com.example.data.FirebaseData;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MembersRecyclerActivity extends AppCompatActivity {
-    private List<MembersClass> membersList = new ArrayList<>();
+    private List<PlayerClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
-//    String team_key;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseData fbData = new FirebaseData().getInstance();
 
     @Override
@@ -57,13 +44,13 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                MembersClass selected_member = membersList.get(position);
+                PlayerClass selectedMember = membersList.get(position);
 //                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
 
-                String nick = (String) selected_member.getNickname();
+                String personUID = (String) selectedMember.getPlayerUID();
 //                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(".MemberInfo");
-                intent.putExtra("id_m", nick);
+                Intent intent = new Intent(".PlayerInfo");
+                intent.putExtra("playerID", personUID);
                 startActivity(intent);
             }
 
@@ -106,67 +93,25 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 //                dialog.show();
 //            }
         }));
-        add_to_members_table();
-        //addListenerOnButton();
+        addToMembersRecycler();
     }
-    public void add_to_members_table(){
+    public void addToMembersRecycler(){
         fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback(){
 
             @Override
-            public void onTeamMemberDataChanged(String fio, String nickname) {
-                addRow(nickname,fio);
+            public void onTeamMemberDataChanged(String playerUID, String nickname, String fio) {
+                addRow(playerUID, nickname, fio);
             }
+
         });
-
-
-//        final List<String> membersIDList = new ArrayList<>();
-//        final DatabaseReference databaseReference =FirebaseDatabase.getInstance().getReference("PersonInfo");
-//        final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(team_key);
-//        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if(dataSnapshot==null)return;
-//                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-//
-//                        membersIDList.add(postSnapShot.getKey());
-//
-//                }
-//                SetData(databaseReference, membersIDList);
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Error
-//                Log.d("Error", "databaseError");
-//            }
-//        });
     }
 
-    private void SetData() {
-
-
-//        for (final String id: userIDList){
-//            databaseRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot2) {
-//
-//                    if(dataSnapshot2==null)return;
-//                    String fio =  (String)dataSnapshot2.child("FIO").getValue();
-//                    String nickname =  (String)dataSnapshot2.child("Nickname").getValue();
-//                    addRow(nickname,fio);
-//                }
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    // Error
-//                    Log.d("Error", "databaseError");
-//                }
-//            });
-//        }
-    }
-
-    private void addRow(String nick_from_base, String fio_from_base ) {
-        MembersClass member = new MembersClass( nick_from_base );
-        member.setFio(fio_from_base);
-        membersList.add(member);
+    private void addRow(String playerUID, String nick, String fio ) {
+        PlayerClass player = new PlayerClass( playerUID );
+        player.setPlayerUID(playerUID);
+        player.setNickname(nick);
+        player.setFio(fio);
+        membersList.add(player);
 
         mAdapter.notifyDataSetChanged();
     }
