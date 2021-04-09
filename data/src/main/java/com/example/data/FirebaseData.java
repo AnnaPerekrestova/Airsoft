@@ -1,5 +1,6 @@
 package com.example.data;
 
+import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -64,6 +65,8 @@ public class FirebaseData {
 
     public interface orgFlagCallback {
         void onOrgFlagChanged(boolean orgFlag);
+
+        void onOrgFlagNull(String no_info);
     }
 
     public interface teamMembersUIDListCallback {
@@ -95,8 +98,12 @@ public class FirebaseData {
                 databaseRef.child(userUID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot == null) return;
-                        callback.onTeamIdChanged(snapshot.child("TeamKey").getValue().toString());
+                        if (snapshot == null)return;
+                        if (snapshot.child("TeamKey").getValue() == null) {
+                            callback.onTeamIdChanged("no info");
+                            return;
+                        }
+                        else {callback.onTeamIdChanged(snapshot.child("TeamKey").getValue().toString());}
                    }
                    @Override
                    public void onCancelled(@NonNull DatabaseError error) {
@@ -109,33 +116,6 @@ public class FirebaseData {
 
     }
 
-
-    public void getOrgFlag(final orgFlagCallback callback){
-        getUserUID(new FirebaseData.userCallback() {
-            @Override
-            public void onUserUIDChanged(String userUID) {
-                DatabaseReference databaseRef = database.getReference("PersonInfo");
-                databaseRef.child(userUID).addValueEventListener(new ValueEventListener() {
-                     @Override
-                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                         if (snapshot == null) return;
-                         callback.onOrgFlagChanged((boolean) snapshot.child("OrgFlag").getValue());
-                     }
-
-                     @Override
-                     public void onCancelled(@NonNull DatabaseError error) {
-                         System.out.println("Unable to attach listener");
-                     }
-                 }
-                );
-            }
-        });
-
-    }
-
-
-
-
     public void getTeamName(final teamCallback callback){
 
 
@@ -144,7 +124,8 @@ public class FirebaseData {
 
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
-              if (snapshot == null) return;
+              if (snapshot == null)return;
+
               else{
                   String teamID = snapshot.child("TeamKey").getValue().toString();
                   final DatabaseReference databaseRef = database.getReference("TeamInfo");
@@ -168,6 +149,32 @@ public class FirebaseData {
           }
       }
     );
+
+    }
+
+    public void getOrgcomKey(final orgcomCallback callback){
+        getUserUID(new FirebaseData.userCallback() {
+            @Override
+            public void onUserUIDChanged(String userUID) {
+                DatabaseReference databaseRef = database.getReference("PersonInfo");
+                databaseRef.child(userUID).addValueEventListener(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         if (snapshot == null)return;
+                         if (snapshot.child("OrgcomKey").getValue() == null) {
+                             callback.onOrgcomIdChanged("no info");
+                             return;
+                         }
+                         else {callback.onOrgcomIdChanged(snapshot.child("OrgcomKey").getValue().toString());}
+                     }
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError error) {
+                         System.out.println("Unable to attach listener");
+                     }
+                 }
+                );
+            }
+        });
 
     }
 
@@ -205,6 +212,33 @@ public class FirebaseData {
               }
           }
         );
+
+    }
+
+    public void getOrgFlag(final orgFlagCallback callback){
+        getUserUID(new FirebaseData.userCallback() {
+            @Override
+            public void onUserUIDChanged(String userUID) {
+                DatabaseReference databaseRef = database.getReference("PersonInfo");
+                databaseRef.child(userUID).addValueEventListener(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         if (snapshot == null) return;
+                         if (snapshot.getValue() == null) {
+                             callback.onOrgFlagNull("no info");
+                             return;
+                         }
+                         else {callback.onOrgFlagChanged((boolean) snapshot.child("OrgFlag").getValue());}
+                     }
+
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError error) {
+                         System.out.println("Unable to attach listener");
+                     }
+                 }
+                );
+            }
+        });
 
     }
 

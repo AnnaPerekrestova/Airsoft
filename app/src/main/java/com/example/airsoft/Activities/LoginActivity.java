@@ -160,19 +160,68 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUILogIn(FirebaseUser user) {
         if (user != null) {
-            FirebaseData fbData = new FirebaseData().getInstance();
+            final FirebaseData fbData = new FirebaseData().getInstance();
             fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
                 @Override
                 public void onOrgFlagChanged(boolean orgFlag) {
-                    if (orgFlag == true){
-                        Intent i = new Intent(".MainOrgcomActivity");
+                    if (orgFlag){
+                        fbData.getOrgcomKey(new FirebaseData.orgcomCallback() {
+                            @Override
+                            public void onOrgcomIdChanged(String orgcomKey) {
+                                if (orgcomKey.equals("no info")){
+                                    Log.d("no info", "no info   " + FirebaseAuth.getInstance().getUid());
 
-                        startActivity(i);
+                                    Intent i = new Intent(".ConnectingToOrgcom");
+                                    startActivity(i);
+                                    finish();
+                                }
+                                else{
+                                    Intent i = new Intent(".MainOrgcomActivity");
+                                    startActivity(i);
+                                }
+                            }
+
+                            @Override
+                            public void onOrgcomNameChanged(String orgcomName) {
+
+                            }
+                        });
+
+
                     }
-                    if (orgFlag == false){
-                        Intent i = new Intent(".MainActivity");
+                    if (!orgFlag){
+                        fbData.getTeamKey(new FirebaseData.teamCallback() {
+                            @Override
+                            public void onTeamIdChanged(String teamKey) {
+                                if (teamKey.equals("no info")){
+                                    Log.d("no info", "no info   " + FirebaseAuth.getInstance().getUid());
 
+                                    Intent i = new Intent(".ConnectingToTeam");
+                                    startActivity(i);
+                                    finish();
+                                }
+                                else{
+                                    Intent i = new Intent(".MainActivity");
+                                    startActivity(i);
+                                }
+                            }
+
+                            @Override
+                            public void onTeamNameChanged(String teamName) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onOrgFlagNull(String no_info) {
+                    if (no_info.equals("no info")){
+                        Log.d("no info", "no info   " + FirebaseAuth.getInstance().getUid());
+
+                        Intent i = new Intent(".RegistrationPersonInfo");
                         startActivity(i);
+                        finish();
                     }
                 }
             });

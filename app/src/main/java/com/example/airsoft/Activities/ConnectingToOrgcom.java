@@ -11,11 +11,8 @@ import android.widget.Toast;
 
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-public class ConnectingToOrgTeam extends AppCompatActivity {
+public class ConnectingToOrgcom extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,7 @@ public class ConnectingToOrgTeam extends AppCompatActivity {
                         fbData.setOrgcomKey(key);
                         //--высвечиваем уведомление о причоединении к команде---------------------------------
 
-                        Toast.makeText(ConnectingToOrgTeam.this, "Вы успешно присоединены к оргкомитету!",
+                        Toast.makeText(ConnectingToOrgcom.this, "Вы успешно присоединены к оргкомитету!",
                                 Toast.LENGTH_SHORT).show();
                         //--уходим на главную активность------------------------------------------------------
                         Intent i = new Intent(".MainOrgcomActivity");

@@ -2,22 +2,17 @@ package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class PlayerInfo extends AppCompatActivity {
 
-    TextView txt_id_member;
+    TextView txt_birthday;
     TextView txt_fio;
     TextView txt_arsenal;
     TextView txt_position;
@@ -26,7 +21,7 @@ public class PlayerInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member_info);
+        setContentView(R.layout.activity_player_info);
 //-----Получаем значения переданные через intent------------------------------------------------------------
         Intent intent = getIntent();
         personUID = intent.getStringExtra("playerID");
@@ -41,7 +36,7 @@ public class PlayerInfo extends AppCompatActivity {
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
             @Override
             public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal) {
-                fillPlayerInfo(arsenal, fio, position);
+                fillPlayerInfo(fio, birthday,nickname, position, arsenal);
             }
 
             @Override
@@ -52,14 +47,19 @@ public class PlayerInfo extends AppCompatActivity {
 
     }
 //--------заполняем элементы активности-----------------------------------
-    private void fillPlayerInfo(String ars, String fio, String pos) {
+    @SuppressLint("SetTextI18n")
+    private void fillPlayerInfo(String fio, String birthday, String nickname, String pos, String ars) {
         txt_fio = (TextView) findViewById(R.id.member_fio);
-        txt_arsenal = (TextView) findViewById(R.id.member_arsenal);
+        txt_birthday = (TextView) findViewById(R.id.member_birthday);
+        txt_nickname = (TextView) findViewById(R.id.member_nickname);
         txt_position = (TextView) findViewById(R.id.member_position);
+        txt_arsenal = (TextView) findViewById(R.id.member_arsenal);
 
-        txt_arsenal.setText("Снаряжение: "+ars);
         txt_fio.setText("ФИО: " + fio);
+        txt_birthday.setText("День рождения: "+birthday);
+        txt_nickname.setText("Позывной: "+nickname);
         txt_position.setText("Должность: " + pos);
+        txt_arsenal.setText("Снаряжение: "+ars);
 
     }
 

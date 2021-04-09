@@ -24,9 +24,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.ConnectingToOrgTeam">
+        <activity android:name=".Activities.ConnectingToOrgcom">
             <intent-filter>
-                <action android:name=".ConnectingToOrgTeam" />
+                <action android:name=".ConnectingToOrgcom" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -163,7 +163,7 @@
             android:name=".Activities.PlayerInfo"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name=".MemberInfo" />
+                <action android:name=".PlayerInfo" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -81,7 +81,7 @@ public class RegistrationPersonInfo extends AppCompatActivity {
                             } else {
                                 orgToDB();
 //                                      переходим в подключение к оргкомитету
-                                Intent i = new Intent(".ConnectingToOrgTeam");
+                                Intent i = new Intent(".ConnectingToOrgcom");
                                 finish();
                                 startActivity(i);
 

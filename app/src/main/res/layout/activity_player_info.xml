@@ -52,7 +52,7 @@
             android:textSize="20dp"/>
 
         <TextView
-            android:id="@+id/member_date_of_birth"
+            android:id="@+id/member_birthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
