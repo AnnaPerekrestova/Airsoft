@@ -65,7 +65,6 @@ public class FirebaseData {
 
     public interface orgFlagCallback {
         void onOrgFlagChanged(boolean orgFlag);
-
         void onOrgFlagNull(String no_info);
     }
 
@@ -82,6 +81,13 @@ public class FirebaseData {
         void onOrgInfoChanged(String fio, String birthday);
     }
 
+//    public interface teamsListCallback {
+//        void onTeamMembersUIDListChanged(List<String> teamMembersUIDList);
+//
+//    }
+    public interface teamsListCallback{
+        void onTeamsListChanged(String teamKey ,String teamName, String teamCity, String teamYear);
+    }
 
 
 
@@ -302,6 +308,51 @@ public class FirebaseData {
         });
 
     }
+
+    public void getTeamsList(final teamsListCallback callback){
+//        final List<String> membersUIDList = new ArrayList<>();
+//        String teamName;
+//        String teamCity;
+//        String teamYear;
+//        String teamMeanAge;
+
+        final DatabaseReference databaseReference = database.getReference("TeamInfo");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot==null)return;
+                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                    final String teamKey = postSnapShot.getKey();
+                    final DatabaseReference databaseReference = database.getReference("TeamInfo");
+
+                    databaseReference.child(teamKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot2) {
+
+                            if(dataSnapshot2==null)return;
+                            String teamName =  (String)dataSnapshot2.child("TeamName").getValue();
+                            String teamCity =  (String)dataSnapshot2.child("TeamCity").getValue();
+                            String teamYear =  (String)dataSnapshot2.child("TeamYear").getValue();
+                            //addRow(nickname,fio);
+                            callback.onTeamsListChanged(teamKey,teamName,teamCity,teamYear);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Error
+                            Log.d("Error", "databaseError");
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
+            }
+        });
+
+    }
+
     public void setTeamKey(String teamKey){
         String userUID= FirebaseAuth.getInstance().getUid();
 
@@ -387,20 +438,23 @@ public class FirebaseData {
         return (newOrgcomKey);
     }
 
-    public String creatingTeam(String teamName,String teamCity){
+    public String creatingTeam(String teamName,String teamCity, String teamYear){
 
         //--------generate random key-------------------------------------------------------------------------
         String newTeamKey = database.getReference("quiz").push().getKey();
 
         DatabaseReference db_teamName;
         DatabaseReference db_teamCity;
+        DatabaseReference db_teamYear;
 
 
         db_teamName = database.getReference("TeamInfo/"+newTeamKey+"/TeamName");
         db_teamCity = database.getReference("TeamInfo/"+newTeamKey+"/TeamCity");
+        db_teamYear = database.getReference("TeamInfo/"+newTeamKey+"/TeamYear");
 
         db_teamName.setValue(teamName);
         db_teamCity.setValue(teamCity);
+        db_teamYear.setValue(teamYear);
 
         String userId=FirebaseAuth.getInstance().getUid();
 

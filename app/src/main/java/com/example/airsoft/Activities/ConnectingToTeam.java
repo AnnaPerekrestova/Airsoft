@@ -24,6 +24,7 @@ public class ConnectingToTeam extends AppCompatActivity {
     public void addListenerOnButton() {
         Button connect_to_team = findViewById(R.id.connect_to_team);
         Button create_team = findViewById(R.id.create_team);
+        Button search_team = findViewById(R.id.search_team);
         connect_to_team.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -50,6 +51,17 @@ public class ConnectingToTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".CreatingTeam");
+                        startActivity(i);
+                        finish();
+                    }
+                }
+
+        );
+        search_team.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".SearchTeamActivity");
                         startActivity(i);
                         finish();
                     }

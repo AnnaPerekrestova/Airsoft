@@ -28,12 +28,13 @@ public class CreatingTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String teamName = ((EditText)findViewById(R.id.team_name)).getText().toString();
-                        String teamCity = ((EditText)findViewById(R.id.team_city)).getText().toString();;
+                        String teamCity = ((EditText)findViewById(R.id.team_city)).getText().toString();
+                        String teamYear = ((EditText)findViewById(R.id.team_year )).getText().toString();
                         //------проверяем заполненность полей-----------------------------------------
                         if ((!teamName.equals("")) & (!teamCity.equals(""))){
                             //------если заполнено, то добавляем в бд ------------------------
                             FirebaseData fbData = new FirebaseData().getInstance();
-                            String teamKey = fbData.creatingTeam(teamName,teamCity);
+                            String teamKey = fbData.creatingTeam(teamName,teamCity,teamYear);
 
                             //----------высвечиваем ключ------------------------------------------------------------------------------------
                             EditText key = findViewById(R.id.new_team_key);
