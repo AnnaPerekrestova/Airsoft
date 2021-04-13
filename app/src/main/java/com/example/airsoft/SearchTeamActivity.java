@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.SearchView;
 
 import com.example.airsoft.Adapters.TeamAdapter;
 import com.example.airsoft.Classes.TeamClass;
 import com.example.data.FirebaseData;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +89,22 @@ public class SearchTeamActivity extends AppCompatActivity {
 //            }
 //        }));
         addToTeamRecycler();
+
+    }
+    public void searchTeamName(){
+        SearchView searchTeam = findViewById(R.id.searchTeamName);
+        searchTeam.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                teamAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
     public void addToTeamRecycler(){
         fbData.getTeamsList(new FirebaseData.teamsListCallback() {
@@ -95,6 +114,7 @@ public class SearchTeamActivity extends AppCompatActivity {
                 addRow(teamKey,teamName,teamCity,String.valueOf(teamAge));
             }
         });
+
     }
     public static int getCurrentYear()
     {
@@ -112,6 +132,8 @@ public class SearchTeamActivity extends AppCompatActivity {
         teamsList.add(team);
 
         teamAdapter.notifyDataSetChanged();
+
+        searchTeamName();
     }
 //    public void addNewMember(View view) {
 //        Intent i = new Intent(".NewMemberActivity");
