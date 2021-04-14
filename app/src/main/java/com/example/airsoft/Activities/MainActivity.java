@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTeamNameChanged(String teamName) {
-                Log.d("nameofteam", teamName);
                 ((TextView) findViewById(R.id.text_team_name)).setText(teamName);
 //---------------Делаем название команды видимым и добавляем информацию о команде при клике---------------------------------------
                 findViewById(R.id.text_team_name).setVisibility(View.VISIBLE);
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         fbData.getTeamKey(new FirebaseData.teamCallback() {
             @Override
             public void onTeamIdChanged(final String teamKey) {
-                Log.d("keyofteam", teamKey);
                 findViewById(R.id.text_team_name).setOnClickListener(new View.OnClickListener() {
 
                     @Override
