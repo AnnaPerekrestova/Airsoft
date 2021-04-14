@@ -20,41 +20,73 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.MyViewHolder> 
     private List<TeamClass> teamsList;
     private List<TeamClass> teamsListAll;
 
-    @Override
-    public Filter getFilter() {
-        return teamNameFilter;
-    }
-    Filter teamNameFilter = new Filter(){
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
+    public Filter getTeamCityFilter(){
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
 //            teamsListAll= new ArrayList<>();
-            if (teamsListAll.size()==0){ teamsListAll.addAll(teamsList);}
+                if (teamsListAll.size()==0){ teamsListAll.addAll(teamsList);}
 
 
-            List<TeamClass> filteredList = new ArrayList<>();
+                List<TeamClass> filteredList = new ArrayList<>();
 
-            if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(teamsListAll);
-            } else {
-                for (TeamClass team: teamsListAll) {
-                    if (team.getTeamName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                        filteredList.add(team);
+                if (charSequence == null || charSequence.length() == 0) {
+                    filteredList.addAll(teamsListAll);
+                } else {
+                    for (TeamClass team: teamsListAll) {
+                        if (team.getTeamCity().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filteredList.add(team);
+                        }
                     }
                 }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
             }
 
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filteredList;
-            return filterResults;
-    }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            teamsList.clear();
-            teamsList.addAll((Collection<? extends TeamClass>) results.values);
-            notifyDataSetChanged();
-        }
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                teamsList.clear();
+                teamsList.addAll((Collection<? extends TeamClass>) results.values);
+                notifyDataSetChanged();
+            }
         };
+    }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+//            teamsListAll= new ArrayList<>();
+                if (teamsListAll.size() == 0) {
+                    teamsListAll.addAll(teamsList);
+                }
+                List<TeamClass> filteredList = new ArrayList<>();
+
+                if (charSequence == null || charSequence.length() == 0) {
+                    filteredList.addAll(teamsListAll);
+                } else {
+                    for (TeamClass team : teamsListAll) {
+                        if (team.getTeamName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filteredList.add(team);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                teamsList.clear();
+                teamsList.addAll((Collection<? extends TeamClass>) results.values);
+                notifyDataSetChanged();
+            }
+        };}
+
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView teamName, teamCity, teamYears;

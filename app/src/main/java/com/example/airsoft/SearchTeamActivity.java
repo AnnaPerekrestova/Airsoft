@@ -92,8 +92,8 @@ public class SearchTeamActivity extends AppCompatActivity {
 
     }
     public void searchTeamName(){
-        SearchView searchTeam = findViewById(R.id.searchTeamName);
-        searchTeam.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        SearchView searchTeamName = findViewById(R.id.searchTeamName);
+        searchTeamName.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -102,6 +102,20 @@ public class SearchTeamActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 teamAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        SearchView searchTeamCity = findViewById(R.id.searchTeamCity);
+        searchTeamCity.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                teamAdapter.getTeamCityFilter().filter(newText);
                 return false;
             }
         });
