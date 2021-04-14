@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -28,23 +29,53 @@ public class MainActivity extends AppCompatActivity {
 
         addListenerOnButton();
         getData();
+
     }
 
-    //--------------------------------------------------------------------------------------------------
+    //---------------Вывод названия команды----------------------------------------------------------
     public void getData(){
         FirebaseData fbData = new FirebaseData().getInstance();
         fbData.getTeamName(new FirebaseData.teamCallback() {
             @Override
-            public void onTeamIdChanged(String teamKey) {
+            public void onTeamIdChanged(final String teamKey) {
+
             }
 
             @Override
             public void onTeamNameChanged(String teamName) {
+                Log.d("nameofteam", teamName);
                 ((TextView) findViewById(R.id.text_team_name)).setText(teamName);
+//---------------Делаем название команды видимым и добавляем информацию о команде при клике---------------------------------------
+                findViewById(R.id.text_team_name).setVisibility(View.VISIBLE);
+
+
+
+            }
+        });
+        fbData.getTeamKey(new FirebaseData.teamCallback() {
+            @Override
+            public void onTeamIdChanged(final String teamKey) {
+                Log.d("keyofteam", teamKey);
+                findViewById(R.id.text_team_name).setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(".TeamInfoActivity");
+                        i.putExtra("teamKey", teamKey);
+                        startActivity(i);
+                    }
+                });
+            }
+
+            @Override
+            public void onTeamNameChanged(String teamName) {
+
 
             }
         });
     }
+
+
 
     //--------------------------------------------------------------------------------------------------
     public void addListenerOnButton(){

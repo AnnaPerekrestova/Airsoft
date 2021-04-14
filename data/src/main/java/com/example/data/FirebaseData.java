@@ -81,6 +81,10 @@ public class FirebaseData {
         void onOrgInfoChanged(String fio, String birthday);
     }
 
+    public interface teamInfoCallback{
+        void onTeamInfoChanged(String teamName, String teamCity, String teamYear);
+    }
+
 //    public interface teamsListCallback {
 //        void onTeamMembersUIDListChanged(List<String> teamMembersUIDList);
 //
@@ -496,6 +500,27 @@ public class FirebaseData {
             public void onCancelled(DatabaseError databaseError) {
                 // Error
                 Log.d("Error", "databaseError");
+            }
+        });
+    }
+
+    public void getTeamInfo(final teamInfoCallback callback, String teamKey){
+        DatabaseReference databaseRef = database.getReference("TeamInfo");
+        databaseRef.child(teamKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+                else{
+                    String teamName = (String) snapshot.child("TeamName").getValue();
+                    String teamCity = (String) snapshot.child("TeamCity").getValue();
+                    String teamYear = (String) snapshot.child("TeamYear").getValue();
+                    callback.onTeamInfoChanged(teamName, teamCity, teamYear);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

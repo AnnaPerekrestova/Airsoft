@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.SearchView;
 
 import com.example.airsoft.Adapters.TeamAdapter;
@@ -36,58 +38,26 @@ public class SearchTeamActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(teamAdapter);
 
-//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                PlayerClass selectedMember = teamsList.get(position);
-////                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
-//
-//                String personUID = (String) selectedMember.getPlayerUID();
-////                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(".PlayerInfo");
-//                intent.putExtra("playerID", personUID);
-//                startActivity(intent);
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//
-//            }
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                TeamClass selectedTeam = teamsList.get(position);
+//                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
 
-//            @Override
-//            public void onLongClick(View view, int position) {
-//                MembersClass selected_member = membersList.get(position);
-//                final String id_member_to_del = (String) selected_member.getNickname();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MembersRecyclerActivity.this);
-//                builder.setTitle("Удаление игрока");
-//                builder.setMessage("Вы действительно хотите удалить выбранного игрока?");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("Удалить", new DialogInterface.OnClickListener() { // Кнопка Удалить
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(getApplicationContext(), id_member_to_del + " Удален из команды", Toast.LENGTH_SHORT).show();
-//                        DatabaseReference db_actually;
-//                        db_actually = database.getReference("Members/members_nicknames/" + id_member_to_del + "/Actually");
-//                        db_actually.setValue(0);
-//                        dialog.dismiss();
-//                        Intent i = new Intent(".MembersRecyclerActivity");
-//                        startActivity(i);
-//                        finish();
-//                        // Отпускает диалоговое окно
-//                    }
+                String teamKey = (String) selectedTeam.getTeamKey();
+//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(".TeamInfoActivity");
+                intent.putExtra("teamKey", teamKey);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
 //
-//                });
-//                builder.setNegativeButton("Оставить", new DialogInterface.OnClickListener() { // Кнопка Оставить
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss(); // Отпускает диалоговое окно
-//                    }
 //
-//                });
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//            }
-//        }));
+        }));
         addToTeamRecycler();
 
     }

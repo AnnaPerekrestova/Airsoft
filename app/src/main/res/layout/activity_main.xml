@@ -56,13 +56,16 @@
                 android:id="@+id/text_team_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
 
+                android:onClick="team_name_click"
                 android:text="название команды"
-
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="36sp"
-                tools:ignore="MissingConstraints" />
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
