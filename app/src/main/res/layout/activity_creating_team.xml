@@ -53,19 +53,18 @@
             android:layout_marginTop="10dp"/>
 
 
-
-
         <EditText
             android:id="@+id/team_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название команды"
-            android:textColor="@color/black"
-            tools:ignore="Autofill,LabelFor"
-            android:padding="15dp"
-            android:imeOptions="actionNext"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:hint="Название команды"
+            android:imeOptions="actionNext"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            tools:ignore="Autofill,LabelFor" />
 
 
         <EditText
@@ -75,8 +74,9 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:hint="Город команды"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:padding="15dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor" />
 
@@ -87,9 +87,10 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:hint="Год создания команды"
-            android:inputType="number"
             android:imeOptions="actionDone"
+            android:inputType="number"
             android:padding="15dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor" />
 

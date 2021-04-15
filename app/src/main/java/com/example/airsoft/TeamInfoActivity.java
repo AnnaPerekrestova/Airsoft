@@ -40,6 +40,7 @@ public class TeamInfoActivity extends AppCompatActivity {
                 if (teamKey == "no info"){
                     findViewById(R.id.button_save_changes).setVisibility(View.INVISIBLE);
                     findViewById(R.id.button_request_to_connect).setVisibility(View.VISIBLE);
+//                    findViewById(R.id.team_info_description)
                 }
                 else{
                     findViewById(R.id.button_request_to_connect).setVisibility(View.INVISIBLE);
