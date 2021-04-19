@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -9,10 +9,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.airsoft.Adapters.TeamAdapter;
 import com.example.airsoft.Classes.TeamClass;
+import com.example.airsoft.R;
+import com.example.airsoft.RecyclerTouchListener;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.example.data.FirebaseData;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -59,6 +64,7 @@ public class SearchTeamActivity extends AppCompatActivity {
 //
         }));
         addToTeamRecycler();
+        addListenerOnButton();
 
     }
     public void searchTeamName(){
@@ -119,6 +125,17 @@ public class SearchTeamActivity extends AppCompatActivity {
 
         searchTeamName();
     }
+    private void addListenerOnButton(){
+        Button myRequests=  findViewById(R.id.my_requests);
+        myRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".MyRequests");
+                startActivity(i);
+            }
+        });
+    }
+
 //    public void addNewMember(View view) {
 //        Intent i = new Intent(".NewMemberActivity");
 //        startActivity(i);

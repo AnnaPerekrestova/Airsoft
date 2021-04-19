@@ -51,14 +51,14 @@ public class LoginActivity extends AppCompatActivity {
         };
         addListenerOnButton();
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        Log.d("state", "onStart    " + FirebaseAuth.getInstance().getUid());
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUILogIn(currentUser);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        Log.d("state", "onStart    " + FirebaseAuth.getInstance().getUid());
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        updateUILogIn(currentUser);
+//    }
 
     public void onStop() {
         super.onStop();

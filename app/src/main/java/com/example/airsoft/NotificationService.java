@@ -15,12 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.data.FirebaseData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class NotificationService extends Service {
@@ -47,7 +49,8 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(LOG_TAG, "onStartCommand");
 
-        someTask();
+        calendarPush();
+        newRequestToConnectTeam();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -68,7 +71,7 @@ public class NotificationService extends Service {
             manager.createNotificationChannel(notificationChannel);
         }
     }
-    private void someTask() {
+    private void calendarPush() {
         Log.d(LOG_TAG, "some_task");
 //---------смотрим на изменения в бд событий в календаре. при появлении нового - вкидываем пуш------------------------
         String userID = FirebaseAuth.getInstance().getUid();
@@ -150,6 +153,79 @@ public class NotificationService extends Service {
 
         });
 
+    }
+    private void newRequestToConnectTeam(){
+        final FirebaseData fbData = new FirebaseData().getInstance();
+        fbData.getTeamKey(new FirebaseData.teamCallback() {
+            @Override
+            public void onTeamIdChanged(String teamKey) {
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("RequestsToConnectTeam");
+                final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(teamKey);
+                databaseQuery.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        if (snapshot.child("Status").getValue().toString().equals("рассматривается")){
+                            fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
+                                @Override
+                                public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal) {
+                                    //------------------создаем объект, который откроет нам активность календаря при нажатии на уведомление--------------------
+//                                    Intent notificationIntent = new Intent(".CalendarActivity");
+//                                    PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,
+//                                            0, notificationIntent,
+//                                            PendingIntent.FLAG_CANCEL_CURRENT);
+
+                                    //---------------создаем менеджер уведомлений-------------------------------------------------------------
+                                    notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                    //---------------создаем конструктор уведомления--------------------------------------------------------------
+                                    NotificationCompat.Builder notificationBuilder =
+                                            new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                                                    .setAutoCancel(false)
+                                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                                    .setWhen(System.currentTimeMillis())
+//                                                    .setContentIntent(contentIntent)
+                                                    .setContentTitle("Запрос на вступление в команду")
+                                                    .setContentText(fio+" хочет вступить в вашу команду")
+                                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                                    createChannelIfNeeded(notificationManager);
+                                    notificationManager.notify(NOTIFY_ID, notificationBuilder.build());
+                                }
+
+                                @Override
+                                public void onOrgInfoChanged(String fio, String birthday) {
+
+                                }
+                            },FirebaseAuth.getInstance().getUid());
+                        }
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onTeamNameChanged(String teamName) {
+
+            }
+        });
     }
 
 

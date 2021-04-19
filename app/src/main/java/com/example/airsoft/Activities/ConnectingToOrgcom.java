@@ -33,15 +33,26 @@ public class ConnectingToOrgcom extends AppCompatActivity {
                         String key = ((EditText)findViewById(R.id.orgcom_key)).getText().toString();
                         //--вносим изменения в бд (присоединяем персон к команде)-----------------------------
                         FirebaseData fbData = new FirebaseData().getInstance();
-                        fbData.setOrgcomKey(key);
-                        //--высвечиваем уведомление о причоединении к команде---------------------------------
+                        fbData.setOrgcomKeyIfExist(new FirebaseData.checkOrgcomExistCallback() {
+                            @Override
+                            public void onOrgcomExistChanged(boolean f, String orgcomName) {
+                                if (f){
+                                    //--высвечиваем уведомление о причоединении к команде---------------------------------
 
-                        Toast.makeText(ConnectingToOrgcom.this, "Вы успешно присоединены к оргкомитету!",
-                                Toast.LENGTH_SHORT).show();
-                        //--уходим на главную активность------------------------------------------------------
-                        Intent i = new Intent(".MainOrgcomActivity");
-                        startActivity(i);
-                        finish();
+                                    Toast.makeText(ConnectingToOrgcom.this, "Вы успешно присоединены к оргкомитету "+ orgcomName+"!",
+                                            Toast.LENGTH_SHORT).show();
+                                    //--уходим на главную активность------------------------------------------------------
+                                    Intent i = new Intent(".MainOrgcomActivity");
+                                    startActivity(i);
+                                    finish();
+                                }
+                                else {
+                                    Toast.makeText(ConnectingToOrgcom.this, "Оргкомитет, соответствующий введенному ключу, отсутствует",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, key);
+
                     }
                 }
 
