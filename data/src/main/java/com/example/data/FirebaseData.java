@@ -360,7 +360,7 @@ public class FirebaseData {
                      String userUID = FirebaseAuth.getInstance().getUid();
 
                      //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
-                     final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+                     final DatabaseReference databaseRef = database.getReference("PersonInfo");
                      DatabaseReference user_person_info = databaseRef.child(userUID);
                      user_person_info.child("TeamKey").setValue(teamKey);
 
@@ -399,7 +399,7 @@ public class FirebaseData {
                     String userId= FirebaseAuth.getInstance().getUid();
 
                     //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
-                    final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+                    final DatabaseReference databaseRef = database.getReference("PersonInfo");
                     DatabaseReference user_person_info = databaseRef.child(userId);
                     user_person_info.child("OrgcomKey").setValue(orgcomKey);
 
@@ -483,7 +483,7 @@ public class FirebaseData {
         String userId= FirebaseAuth.getInstance().getUid();
 
         //----------записываем сгенерированный ключ в соответствующее поле в информацию о пользователе------------------------
-        final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
+        final DatabaseReference databaseRef = database.getReference("PersonInfo");
         DatabaseReference user_person_info = databaseRef.child(userId);
         user_person_info.child("OrgcomKey").setValue(newOrgcomKey);
 
@@ -573,6 +573,9 @@ public class FirebaseData {
         });
     }
     public void requestToConnect(String teamKey){
+        //---проверяем, нет ли уже заявки в эту команду со статусом "рассматривается"---------------------
+
+
         //--------generate random key-------------------------------------------------------------------------
         String newKey = database.getReference("quiz").push().getKey();
         String userUID=FirebaseAuth.getInstance().getUid();
@@ -591,7 +594,7 @@ public class FirebaseData {
     }
 
     public interface myRequestsListCallback{
-        void onMyRequestsListChanged(String userUID,String teamName ,String status);
+        void onMyRequestsListChanged(String requestKey, String userUID,String teamName ,String status);
     }
 
     public void getMyRequest(final myRequestsListCallback callback){
@@ -604,13 +607,14 @@ public class FirebaseData {
                 else
                     {
                         for (DataSnapshot postSnapShot: snapshot.getChildren()) {
+                            final String requestKey = snapshot.getValue().toString();
                             String teamKey = (String) postSnapShot.child("TeamKey").getValue();
                             final String status = (String) postSnapShot.child("Status").getValue();
 
                             getTeamInfo(new teamInfoCallback() {
                                 @Override
                                 public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
-                                    callback.onMyRequestsListChanged(getUserUID(), teamName, status);
+                                    callback.onMyRequestsListChanged(requestKey, getUserUID(), teamName, status);
                                 }
                             }, teamKey);
 
@@ -626,7 +630,7 @@ public class FirebaseData {
     }
 
     public interface requestsToMyTeamListCallback{
-        void onRequestsToMyTeamListChanged(String playerUID,String teamName ,String status);
+        void onRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
     }
 
     public void getRequestRequestsToMyTeam(final requestsToMyTeamListCallback callback) {
@@ -642,6 +646,7 @@ public class FirebaseData {
                         else
                         {
                             for (DataSnapshot postSnapShot: snapshot.getChildren()) {
+                                final String requestKey = postSnapShot.getKey().toString();
                                 String teamKey = (String) postSnapShot.child("TeamKey").getValue();
                                 final String playerUID = (String) postSnapShot.child("UserUID").getValue();
                                 final String status = (String) postSnapShot.child("Status").getValue();
@@ -649,7 +654,7 @@ public class FirebaseData {
                                 getTeamInfo(new teamInfoCallback() {
                                     @Override
                                     public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
-                                        callback.onRequestsToMyTeamListChanged(playerUID, teamName, status);
+                                        callback.onRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
                                     }
                                 }, teamKey);
 
@@ -663,10 +668,74 @@ public class FirebaseData {
                     }
                 });
             }
-
-
             @Override
             public void onTeamNameChanged(String teamName) {
+
+            }
+        });
+    }
+    public interface changeRequestStatusCallback{
+        void onChangeRequestStatus();
+    }
+    public void approveRequest(final changeRequestStatusCallback callback, final String requestKey){
+        //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
+        final DatabaseReference databaseReference = database.getReference("RequestsToConnectTeam");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+                if (snapshot.child(requestKey).getValue() != null) {
+                    DatabaseReference db_status;
+                    db_status = database.getReference("RequestsToConnectTeam/" + requestKey + "/Status");
+                    db_status.setValue("одобрена");
+                //----записываем игроку команду, в которой приняли заявку, остальные заявки этого пользователя удаляем из бд------------
+                    String teamKey =snapshot.child(requestKey).child("TeamKey").getValue().toString();
+                    String playerUID =snapshot.child(requestKey).child("UserUID").getValue().toString();
+
+                    //----------записываем ключ в информацию о пользователе------------------------
+                    DatabaseReference db_teamKey;
+                    db_teamKey = database.getReference("PersonInfo/" + playerUID + "/TeamKey");
+                    db_teamKey.setValue(teamKey);
+
+
+                    DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+                    final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(playerUID);
+                    databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapShot: snapshot.getChildren()){
+                                postSnapShot.getRef().removeValue();
+                                callback.onChangeRequestStatus();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+    }
+    public void dismissRequest(final String requestKey){
+        //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
+        final DatabaseReference databaseReference = database.getReference("RequestsToConnectTeam");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+                if (snapshot.child(requestKey).getValue() != null) {
+                    DatabaseReference db_status;
+                    db_status = database.getReference("RequestsToConnectTeam/" + requestKey + "/Status");
+                    db_status.setValue("отклонена");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

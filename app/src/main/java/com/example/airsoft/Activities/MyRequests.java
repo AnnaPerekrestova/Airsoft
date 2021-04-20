@@ -64,16 +64,16 @@ public class MyRequests extends AppCompatActivity {
     public void addToRecycler(){
         fbData.getMyRequest(new FirebaseData.myRequestsListCallback() {
             @Override
-            public void onMyRequestsListChanged(String userUID, String teamName, String status) {
-                addRow(userUID, teamName, status);
+            public void onMyRequestsListChanged(String requestKey, String userUID, String teamName, String status) {
+                addRow(requestKey, userUID, teamName, status);
             }
-
         });
     }
 
 
-    private void addRow(String userUID,String teamName,String status) {
-        RequestClass request = new RequestClass(userUID,teamName);
+    private void addRow(String requestKey,String userUID,String teamName,String status) {
+        RequestClass request = new RequestClass(requestKey);
+        request.setRequestKey(requestKey);
         request.setStatus(status);
         request.setTeamName(teamName);
         request.setUserUID(userUID);

@@ -1,11 +1,10 @@
 package com.example.airsoft.Classes;
 
 public class RequestClass {
-    private String playerFIO, userUID, teamName, status;
+    private String requestKey, playerFIO, userUID, teamName, status;
 
-    public RequestClass(String playerFIO, String userUID) {
-        this.playerFIO=playerFIO;
-        this.userUID = userUID;
+    public RequestClass(String requestKey) {
+        this.requestKey=requestKey;
 
     }
     public String getPlayerFIO(){return playerFIO;}
@@ -20,4 +19,7 @@ public class RequestClass {
     public String getStatus(){return status;}
     public void setStatus(String status){this.status=status;}
 
+    public String getRequestKey() {return requestKey;}
+
+    public void setRequestKey(String requestKey) {this.requestKey = requestKey;}
 }

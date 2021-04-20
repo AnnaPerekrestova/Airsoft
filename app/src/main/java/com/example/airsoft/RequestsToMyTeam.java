@@ -58,18 +58,20 @@ public class RequestsToMyTeam extends AppCompatActivity {
     public void addToRecycler(){
         fbData.getRequestRequestsToMyTeam(new FirebaseData.requestsToMyTeamListCallback() {
             @Override
-            public void onRequestsToMyTeamListChanged(String playerUID, String teamName, String status) {
-                addRow(playerUID, teamName, status);
+            public void onRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+                addRow(requestKey, playerUID, teamName, status);
             }
+
         });
     }
 
 
-    private void addRow(final String playerUID, final String teamName, final String status) {
+    private void addRow(final String requestKey, final String playerUID, final String teamName, final String status) {
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
             @Override
             public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal) {
-                RequestClass request = new RequestClass(playerUID,teamName);
+                RequestClass request = new RequestClass(requestKey);
+                request.setRequestKey(requestKey);
                 request.setStatus(status);
                 request.setTeamName(teamName);
                 request.setUserUID(playerUID);

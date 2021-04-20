@@ -1,20 +1,25 @@
 package com.example.airsoft.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.airsoft.Activities.TeamInfoActivity;
 import com.example.airsoft.Classes.RequestClass;
 import com.example.airsoft.R;
+import com.example.data.FirebaseData;
 
 import java.util.List;
 
 public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTeamAdapter.MyViewHolder> {
     private List<RequestClass> requestsList;
+    FirebaseData fbData = new FirebaseData().getInstance();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView playerFIO, status;
@@ -32,6 +37,7 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
 
     public RequestsToMyTeamAdapter(List<RequestClass> requestsList) {
         this.requestsList = requestsList;
+
     }
 
     @Override
@@ -48,10 +54,51 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
         holder.playerFIO.setText(request.getPlayerFIO());
         holder.status.setText(request.getStatus());
 
+        checkData(holder,request);
+        addListenerOnButton(holder,request);
     }
 
     @Override
     public int getItemCount() {
         return requestsList.size();
     }
+
+    private void checkData(RequestsToMyTeamAdapter.MyViewHolder holder, RequestClass request){
+        if (request.getStatus().equals("рассматривается")){
+            holder.status.setVisibility(View.INVISIBLE);
+            holder.approve.setVisibility(View.VISIBLE);
+            holder.dismiss.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.approve.setVisibility(View.INVISIBLE);
+            holder.dismiss.setVisibility(View.INVISIBLE);
+            holder.status.setVisibility(View.VISIBLE);
+        }
+    }
+    private void addListenerOnButton(final RequestsToMyTeamAdapter.MyViewHolder holder, final RequestClass request){
+       holder.approve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                request.setStatus("одобрена");
+                fbData.approveRequest(new FirebaseData.changeRequestStatusCallback() {
+                    @Override
+                    public void onChangeRequestStatus() {
+                        notifyDataSetChanged();
+                    }
+                }, request.getRequestKey());
+
+                notifyDataSetChanged();
+
+            }
+        });
+       holder.dismiss.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               request.setStatus("отклонена");
+               fbData.dismissRequest(request.getRequestKey());
+                notifyDataSetChanged();
+           }
+       });
+    }
+
 }
