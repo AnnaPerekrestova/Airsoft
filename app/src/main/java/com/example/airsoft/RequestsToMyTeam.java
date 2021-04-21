@@ -54,6 +54,7 @@ public class RequestsToMyTeam extends AppCompatActivity {
             }
         }));
         addToRecycler();
+        updateRecycler();
     }
     public void addToRecycler(){
         fbData.getRequestRequestsToMyTeam(new FirebaseData.requestsToMyTeamListCallback() {
@@ -62,6 +63,17 @@ public class RequestsToMyTeam extends AppCompatActivity {
                 addRow(requestKey, playerUID, teamName, status);
             }
 
+        });
+    }
+    public void updateRecycler(){
+
+        fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
+
+            @Override
+            public void onRequestsToMyTeamListChanged() {
+                finish();
+                startActivity(getIntent());
+            }
         });
     }
 
@@ -88,4 +100,5 @@ public class RequestsToMyTeam extends AppCompatActivity {
         },playerUID);
 
     }
+
 }

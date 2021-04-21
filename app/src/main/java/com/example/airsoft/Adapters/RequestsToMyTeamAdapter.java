@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.airsoft.Activities.TeamInfoActivity;
 import com.example.airsoft.Classes.RequestClass;
 import com.example.airsoft.R;
+import com.example.airsoft.RequestsToMyTeam;
 import com.example.data.FirebaseData;
 
 import java.util.List;
@@ -79,26 +80,35 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
        holder.approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                request.setStatus("одобрена");
+
                 fbData.approveRequest(new FirebaseData.changeRequestStatusCallback() {
                     @Override
-                    public void onChangeRequestStatus() {
-                        notifyDataSetChanged();
+                    public void onChangeRequestStatus(boolean f) {
+                        if (f){
+                            request.setStatus("одобрена");
+                        }
                     }
+
                 }, request.getRequestKey());
 
-                notifyDataSetChanged();
+
 
             }
         });
        holder.dismiss.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               request.setStatus("отклонена");
-               fbData.dismissRequest(request.getRequestKey());
-                notifyDataSetChanged();
+
+               fbData.dismissRequest(new FirebaseData.changeRequestStatusCallback() {
+                   @Override
+                   public void onChangeRequestStatus(boolean f) {
+                       request.setStatus("отклонена");
+                   }
+               },request.getRequestKey());
+
            }
        });
     }
+
 
 }

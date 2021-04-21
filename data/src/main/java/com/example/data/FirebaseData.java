@@ -5,8 +5,10 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +50,9 @@ public class FirebaseData {
             }
             return instance;
         }
+    }
+
+    public void dismissRequest(String requestKey) {
     }
 
     //------------------------------------------------------------------------------------------------------
@@ -639,13 +644,12 @@ public class FirebaseData {
             @Override
             public void onTeamIdChanged(String teamKey) {
                 final Query databaseQuery = databaseRef.orderByChild("TeamKey").equalTo(teamKey);
-                databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseQuery.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot == null) return;
-                        else
-                        {
-                            for (DataSnapshot postSnapShot: snapshot.getChildren()) {
+                        else {
+                            for (DataSnapshot postSnapShot : snapshot.getChildren()) {
                                 final String requestKey = postSnapShot.getKey().toString();
                                 String teamKey = (String) postSnapShot.child("TeamKey").getValue();
                                 final String playerUID = (String) postSnapShot.child("UserUID").getValue();
@@ -674,8 +678,49 @@ public class FirebaseData {
             }
         });
     }
+    public interface requestsToMyTeamListIfChangedCallback{
+        void onRequestsToMyTeamListChanged();
+    }
+    public void getRequestRequestsToMyTeamIfChanged(final requestsToMyTeamListIfChangedCallback callback) {
+        final DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+        getTeamKey(new teamCallback() {
+            @Override
+            public void onTeamIdChanged(String teamKey) {
+                final Query databaseQuery = databaseRef.orderByChild("TeamKey").equalTo(teamKey);
+                databaseQuery.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                       callback.onRequestsToMyTeamListChanged();
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        callback.onRequestsToMyTeamListChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+            @Override
+            public void onTeamNameChanged(String teamName) {
+
+            }
+        });
+    }
+
     public interface changeRequestStatusCallback{
-        void onChangeRequestStatus();
+        void onChangeRequestStatus(boolean f);
     }
     public void approveRequest(final changeRequestStatusCallback callback, final String requestKey){
         //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
@@ -696,22 +741,27 @@ public class FirebaseData {
                     DatabaseReference db_teamKey;
                     db_teamKey = database.getReference("PersonInfo/" + playerUID + "/TeamKey");
                     db_teamKey.setValue(teamKey);
+                    callback.onChangeRequestStatus(true);
 
 
-                    DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
-                    final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(playerUID);
-                    databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                                postSnapShot.getRef().removeValue();
-                                callback.onChangeRequestStatus();
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {}
-                    });
+//-------------------удаление всех заявок пользователя, которого приняла в команду---------------------------
+//                    DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+//                    final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(playerUID);
+//                    databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            for (DataSnapshot postSnapShot: snapshot.getChildren()){
+//                                postSnapShot.getRef().removeValue();
+//                                callback.onChangeRequestStatus(true);
+//                            }
+//                        }
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {}
+//                    });
+                }else {
+                    callback.onChangeRequestStatus(false);
                 }
             }
 
@@ -720,7 +770,7 @@ public class FirebaseData {
         });
 
     }
-    public void dismissRequest(final String requestKey){
+    public void dismissRequest(final changeRequestStatusCallback callback,final String requestKey){
         //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
         final DatabaseReference databaseReference = database.getReference("RequestsToConnectTeam");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -731,6 +781,9 @@ public class FirebaseData {
                     DatabaseReference db_status;
                     db_status = database.getReference("RequestsToConnectTeam/" + requestKey + "/Status");
                     db_status.setValue("отклонена");
+                    callback.onChangeRequestStatus(true);
+                }else{
+                    callback.onChangeRequestStatus(false);
                 }
             }
 
