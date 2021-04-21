@@ -13,7 +13,8 @@
         android:adjustViewBounds="true"
         android:alpha="0.8"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/multicam" />
+        app:srcCompat="@drawable/multicam"
+        android:contentDescription="@string/backgroundPic"/>
 
     <ImageButton
         android:id="@+id/delog"

@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".SearchTeamActivity">
 
+
+    <ImageView
+        android:id="@+id/background_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        style="@style/background_multicam"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/multicam"
+        android:contentDescription="@string/backgroundPic"/>
+
     <SearchView
         android:id="@+id/searchTeamName"
         android:layout_width="342dp"

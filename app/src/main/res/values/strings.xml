@@ -53,4 +53,6 @@
     <string name="Games">Список игр</string>
     <string name="e_mail">E-mail</string>
     <string name="password">password</string>
+    <string name="backgroundPic">Фон приложения</string>
+    <string name="contacts">Контакты</string>
 </resources>
