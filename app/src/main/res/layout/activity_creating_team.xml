@@ -86,20 +86,16 @@
                 android:textColor="@color/black"
                 tools:ignore="Autofill,LabelFor" />
 
-            <TextView
+            <EditText
                 android:id="@+id/team_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                android:background="?attr/editTextBackground"
                 android:ems="10"
                 android:gravity="start|top"
-                android:text=""
                 android:hint="Дата основания команды"
-                android:padding="15dp"
-                android:textAppearance="?android:attr/textAppearanceMediumInverse"
-                android:textColor="?attr/editTextColor" />
+                android:padding="15dp" />
 
 
             <Button

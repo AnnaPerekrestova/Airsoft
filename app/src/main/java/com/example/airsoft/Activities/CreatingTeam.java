@@ -24,43 +24,10 @@ public class CreatingTeam extends AppCompatActivity {
         setContentView(R.layout.activity_creating_team);
         addListenerOnButton();
 
-        findViewById(R.id.team_year).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callDatePicker();
-            }
-        });
 
     }
 
-    public void callDatePicker() {
-        // инициализируем диалог выбора даты текущими значениями
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String day = "";
-                        String month = "";
-                        if (dayOfMonth<10) {
-                            day="0"+dayOfMonth;
-                        }
-                        else {
-                            day=""+dayOfMonth;
-                        }
-                        if (monthOfYear<9) {
-                            monthOfYear += 1;
-                            month="0"+monthOfYear;
-                        }
-                        else {
-                            monthOfYear += 1;
-                            month=""+monthOfYear;
-                        }
-                        String editTextDateParam = day + "." + month + "." + year;
-                        ((TextView) findViewById(R.id.team_year)).setText(editTextDateParam);
-                    }
-                }, 2020, 0, 1);
-        datePickerDialog.show();
-    }
+
 
 
 

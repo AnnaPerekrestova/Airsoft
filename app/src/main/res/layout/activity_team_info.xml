@@ -101,6 +101,7 @@
                         app:layout_constraintStart_toStartOf="parent"/>
 
                     <Button
+                        style="@style/buttonStyleBorderSand"
                         android:id="@+id/requests_to_my_team_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
