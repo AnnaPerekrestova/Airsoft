@@ -13,7 +13,8 @@
         android:adjustViewBounds="true"
         style="@style/background_multicam"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/multicam" />
+        app:srcCompat="@drawable/multicam"
+        android:contentDescription="@string/backgroundPic"/>
 
 
     <LinearLayout

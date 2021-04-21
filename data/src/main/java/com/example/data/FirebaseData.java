@@ -83,7 +83,7 @@ public class FirebaseData {
     }
 
     public interface personInfoCallback{
-        void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal);
+        void onPlayerInfoChanged(String fio, String nickname, String birthday, String contacts, String arsenal);
         void onOrgInfoChanged(String fio, String birthday);
     }
 
@@ -429,11 +429,11 @@ public class FirebaseData {
 
     }
 
-    public void creatingPlayer(String fio, String nickname, String birthday, String position, String arsenal, boolean orgFlag){
+    public void creatingPlayer(String fio, String nickname, String birthday, String contacts, String arsenal, boolean orgFlag){
         String personUID = FirebaseAuth.getInstance().getUid();
 
         DatabaseReference db_personFIO;
-        DatabaseReference db_personPosition;
+        DatabaseReference db_personContacts;
         DatabaseReference db_personArsenal;
         DatabaseReference db_personBirthday;
         DatabaseReference db_personNickname;
@@ -442,14 +442,14 @@ public class FirebaseData {
         db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
         db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
         db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
-        db_personPosition = database.getReference("PersonInfo/"+personUID+"/Position");
+        db_personContacts = database.getReference("PersonInfo/"+personUID+"/Contacts");
         db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
         db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
 
         db_personFIO.setValue(fio);
         db_personNickname.setValue(nickname);
         db_personBirthday.setValue(birthday);
-        db_personPosition.setValue(position);
+        db_personContacts.setValue(contacts);
         db_personArsenal.setValue(arsenal);
         db_personOrg.setValue(orgFlag);
     }
@@ -539,10 +539,10 @@ public class FirebaseData {
                 if ((boolean)dataSnapshotInfo.child("OrgFlag").getValue()== false){
                     String fio = (String) dataSnapshotInfo.child("FIO").getValue();
                     String arsenal = (String) dataSnapshotInfo.child("Arsenal").getValue();
-                    String position = (String) dataSnapshotInfo.child("Position").getValue();
+                    String contacts = (String) dataSnapshotInfo.child("Contacts").getValue();
                     String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
                     String nickname = (String) dataSnapshotInfo.child("Nickname").getValue();
-                    callback.onPlayerInfoChanged(fio,nickname,birthday,position,arsenal);
+                    callback.onPlayerInfoChanged(fio,nickname,birthday,contacts,arsenal);
 
                 }
 

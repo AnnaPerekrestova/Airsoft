@@ -35,8 +35,8 @@ public class PlayerInfo extends AppCompatActivity {
         FirebaseData fbData = new FirebaseData().getInstance();
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
             @Override
-            public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal) {
-                fillPlayerInfo(fio, birthday,nickname, position, arsenal);
+            public void onPlayerInfoChanged(String fio, String nickname, String birthday, String contacts, String arsenal) {
+                fillPlayerInfo(fio, birthday,nickname, contacts, arsenal);
             }
 
             @Override
@@ -48,17 +48,17 @@ public class PlayerInfo extends AppCompatActivity {
     }
 //--------заполняем элементы активности-----------------------------------
     @SuppressLint("SetTextI18n")
-    private void fillPlayerInfo(String fio, String birthday, String nickname, String pos, String ars) {
+    private void fillPlayerInfo(String fio, String birthday, String nickname, String contacts, String ars) {
         txt_fio = (TextView) findViewById(R.id.member_fio);
         txt_birthday = (TextView) findViewById(R.id.member_birthday);
         txt_nickname = (TextView) findViewById(R.id.member_nickname);
-        txt_position = (TextView) findViewById(R.id.member_position);
+        txt_position = (TextView) findViewById(R.id.member_contacts);
         txt_arsenal = (TextView) findViewById(R.id.member_arsenal);
 
         txt_fio.setText("ФИО: " + fio);
         txt_birthday.setText("День рождения: "+birthday);
         txt_nickname.setText("Позывной: "+nickname);
-        txt_position.setText("Должность: " + pos);
+        txt_position.setText("Контакты: " + contacts);
         txt_arsenal.setText("Снаряжение: "+ars);
 
     }

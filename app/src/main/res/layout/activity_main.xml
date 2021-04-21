@@ -15,7 +15,10 @@
         android:adjustViewBounds="true"
         android:alpha="0.8"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/multicam" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/multicam"
+        android:contentDescription="@string/backgroundPic" />
 
     <ImageButton
         android:id="@+id/delog"
@@ -24,7 +27,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_set_as" />
+        app:srcCompat="@android:drawable/ic_menu_set_as"
+        android:contentDescription="Выйти из аккаунта" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,7 +62,6 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
 
-                android:onClick="team_name_click"
                 android:text="название команды"
                 android:textAlignment="center"
                 android:textColor="@color/black"
