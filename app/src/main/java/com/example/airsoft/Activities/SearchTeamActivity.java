@@ -65,6 +65,7 @@ public class SearchTeamActivity extends AppCompatActivity {
         }));
         addToTeamRecycler();
         addListenerOnButton();
+        onRequestApprove();
 
     }
     public void searchTeamName(){
@@ -132,6 +133,18 @@ public class SearchTeamActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(".MyRequests");
                 startActivity(i);
+            }
+        });
+    }
+    private void onRequestApprove(){
+        //---если появилась одобренная заявка - открываем mainAct------------------
+        fbData.onRequestApprove(new FirebaseData.onRequestApproveCallback() {
+
+            @Override
+            public void onRequestApprove() {
+                Intent i = new Intent(".MainActivity");
+                startActivity(i);
+                finish();
             }
         });
     }

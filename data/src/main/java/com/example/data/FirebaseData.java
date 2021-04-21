@@ -531,12 +531,12 @@ public class FirebaseData {
             public void onDataChange(DataSnapshot dataSnapshotInfo) {
 
                 if (dataSnapshotInfo == null) return;
-                if ((boolean)dataSnapshotInfo.child("OrgFlag").getValue()== true){
+                if ((boolean) dataSnapshotInfo.child("OrgFlag").getValue()){
                     String fio = (String) dataSnapshotInfo.child("FIO").getValue();
                     String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
                     callback.onOrgInfoChanged(fio,birthday);
                 }
-                if ((boolean)dataSnapshotInfo.child("OrgFlag").getValue()== false){
+                if (!((boolean) dataSnapshotInfo.child("OrgFlag").getValue())){
                     String fio = (String) dataSnapshotInfo.child("FIO").getValue();
                     String arsenal = (String) dataSnapshotInfo.child("Arsenal").getValue();
                     String contacts = (String) dataSnapshotInfo.child("Contacts").getValue();
@@ -547,9 +547,6 @@ public class FirebaseData {
                 }
 
             }
-
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Error
@@ -815,6 +812,41 @@ public class FirebaseData {
                 }else{
                     callback.onChangeRequestStatus(false);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public interface onRequestApproveCallback{
+        void onRequestApprove();
+    }
+    public void onRequestApprove(final onRequestApproveCallback callback){
+        final DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+
+        final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(getUserUID());
+        databaseQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.child("Status").getValue()!=null) {
+                    if (snapshot.child("Status").getValue().toString().equals("одобрена")){
+                    callback.onRequestApprove();}
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override

@@ -30,6 +30,7 @@ public class TeamInfoActivity extends AppCompatActivity {
         getData(teamKey);
         memberOfTeamChecker();
         addListenerOnButton(teamKey);
+        onRequestApprove();
     }
 
     private void memberOfTeamChecker() {
@@ -101,5 +102,16 @@ public class TeamInfoActivity extends AppCompatActivity {
         });
     }
 
+    private void onRequestApprove(){
+        //---если появилась одобренная заявка - открываем mainAct------------------
+        fbData.onRequestApprove(new FirebaseData.onRequestApproveCallback() {
 
+            @Override
+            public void onRequestApprove() {
+                Intent i = new Intent(".MainActivity");
+                startActivity(i);
+                finish();
+            }
+        });
+    }
 }
