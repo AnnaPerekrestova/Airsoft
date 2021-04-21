@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchTeamActivity">
+    tools:context=".Activities.SearchTeamActivity">
 
 
     <ImageView
@@ -41,10 +41,18 @@
 
         android:id="@+id/teams_list_recycler"
         layout="@layout/content_games_recycler"
-        android:layout_width="379dp"
-        android:layout_height="524dp"
+        android:layout_width="360dp"
+        android:layout_height="382dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTeamCity" />
+
+    <Button
+        android:id="@+id/my_requests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Мои заявки"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teams_list_recycler" />
 </androidx.constraintlayout.widget.ConstraintLayout>

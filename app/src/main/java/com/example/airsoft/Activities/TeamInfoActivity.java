@@ -1,17 +1,16 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-
-import java.util.List;
 
 public class TeamInfoActivity extends AppCompatActivity {
 
@@ -30,9 +29,10 @@ public class TeamInfoActivity extends AppCompatActivity {
 
         getData(teamKey);
         memberOfTeamChecker();
+        addListenerOnButton(teamKey);
     }
 
-    public void memberOfTeamChecker() {
+    private void memberOfTeamChecker() {
         fbData.getTeamKey(new FirebaseData.teamCallback() {
             @Override
             public void onTeamIdChanged(String teamKey) {
@@ -55,7 +55,7 @@ public class TeamInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void getData(String teamKey){
+    private void getData(String teamKey){
         fbData.getTeamInfo(new FirebaseData.teamInfoCallback()  {
             @Override
             public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
@@ -64,6 +64,26 @@ public class TeamInfoActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.team_info_city)).setText("Город команды: "+teamCity);
             }
         },teamKey);
+    }
+    private void addListenerOnButton(final String teamKey){
+        Button requestToConnect =  findViewById(R.id.button_request_to_connect);
+        Button requestsToMyTeam =  findViewById(R.id.requests_to_my_team_button);
+        requestToConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fbData.requestToConnect(teamKey);
+                Toast.makeText(TeamInfoActivity.this, "Ваша заявка на вступление в команду отправлена!",
+                        Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        requestsToMyTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".RequestsToMyTeam");
+                startActivity(i);
+            }
+        });
     }
 
 
