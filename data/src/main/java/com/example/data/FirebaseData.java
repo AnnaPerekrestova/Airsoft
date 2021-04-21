@@ -3,6 +3,7 @@ package com.example.data;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -577,10 +578,39 @@ public class FirebaseData {
             }
         });
     }
-    public void requestToConnect(String teamKey){
+
+    public interface checkPersonsRequestsCallback{
+        void onPersonRequestsResultChanged(boolean res);
+    }
+    public void checkPersonRequests(final checkPersonsRequestsCallback callback, final String teamKey) {
+        final boolean[] f = {false};
         //---проверяем, нет ли уже заявки в эту команду со статусом "рассматривается"---------------------
+        DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+        final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(getUserUID());
+        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) return;
+                else {
+                    for (DataSnapshot postSnapShot : snapshot.getChildren()) {
+                        if (postSnapShot.child("TeamKey").getValue().toString().equals(teamKey)){
+                            if (postSnapShot.child("Status").getValue().toString().equals("рассматривается")) {
+                                f[0] = true;
+                            }
+                        }
+                    }
+                }
+                callback.onPersonRequestsResultChanged(f[0]);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    public void requestToConnect(String teamKey){
         //--------generate random key-------------------------------------------------------------------------
         String newKey = database.getReference("quiz").push().getKey();
         String userUID=FirebaseAuth.getInstance().getUid();
@@ -595,8 +625,8 @@ public class FirebaseData {
         db_userUID.setValue(userUID);
         db_teamKey.setValue(teamKey);
         db_status.setValue("рассматривается");
-
     }
+
 
     public interface myRequestsListCallback{
         void onMyRequestsListChanged(String requestKey, String userUID,String teamName ,String status);

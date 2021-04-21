@@ -71,10 +71,22 @@ public class TeamInfoActivity extends AppCompatActivity {
         requestToConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fbData.requestToConnect(teamKey);
-                Toast.makeText(TeamInfoActivity.this, "Ваша заявка на вступление в команду отправлена!",
-                        Toast.LENGTH_SHORT).show();
-                finish();
+                fbData.checkPersonRequests(new FirebaseData.checkPersonsRequestsCallback() {
+                    @Override
+                    public void onPersonRequestsResultChanged(boolean res) {
+                        if (res){
+                            Toast.makeText(TeamInfoActivity.this,  "Ваша заявка в эту команду уже рассматривается",
+                                    Toast.LENGTH_SHORT).show();
+                        }else{
+                            fbData.requestToConnect(teamKey);
+                            Toast.makeText(TeamInfoActivity.this, "Ваша заявка на вступление в команду отправлена!",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                }, teamKey);
+
+
             }
         });
         requestsToMyTeam.setOnClickListener(new View.OnClickListener() {
