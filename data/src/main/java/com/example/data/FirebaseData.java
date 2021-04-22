@@ -705,7 +705,8 @@ public class FirebaseData {
 
 
     public interface requestsToMyTeamListCallback{
-        void onRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
+        void onAllRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
+        void onFilteredRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
     }
 
     public void getRequestRequestsToMyTeam(final requestsToMyTeamListCallback callback) {
@@ -728,7 +729,10 @@ public class FirebaseData {
                                 getTeamInfo(new teamInfoCallback() {
                                     @Override
                                     public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
-                                        callback.onRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
+                                        callback.onAllRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
+                                        if (status.equals("рассматривается")){
+                                            callback.onFilteredRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
+                                        }
                                     }
                                 }, teamKey);
 

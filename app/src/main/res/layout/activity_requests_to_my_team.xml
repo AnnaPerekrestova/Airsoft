@@ -4,13 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RequestsToMyTeam">
+    tools:context=".Activities.RequestsToMyTeam">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/requests_to_my_team_recycler"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        tools:ignore="MissingConstraints"  />
+        android:layout_width="410dp"
+        android:layout_height="655dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/onlyRassm"
+        tools:ignore="MissingConstraints" />
+
+    <Switch
+        android:id="@+id/onlyRassm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:text="Отобразить только не рассмотреные заявки"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

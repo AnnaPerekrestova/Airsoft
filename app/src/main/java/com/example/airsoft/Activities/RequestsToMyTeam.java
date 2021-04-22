@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -8,11 +8,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.example.airsoft.Adapters.MyRequestsAdapter;
 import com.example.airsoft.Adapters.RequestsToMyTeamAdapter;
 import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.Classes.RequestClass;
+import com.example.airsoft.R;
+import com.example.airsoft.RecyclerTouchListener;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.example.data.FirebaseData;
 
 import java.util.ArrayList;
@@ -55,16 +60,54 @@ public class RequestsToMyTeam extends AppCompatActivity {
 
             }
         }));
-        addToRecycler();
+        addAllToRecycler();
         updateRecycler();
+        addSwitchListener();
     }
-    public void addToRecycler(){
+
+    private void addSwitchListener() {
+        Switch mySwitch = findViewById(R.id.onlyRassm);
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    requestsToMyTeamList.clear();
+                    addFilteredToRecycler();
+                    requestsToMyTeamAdapter.notifyDataSetChanged();
+                }
+                else{
+                    requestsToMyTeamList.clear();
+                    addAllToRecycler();
+                    requestsToMyTeamAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+    public void addFilteredToRecycler(){
         fbData.getRequestRequestsToMyTeam(new FirebaseData.requestsToMyTeamListCallback() {
             @Override
-            public void onRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+            }
+
+            @Override
+            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+                addRow(requestKey, playerUID, teamName, status);
+            }
+        });
+    }
+
+    public void addAllToRecycler(){
+        fbData.getRequestRequestsToMyTeam(new FirebaseData.requestsToMyTeamListCallback() {
+            @Override
+            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
                 addRow(requestKey, playerUID, teamName, status);
             }
 
+            @Override
+            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+
+            }
         });
     }
     public void updateRecycler(){
