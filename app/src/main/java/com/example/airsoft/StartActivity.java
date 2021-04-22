@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.airsoft.Activities.MainActivity;
 import com.example.data.FirebaseData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +21,8 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -49,6 +52,9 @@ public class StartActivity extends AppCompatActivity {
     }
     private void updateUILogIn(FirebaseUser user) {
         if (user != null) {
+            //-----Запускаем сервис для уведомлений------------------------------------------------------------
+            startService(new Intent(StartActivity.this, NotificationService.class));
+
             final FirebaseData fbData = new FirebaseData().getInstance();
             fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
                 @Override

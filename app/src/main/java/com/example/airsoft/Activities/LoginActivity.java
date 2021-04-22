@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.airsoft.NotificationService;
 import com.example.airsoft.R;
+import com.example.airsoft.StartActivity;
 import com.example.data.FirebaseData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -160,6 +162,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUILogIn(FirebaseUser user) {
         if (user != null) {
+            //-----Запускаем сервис для уведомлений------------------------------------------------------------
+            startService(new Intent(LoginActivity.this, NotificationService.class));
+
             final FirebaseData fbData = new FirebaseData().getInstance();
             fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
                 @Override

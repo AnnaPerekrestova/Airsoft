@@ -60,12 +60,39 @@ public class MyRequests extends AppCompatActivity {
             }
         }));
         addToRecycler();
+        updateRecycler();
+        onRequestApprove();
+    }
+    public void updateRecycler(){
+
+        fbData.getMyRequestsIfChanged(new FirebaseData.myRequestsListIfChangedCallback() {
+
+            @Override
+            public void onMyRequestsListChanged() {
+                finish();
+                startActivity(getIntent());
+                finish();
+            }
+
+        });
     }
     public void addToRecycler(){
         fbData.getMyRequest(new FirebaseData.myRequestsListCallback() {
             @Override
             public void onMyRequestsListChanged(String requestKey, String userUID, String teamName, String status) {
                 addRow(requestKey, userUID, teamName, status);
+            }
+        });
+    }
+    private void onRequestApprove(){
+        //---если появилась одобренная заявка - открываем mainAct------------------
+        fbData.onRequestApprove(new FirebaseData.onRequestApproveCallback() {
+
+            @Override
+            public void onRequestApprove() {
+                Intent i = new Intent(".MainActivity");
+                startActivity(i);
+                finish();
             }
         });
     }

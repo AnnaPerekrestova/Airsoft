@@ -639,7 +639,7 @@ public class FirebaseData {
                 else
                     {
                         for (DataSnapshot postSnapShot: snapshot.getChildren()) {
-                            final String requestKey = snapshot.getValue().toString();
+                            final String requestKey = postSnapShot.getKey().toString();
                             String teamKey = (String) postSnapShot.child("TeamKey").getValue();
                             final String status = (String) postSnapShot.child("Status").getValue();
 
@@ -660,6 +660,49 @@ public class FirebaseData {
             }
         });
     }
+
+    public interface myRequestsListIfChangedCallback{
+        void onMyRequestsListChanged();
+    }
+    public void getMyRequestsIfChanged(final myRequestsListIfChangedCallback callback) {
+        final DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+        getTeamKey(new teamCallback() {
+            @Override
+            public void onTeamIdChanged(String teamKey) {
+                final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(getUserUID());
+                databaseQuery.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        callback.onMyRequestsListChanged();
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        callback.onMyRequestsListChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+            @Override
+            public void onTeamNameChanged(String teamName) {
+
+            }
+        });
+    }
+
+
 
     public interface requestsToMyTeamListCallback{
         void onRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
@@ -854,5 +897,9 @@ public class FirebaseData {
 
             }
         });
+    }
+    public void cancelRequest(String requestKey){
+        DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
+        databaseRef.child(requestKey).getRef().removeValue();
     }
 }

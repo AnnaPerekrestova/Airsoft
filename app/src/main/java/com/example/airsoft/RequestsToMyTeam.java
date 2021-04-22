@@ -5,11 +5,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.airsoft.Adapters.MyRequestsAdapter;
 import com.example.airsoft.Adapters.RequestsToMyTeamAdapter;
+import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.Classes.RequestClass;
 import com.example.data.FirebaseData;
 
@@ -38,14 +40,14 @@ public class RequestsToMyTeam extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                RequestClass selectedRequest = myRequestsList.get(position);
-////                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
-//
-//                String teamKey = (String) selectedTeam.getTeamKey();
-////                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(".TeamInfoActivity");
-//                intent.putExtra("teamKey", teamKey);
-//                startActivity(intent);
+                RequestClass selectedMember = requestsToMyTeamList.get(position);
+//                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
+
+                String personUID = (String) selectedMember.getUserUID();
+//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(".PlayerInfo");
+                intent.putExtra("playerID", personUID);
+                startActivity(intent);
             }
 
             @Override
