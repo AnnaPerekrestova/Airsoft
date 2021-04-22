@@ -24,11 +24,14 @@ public class CreatingTeam extends AppCompatActivity {
         setContentView(R.layout.activity_creating_team);
         addListenerOnButton();
 
-
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(".ConnectingToTeam");
+        finish();
+        startActivity(i);
+    }
     public static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);

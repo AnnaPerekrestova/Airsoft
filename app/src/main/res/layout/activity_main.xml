@@ -5,30 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@drawable/multicam_alpha08"
     tools:context=".Activities.MainActivity">
 
-
-    <ImageView
-        android:id="@+id/background_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:alpha="0.8"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/multicam"
-        android:contentDescription="@string/backgroundPic" />
 
     <ImageButton
         android:id="@+id/delog"
         style="@style/buttonStyleBorderSand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_set_as"
         android:contentDescription="Выйти из аккаунта" />
+
+    <ImageButton
+        android:id="@+id/my_info"
+        style="@style/buttonStyleBorderSand"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="Информация обо мне"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?android:attr/fingerprintAuthDrawable" />
 
     <LinearLayout
         android:layout_width="match_parent"

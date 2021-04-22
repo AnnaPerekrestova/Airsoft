@@ -4,17 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/multicam"
     tools:context=".Activities.LoginActivity">
-
-    <ImageView
-        android:id="@+id/background_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        style="@style/background_multicam"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/multicam"
-        android:contentDescription="@string/backgroundPic" />
 
     <LinearLayout
         android:layout_width="match_parent"

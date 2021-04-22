@@ -5,17 +5,10 @@
     android:scrollbars="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/multicam"
     tools:context=".Activities.NewGameRecyclerActivity">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        style="@style/background_multicam"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/multicam"
-        android:contentDescription="@string/backgroundPic"/>
+
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"

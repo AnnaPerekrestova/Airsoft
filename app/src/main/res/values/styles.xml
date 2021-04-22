@@ -25,8 +25,7 @@
         <item name="android:background">@color/colorYellow</item>
     </style>
 
-    <style name="background_multicam">
-        <item name="android:alpha">0.4</item>
-
+    <style name="multicam">
+        <item name="android:background">@drawable/multicam_alpha04</item>
     </style>
 </resources>

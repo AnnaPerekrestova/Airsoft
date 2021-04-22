@@ -68,6 +68,14 @@ public class SearchTeamActivity extends AppCompatActivity {
         onRequestApprove();
 
     }
+//------Обрабатываем нажатие кнопки назад на устройстве---------
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(".ConnectingToTeam");
+        finish();
+        startActivity(i);
+    }
+
     public void searchTeamName(){
         SearchView searchTeamName = findViewById(R.id.searchTeamName);
         searchTeamName.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

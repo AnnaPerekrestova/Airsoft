@@ -12,11 +12,13 @@ import com.example.data.FirebaseData;
 
 public class PlayerInfo extends AppCompatActivity {
 
+    FirebaseData fbData = new FirebaseData().getInstance();
     TextView txt_birthday;
     TextView txt_fio;
     TextView txt_arsenal;
     TextView txt_position;
     TextView txt_nickname;
+    TextView txt_team;
     String personUID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,18 @@ public class PlayerInfo extends AppCompatActivity {
 //-----Мполучаем информацию об игроке из БД и заполняем ею элементы----------------------------------------------------
     private void getMemberInfo() {
         //заполняем элементы активности
-        FirebaseData fbData = new FirebaseData().getInstance();
+
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
             @Override
-            public void onPlayerInfoChanged(String fio, String nickname, String birthday, String contacts, String arsenal) {
-                fillPlayerInfo(fio, birthday,nickname, contacts, arsenal);
+            public void onPlayerInfoChanged(final String fio, final String nickname, final String birthday, final String contacts, final String arsenal, String teamKey) {
+
+                fbData.getTeamInfo(new FirebaseData.teamInfoCallback() {
+                    @Override
+                    public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
+                        fillPlayerInfo(fio, birthday,nickname, contacts, arsenal, teamName);
+                    }
+                }, teamKey);
+
             }
 
             @Override
@@ -45,21 +54,25 @@ public class PlayerInfo extends AppCompatActivity {
             }
         }, personUID );
 
+
     }
+
 //--------заполняем элементы активности-----------------------------------
     @SuppressLint("SetTextI18n")
-    private void fillPlayerInfo(String fio, String birthday, String nickname, String contacts, String ars) {
+    private void fillPlayerInfo(String fio, String birthday, String nickname, String contacts, String ars, String teamname) {
         txt_fio = (TextView) findViewById(R.id.member_fio);
         txt_birthday = (TextView) findViewById(R.id.member_birthday);
         txt_nickname = (TextView) findViewById(R.id.member_nickname);
         txt_position = (TextView) findViewById(R.id.member_contacts);
         txt_arsenal = (TextView) findViewById(R.id.member_arsenal);
+        txt_team = (TextView) findViewById(R.id.member_team_name);
 
-        txt_fio.setText("ФИО: " + fio);
-        txt_birthday.setText("День рождения: "+birthday);
-        txt_nickname.setText("Позывной: "+nickname);
-        txt_position.setText("Контакты: " + contacts);
-        txt_arsenal.setText("Снаряжение: "+ars);
+        txt_fio.setText(fio);
+        txt_birthday.setText(birthday);
+        txt_nickname.setText(nickname);
+        txt_position.setText(contacts);
+        txt_arsenal.setText(ars);
+        txt_team.setText(teamname);
 
     }
 

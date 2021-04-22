@@ -126,7 +126,7 @@ public class RequestsToMyTeam extends AppCompatActivity {
     private void addRow(final String requestKey, final String playerUID, final String teamName, final String status) {
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
             @Override
-            public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal) {
+            public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal, String teamKey) {
                 RequestClass request = new RequestClass(requestKey);
                 request.setRequestKey(requestKey);
                 request.setStatus(status);

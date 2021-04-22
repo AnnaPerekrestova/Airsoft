@@ -63,8 +63,8 @@ public class ConnectingToTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".CreatingTeam");
-                        startActivity(i);
                         finish();
+                        startActivity(i);
                     }
                 }
 
@@ -74,8 +74,8 @@ public class ConnectingToTeam extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(".SearchTeamActivity");
-                        startActivity(i);
                         finish();
+                        startActivity(i);
                     }
                 }
 

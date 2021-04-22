@@ -4,55 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/multicam"
     tools:context=".Activities.SearchTeamActivity">
 
 
-    <ImageView
-        android:id="@+id/background_pic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        style="@style/background_multicam"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/multicam"
-        android:contentDescription="@string/backgroundPic"/>
-
     <SearchView
         android:id="@+id/searchTeamName"
-        android:layout_width="342dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:queryHint="Название команды"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="16dp"
+        android:iconifiedByDefault="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SearchView
         android:id="@+id/searchTeamCity"
-        android:layout_width="342dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:queryHint="Город команды"
+        android:iconifiedByDefault="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTeamName" />
 
     <androidx.recyclerview.widget.RecyclerView
-
         android:id="@+id/teams_list_recycler"
         layout="@layout/content_games_recycler"
-        android:layout_width="360dp"
-        android:layout_height="382dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTeamCity" />
+        app:layout_constraintTop_toBottomOf="@+id/searchTeamCity"
+        app:layout_constraintBottom_toTopOf="@id/my_requests"/>
 
     <Button
         android:id="@+id/my_requests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/buttonStyleBorderSand"
         android:text="Мои заявки"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teams_list_recycler" />
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

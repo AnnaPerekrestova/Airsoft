@@ -23,7 +23,7 @@
     <string name="to_main">На главную</string>
     <string name="game_date">Дата</string>
     <string name="new_game">Новая игра</string>
-    <string name="equipment_info">Информация о снаряжении</string>
+    <string name="equipment_info">Снаряжение</string>
     <string name="new_game_create">Создание новой игры</string>
     <string name="title_activity_test_recycle">TestRecycle</string>
     <!-- Strings used for fragments for navigation -->
@@ -55,4 +55,7 @@
     <string name="password">password</string>
     <string name="backgroundPic">Фон приложения</string>
     <string name="contacts">Контакты</string>
+    <string name="no_info">Нет информации</string>
+    <string name="birthdate">Дата рождения</string>
+    <string name="team">Команда</string>
 </resources>

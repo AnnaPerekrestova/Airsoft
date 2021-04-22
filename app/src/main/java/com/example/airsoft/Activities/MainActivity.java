@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
+    FirebaseData fbData = new FirebaseData().getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------Вывод названия команды----------------------------------------------------------
     public void getData(){
-        FirebaseData fbData = new FirebaseData().getInstance();
         fbData.getTeamName(new FirebaseData.teamCallback() {
             @Override
             public void onTeamIdChanged(final String teamKey) {
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonStatistic = findViewById(R.id.stats);
         Button buttonCalendar = findViewById(R.id.calendar);
         ImageButton buttonDelog = findViewById(R.id.delog);
+        ImageButton buttonMyInfo = findViewById(R.id.my_info);
 
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
@@ -147,5 +149,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+        buttonMyInfo.setOnClickListener(
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String personUID = fbData.getUserUID();
+//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(".PlayerInfo");
+                intent.putExtra("playerID", personUID);
+                startActivity(intent);
+            }
+        });
     }
 }

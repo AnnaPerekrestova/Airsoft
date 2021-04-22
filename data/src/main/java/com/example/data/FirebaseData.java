@@ -83,7 +83,7 @@ public class FirebaseData {
     }
 
     public interface personInfoCallback{
-        void onPlayerInfoChanged(String fio, String nickname, String birthday, String contacts, String arsenal);
+        void onPlayerInfoChanged(String fio, String nickname, String birthday, String contacts, String arsenal, String teamKey);
         void onOrgInfoChanged(String fio, String birthday);
     }
 
@@ -542,7 +542,8 @@ public class FirebaseData {
                     String contacts = (String) dataSnapshotInfo.child("Contacts").getValue();
                     String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
                     String nickname = (String) dataSnapshotInfo.child("Nickname").getValue();
-                    callback.onPlayerInfoChanged(fio,nickname,birthday,contacts,arsenal);
+                    String teamKey = (String) dataSnapshotInfo.child("TeamKey").getValue();
+                    callback.onPlayerInfoChanged(fio,nickname,birthday,contacts,arsenal,teamKey);
 
                 }
 

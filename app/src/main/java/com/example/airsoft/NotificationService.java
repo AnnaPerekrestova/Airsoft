@@ -173,7 +173,7 @@ public class NotificationService extends Service {
                         if (snapshot.child("Status").getValue().toString().equals("рассматривается")){
                             fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
                                 @Override
-                                public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal) {
+                                public void onPlayerInfoChanged(String fio, String nickname, String birthday, String position, String arsenal, String teamKey) {
                                     //------------------создаем объект, который откроет нам активность календаря при нажатии на уведомление--------------------
                                     Intent notificationIntent = new Intent(".RequestsToMyTeam");
                                     PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,
