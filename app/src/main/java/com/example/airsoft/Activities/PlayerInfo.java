@@ -38,13 +38,20 @@ public class PlayerInfo extends AppCompatActivity {
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
             @Override
             public void onPlayerInfoChanged(final String fio, final String nickname, final String birthday, final String contacts, final String arsenal, String teamKey) {
+                if (teamKey==null){
+                    //--делаем невидимыми кнопку и строку с названием команды---------------------------
+                    fillPlayerInfo(fio, birthday,nickname, contacts, arsenal,"");
+                }
+                else{
+                    fbData.getTeamInfo(new FirebaseData.teamInfoCallback() {
+                        @Override
+                        public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
 
-                fbData.getTeamInfo(new FirebaseData.teamInfoCallback() {
-                    @Override
-                    public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
-                        fillPlayerInfo(fio, birthday,nickname, contacts, arsenal, teamName);
-                    }
-                }, teamKey);
+                            fillPlayerInfo(fio, birthday,nickname, contacts, arsenal, teamName);
+                        }
+                    }, teamKey);
+                }
+
 
             }
 

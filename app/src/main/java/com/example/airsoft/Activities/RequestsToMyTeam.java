@@ -45,14 +45,14 @@ public class RequestsToMyTeam extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                RequestClass selectedMember = requestsToMyTeamList.get(position);
-//                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
-
-                String personUID = (String) selectedMember.getUserUID();
-//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(".PlayerInfo");
-                intent.putExtra("playerID", personUID);
-                startActivity(intent);
+//                RequestClass selectedMember = requestsToMyTeamList.get(position);
+////                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
+//
+//                String personUID = (String) selectedMember.getUserUID();
+////                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(".PlayerInfo");
+//                intent.putExtra("playerID", personUID);
+//                startActivity(intent);
             }
 
             @Override
@@ -64,7 +64,30 @@ public class RequestsToMyTeam extends AppCompatActivity {
         updateRecycler();
         addSwitchListener();
     }
+    public void updateRecycler(){
 
+        fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
+
+            @Override
+            public void onRequestsToMyTeamListChanged() {
+//                finish();
+//                startActivity(getIntent());
+                requestsToMyTeamList.clear();
+                addAllToRecycler();
+                requestsToMyTeamAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+
+            }
+
+            @Override
+            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
+
+            }
+        });
+    }
     private void addSwitchListener() {
         Switch mySwitch = findViewById(R.id.onlyRassm);
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -85,7 +108,12 @@ public class RequestsToMyTeam extends AppCompatActivity {
 
     }
     public void addFilteredToRecycler(){
-        fbData.getRequestRequestsToMyTeam(new FirebaseData.requestsToMyTeamListCallback() {
+        fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
+            @Override
+            public void onRequestsToMyTeamListChanged() {
+
+            }
+
             @Override
             public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
             }
@@ -98,7 +126,13 @@ public class RequestsToMyTeam extends AppCompatActivity {
     }
 
     public void addAllToRecycler(){
-        fbData.getRequestRequestsToMyTeam(new FirebaseData.requestsToMyTeamListCallback() {
+
+        fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
+            @Override
+            public void onRequestsToMyTeamListChanged() {
+
+            }
+
             @Override
             public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
                 addRow(requestKey, playerUID, teamName, status);
@@ -110,17 +144,7 @@ public class RequestsToMyTeam extends AppCompatActivity {
             }
         });
     }
-    public void updateRecycler(){
 
-        fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
-
-            @Override
-            public void onRequestsToMyTeamListChanged() {
-                finish();
-                startActivity(getIntent());
-            }
-        });
-    }
 
 
     private void addRow(final String requestKey, final String playerUID, final String teamName, final String status) {
@@ -143,7 +167,5 @@ public class RequestsToMyTeam extends AppCompatActivity {
 
             }
         },playerUID);
-
     }
-
 }

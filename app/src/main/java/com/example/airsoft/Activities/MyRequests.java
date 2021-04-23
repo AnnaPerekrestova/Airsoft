@@ -69,15 +69,28 @@ public class MyRequests extends AppCompatActivity {
 
             @Override
             public void onMyRequestsListChanged() {
-                finish();
-                startActivity(getIntent());
-                finish();
+//                finish();
+//                startActivity(getIntent());
+//                finish();
+                myRequestsList.clear();
+                addToRecycler();
+                myRequestAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onMyRequestsListChanged(String requestKey, String userUID, String teamName, String status) {
+
             }
 
         });
     }
     public void addToRecycler(){
-        fbData.getMyRequest(new FirebaseData.myRequestsListCallback() {
+        fbData.getMyRequestsIfChanged(new FirebaseData.myRequestsListIfChangedCallback()  {
+            @Override
+            public void onMyRequestsListChanged() {
+
+            }
+
             @Override
             public void onMyRequestsListChanged(String requestKey, String userUID, String teamName, String status) {
                 addRow(requestKey, userUID, teamName, status);
