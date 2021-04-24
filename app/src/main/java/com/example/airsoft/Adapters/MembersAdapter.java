@@ -1,6 +1,6 @@
 package com.example.airsoft.Adapters;
 
-
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,22 +16,21 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MyViewHo
 
     private List<PlayerClass> membersList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView nickname, fio;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
-            nickname = (TextView) view.findViewById(R.id.recycler_nickname);
-            fio = (TextView) view.findViewById(R.id.recycler_fio);
-
+            nickname = view.findViewById(R.id.recycler_nickname);
+            fio = view.findViewById(R.id.recycler_fio);
         }
     }
-
 
     public MembersAdapter(List<PlayerClass> membersList) {
         this.membersList = membersList;
     }
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

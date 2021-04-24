@@ -795,7 +795,7 @@ public class FirebaseData {
 
 
 //---------------------создание в БД новой записи о полигоне-------------------------------------------------------------
-    public void creatingNewPolygon(final String polygonName, final String polygonAddress, final boolean polygonActuality){
+    public void creatingNewPolygon(final String polygonName, final String polygonAddress, final String polygonDescription){
         getOrgcomKey(new orgcomCallback() {
             @Override
             public void onOrgcomIdChanged(String orgcomKey) {
@@ -806,11 +806,13 @@ public class FirebaseData {
                 DatabaseReference db_polygonName = database.getReference("Polygons/"+newPolygonKey+"/PolygonName");
                 DatabaseReference db_polygonAddress = database.getReference("Polygons/"+newPolygonKey+"/PolygonAddress");
                 DatabaseReference db_polygonActuality = database.getReference("Polygons/"+newPolygonKey+"/PolygonActuality");
+                DatabaseReference db_polygonDescription = database.getReference("Polygons/"+newPolygonKey+"/PolygonDescription");
 
                 db_polygonOrgcomID.setValue(orgcomKey);
                 db_polygonName.setValue(polygonName);
                 db_polygonAddress.setValue(polygonAddress);
-                db_polygonActuality.setValue(polygonActuality);
+                db_polygonActuality.setValue(true);
+                db_polygonDescription.setValue(polygonDescription);
             }
 
             @Override
@@ -822,8 +824,8 @@ public class FirebaseData {
     }
     //-------------------------------получаем список всех команд в БД---------------------------------------------------------
     public interface polygonListCallback{
-        void onPolygonListChanged(String polygonKey,String polygonName,
-                                  String polygonAddress,String polygonOrgcomID, boolean polygonActuality);
+        void onPolygonListChanged(String polygonKey,String polygonName, String polygonAddress,
+                                  String polygonOrgcomID, boolean polygonActuality, String polygonDescription);
     }
     public void getPolygonsList(final polygonListCallback callback){
         getOrgcomKey(new orgcomCallback() {
@@ -840,7 +842,8 @@ public class FirebaseData {
                                 String polygonName =  (String)postSnapShot.child("PolygonName").getValue();
                                 String polygonAddress =  (String)postSnapShot.child("PolygonAddress").getValue();
                                 boolean polygonActuality =  (boolean) postSnapShot.child("PolygonActuality").getValue();
-                                callback.onPolygonListChanged(polygonKey,polygonName,polygonAddress,orgcomKey,polygonActuality);
+                                String polygonDescription =  (String)postSnapShot.child("PolygonDescription").getValue();
+                                callback.onPolygonListChanged(polygonKey,polygonName,polygonAddress,orgcomKey,polygonActuality,polygonDescription);
                             }
                         }
                     }

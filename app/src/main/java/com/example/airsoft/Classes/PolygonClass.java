@@ -1,7 +1,7 @@
 package com.example.airsoft.Classes;
 
 public class PolygonClass {
-    private String polygonKey, polygonName, polygonAddress, polygonOrgcomID;
+    private String polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonDescription;
     private boolean polygonActuality;
 
     public PolygonClass(String polygonKey){
@@ -22,4 +22,7 @@ public class PolygonClass {
 
     public boolean getPolygonActuality(){return polygonActuality;}
     public void setPolygonActuality(boolean polygonActuality){this.polygonActuality=polygonActuality;}
+
+    public String getPolygonDescription(){return polygonDescription;}
+    public void setPolygonDescription(String polygonDescription){this.polygonDescription=polygonDescription;}
 }
