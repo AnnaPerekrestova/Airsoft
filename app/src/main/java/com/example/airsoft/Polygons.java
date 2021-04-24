@@ -23,6 +23,8 @@ public class Polygons extends AppCompatActivity {
 
 
     }
+
+
     private void addListenerOnButton() {
         Button buttonNewPolygon = findViewById(R.id.new_polygon_button);
 
