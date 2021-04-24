@@ -1,28 +1,26 @@
 package com.example.airsoft.Adapters;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.airsoft.Classes.RequestClass;
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-
 import java.util.List;
 
 public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTeamAdapter.MyViewHolder> {
     private List<RequestClass> requestsList;
-    FirebaseData fbData = new FirebaseData().getInstance();
+    private FirebaseData fbData = FirebaseData.getInstance();
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView playerFIO, status;
-        public Button approve,dismiss;
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView playerFIO, status;
+        Button approve,dismiss;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             playerFIO = view.findViewById(R.id.request_to_my_team_FIO);
             status = view.findViewById(R.id.request_to_my_team_status);
@@ -30,19 +28,17 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
             dismiss = view.findViewById(R.id.request_to_my_team_dismiss);
         }
     }
-
-
     public RequestsToMyTeamAdapter(List<RequestClass> requestsList) {
         this.requestsList = requestsList;
-
     }
 
+    @NonNull
     @Override
     public RequestsToMyTeamAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.request_to_my_team_list_row, parent, false);
 
-        return new RequestsToMyTeamAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
@@ -76,7 +72,6 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
        holder.approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 fbData.approveRequest(new FirebaseData.changeRequestStatusCallback() {
                     @Override
                     public void onChangeRequestStatus(boolean f) {
@@ -86,25 +81,18 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
                     }
 
                 }, request.getRequestKey());
-
-
-
             }
         });
        holder.dismiss.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-
                fbData.dismissRequest(new FirebaseData.changeRequestStatusCallback() {
                    @Override
                    public void onChangeRequestStatus(boolean f) {
                        request.setStatus("отклонена");
                    }
                },request.getRequestKey());
-
            }
        });
     }
-
-
 }

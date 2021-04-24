@@ -1,30 +1,29 @@
 package com.example.airsoft.Adapters;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.airsoft.Classes.RequestClass;
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-
 import java.util.List;
 
 public class MyRequestsAdapter extends RecyclerView.Adapter<MyRequestsAdapter.MyViewHolder> {
     private List<RequestClass> requestsList;
-    FirebaseData fbData = new FirebaseData().getInstance();
+    private FirebaseData fbData = FirebaseData.getInstance();
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView teamName, status;
-        public Button cancelRequest;
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView teamName, status;
+        Button cancelRequest;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
-            teamName = (TextView) view.findViewById(R.id.my_request_team_name);
-            status = (TextView) view.findViewById(R.id.my_request_status);
+            teamName = view.findViewById(R.id.my_request_team_name);
+            status = view.findViewById(R.id.my_request_status);
             cancelRequest = view.findViewById(R.id.my_request_cancel);
         }
     }
@@ -34,12 +33,13 @@ public class MyRequestsAdapter extends RecyclerView.Adapter<MyRequestsAdapter.My
         this.requestsList = requestsList;
     }
 
+    @NonNull
     @Override
     public MyRequestsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_requests_list_row, parent, false);
 
-        return new MyRequestsAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override

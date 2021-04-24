@@ -9,7 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.RequestsToMyTeam"
+        <activity android:name=".CreatingPolygon">
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".CreatingPolygon" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Polygons">
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".Polygons" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.RequestsToMyTeam"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".RequestsToMyTeam" />

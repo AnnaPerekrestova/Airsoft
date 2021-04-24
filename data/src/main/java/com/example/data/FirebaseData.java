@@ -1,13 +1,8 @@
 package com.example.data;
 
-import android.content.Intent;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -19,16 +14,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static android.os.SystemClock.sleep;
+import java.util.Objects;
 
 //-----Singleton----------------------------------------------------------------------------------
 public class FirebaseData {
     private static volatile FirebaseData instance;
-    private String teamID;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private void FirebaseData(){}
+    public FirebaseData(){}
 
     public static FirebaseData getInstance() {
         // Техника, которую мы здесь применяем называется «блокировка с двойной
@@ -53,9 +45,21 @@ public class FirebaseData {
         }
     }
 
+
+
+
+
+//----------------------выход из аккаунта------------------------------
+    public void deLogin(){
+        FirebaseAuth.getInstance().signOut();
+    }
+
+//-----------------------получаем UID текущего пользователя---------------------------------------------------------
     public String getUserUID(){
         return (FirebaseAuth.getInstance().getUid());
     }
+
+
 //--------------получаем teamKey и TeamName команды, к которой приклеплен активный пользователь-------------------------------------------------------------
     public interface teamCallback {
         void onTeamIdChanged(String teamKey);
@@ -66,12 +70,10 @@ public class FirebaseData {
         databaseRef.child(getUserUID()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null)return;
                 if (snapshot.child("TeamKey").getValue() == null) {
                     callback.onTeamIdChanged("no info");
-                    return;
                 }
-                else {callback.onTeamIdChanged(snapshot.child("TeamKey").getValue().toString());}
+                else {callback.onTeamIdChanged(Objects.requireNonNull(snapshot.child("TeamKey").getValue()).toString());}
            }
            @Override
            public void onCancelled(@NonNull DatabaseError error) {
@@ -83,29 +85,23 @@ public class FirebaseData {
 
     public void getTeamName(final teamCallback callback){
         final DatabaseReference databaseRef = database.getReference("PersonInfo");
-        databaseRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseRef.child(getUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
 
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
-              if (snapshot == null)return;
+              String teamID = Objects.requireNonNull(snapshot.child("TeamKey").getValue()).toString();
+              final DatabaseReference databaseRef = database.getReference("TeamInfo");
+              databaseRef.child(teamID).addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(@NonNull DataSnapshot snapshot) {
+                      callback.onTeamNameChanged(Objects.requireNonNull(snapshot.child("TeamName").getValue()).toString());
 
-              else{
-                  String teamID = snapshot.child("TeamKey").getValue().toString();
-                  final DatabaseReference databaseRef = database.getReference("TeamInfo");
-                  databaseRef.child(teamID).addListenerForSingleValueEvent(new ValueEventListener() {
-                      @Override
-                      public void onDataChange(@NonNull DataSnapshot snapshot) {
-                          if (snapshot == null) return;
-                              //----выводим название команды:--------
-                          else {
-                              callback.onTeamNameChanged(snapshot.child("TeamName").getValue().toString());
-                          }
-                      }
-                      @Override
-                      public void onCancelled(@NonNull DatabaseError error) {
-                      }
-                  });
-              }
+                  }
+                  @Override
+                  public void onCancelled(@NonNull DatabaseError error) {
+                  }
+              });
+
           }
           @Override
           public void onCancelled(@NonNull DatabaseError error) {
@@ -125,12 +121,10 @@ public class FirebaseData {
         databaseRef.child(getUserUID()).addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 if (snapshot == null)return;
                  if (snapshot.child("OrgcomKey").getValue() == null) {
                      callback.onOrgcomIdChanged("no info");
-                     return;
                  }
-                 else {callback.onOrgcomIdChanged(snapshot.child("OrgcomKey").getValue().toString());}
+                 else {callback.onOrgcomIdChanged(Objects.requireNonNull(snapshot.child("OrgcomKey").getValue()).toString());}
              }
              @Override
              public void onCancelled(@NonNull DatabaseError error) {
@@ -142,29 +136,22 @@ public class FirebaseData {
 
     public void getOrgcomName(final orgcomCallback callback){
         final DatabaseReference databaseRef = database.getReference("PersonInfo");
-        databaseRef.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-
+        databaseRef.child(getUserUID()).addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  if (snapshot == null) return;
-                  else{
-                      String orgcomID = snapshot.child("OrgcomKey").getValue().toString();
+                  String orgcomID = Objects.requireNonNull(snapshot.child("OrgcomKey").getValue()).toString();
 
-                      final DatabaseReference databaseRef = database.getReference("OrgcomInfo");
-                      databaseRef.child(orgcomID).addListenerForSingleValueEvent(new ValueEventListener() {
-                          @Override
-                          public void onDataChange(@NonNull DataSnapshot snapshot) {
-                              if (snapshot == null) return;
-                                  //----выводим название команды:--------
-                              else {
-                                  callback.onOrgcomNameChanged(snapshot.child("OrgcomName").getValue().toString());
-                              }
-                          }
-                          @Override
-                          public void onCancelled(@NonNull DatabaseError error) {
-                          }
-                      });
-                  }
+                  final DatabaseReference databaseRef = database.getReference("OrgcomInfo");
+                  databaseRef.child(orgcomID).addListenerForSingleValueEvent(new ValueEventListener() {
+                      @Override
+                      public void onDataChange(@NonNull DataSnapshot snapshot) {
+                          callback.onOrgcomNameChanged(Objects.requireNonNull(snapshot.child("OrgcomName").getValue()).toString());
+                      }
+                      @Override
+                      public void onCancelled(@NonNull DatabaseError error) {
+                      }
+                  });
+
               }
               @Override
               public void onCancelled(@NonNull DatabaseError error) {
@@ -184,27 +171,25 @@ public class FirebaseData {
         databaseRef.child(getUserUID()).addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 if (snapshot == null) return;
                  if (snapshot.getValue() == null) {
                      callback.onOrgFlagNull("no info");
-                     return;
                  }
                  else {callback.onOrgFlagChanged((boolean) snapshot.child("OrgFlag").getValue());}
              }
-
              @Override
              public void onCancelled(@NonNull DatabaseError error) {
                  System.out.println("Unable to attach listener");
              }
          }
-        );}
+        );
+    }
 
 //---------получаем список UID пользователей, присоединенных к команде активного пользователя-----------------------------
     public interface teamMembersUIDListCallback {
         void onTeamMembersUIDListChanged(List<String> teamMembersUIDList);
     }
 
-    public void getTeamMembersUIDList(final teamMembersUIDListCallback callback){
+    private void getTeamMembersUIDList(final teamMembersUIDListCallback callback){
         final List<String> membersUIDList = new ArrayList<>();
         getTeamKey(new teamCallback(){
 
@@ -214,15 +199,14 @@ public class FirebaseData {
                 final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(teamKey);
                 databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot==null)return;
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                             membersUIDList.add(postSnapShot.getKey());
                         }
                         callback.onTeamMembersUIDListChanged(membersUIDList);
                     }
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                         // Error
                         Log.d("Error", "databaseError");
                     }
@@ -248,15 +232,14 @@ public class FirebaseData {
 
                     databaseReference.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
 
-                            if(dataSnapshot2==null)return;
                             String fio =  (String)dataSnapshot2.child("FIO").getValue();
                             String nickname =  (String)dataSnapshot2.child("Nickname").getValue();
                             callback.onTeamMemberDataChanged(id,nickname,fio);
                         }
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
                             // Error
                             Log.d("Error", "databaseError");
                         }
@@ -274,33 +257,32 @@ public class FirebaseData {
         final DatabaseReference databaseReference = database.getReference("TeamInfo");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot==null)return;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
                     final String teamKey = postSnapShot.getKey();
                     final DatabaseReference databaseReference = database.getReference("TeamInfo");
 
-                    databaseReference.child(teamKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                    if (teamKey != null) {
+                        databaseReference.child(teamKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
 
-                            if(dataSnapshot2==null)return;
-                            String teamName =  (String)dataSnapshot2.child("TeamName").getValue();
-                            String teamCity =  (String)dataSnapshot2.child("TeamCity").getValue();
-                            String teamYear =  (String)dataSnapshot2.child("TeamYear").getValue();
-                            //addRow(nickname,fio);
-                            callback.onTeamsListChanged(teamKey,teamName,teamCity,teamYear);
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            // Error
-                            Log.d("Error", "databaseError");
-                        }
-                    });
+                                String teamName =  (String)dataSnapshot2.child("TeamName").getValue();
+                                String teamCity =  (String)dataSnapshot2.child("TeamCity").getValue();
+                                String teamYear =  (String)dataSnapshot2.child("TeamYear").getValue();
+                                callback.onTeamsListChanged(teamKey,teamName,teamCity,teamYear);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Error
+                                Log.d("Error", "databaseError");
+                            }
+                        });
+                    }
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Error
                 Log.d("Error", "databaseError");
             }
@@ -315,26 +297,24 @@ public class FirebaseData {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 if(snapshot==null)return;
                  if (snapshot.child(teamKey).getValue()!=null){
 
-                     String teamName = snapshot.child(teamKey).child("TeamName").getValue().toString();
-
-                     String userUID = FirebaseAuth.getInstance().getUid();
+                     String teamName = Objects.requireNonNull(snapshot.child(teamKey).child("TeamName").getValue()).toString();
+                     String userUID = getUserUID();
 
                      //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
                      final DatabaseReference databaseRef = database.getReference("PersonInfo");
                      DatabaseReference user_person_info = databaseRef.child(userUID);
                      user_person_info.child("TeamKey").setValue(teamKey);
+
                      //-------------------удаление всех заявок со статусом "рассматривается" пользователя, который вступил в команду---------------------------
                      DatabaseReference requests = database.getReference("RequestsToConnectTeam");
                      final Query databaseQuery = requests.orderByChild("UserUID").equalTo(userUID);
                      databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-
                          @Override
                          public void onDataChange(@NonNull DataSnapshot snapshot) {
                              for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                                 if (postSnapShot.child("Status").getValue().toString().equals("рассматривается")){
+                                 if (Objects.requireNonNull(postSnapShot.child("Status").getValue()).toString().equals("рассматривается")){
                                      postSnapShot.getRef().removeValue();
                                  }
                              }
@@ -342,15 +322,12 @@ public class FirebaseData {
                          @Override
                          public void onCancelled(@NonNull DatabaseError error) {}
                      });
-
                      callback.onTeamExistChanged(true,teamName);
                  }
                  else{
                      callback.onTeamExistChanged(false,"");
                  }
-
              }
-
              @Override
              public void onCancelled(@NonNull DatabaseError error) {
 
@@ -367,12 +344,9 @@ public class FirebaseData {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot==null)return;
                 if (snapshot.child(orgcomKey).getValue()!=null){
-
-                    String orgcomName = snapshot.child(orgcomKey).child("OrgcomName").getValue().toString();
-
-                    String userId= FirebaseAuth.getInstance().getUid();
+                    String orgcomName = Objects.requireNonNull(snapshot.child(orgcomKey).child("OrgcomName").getValue()).toString();
+                    String userId= getUserUID();
 
                     //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
                     final DatabaseReference databaseRef = database.getReference("PersonInfo");
@@ -384,18 +358,15 @@ public class FirebaseData {
                 else{
                     callback.onOrgcomExistChanged(false,"");
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 //---------------создание в БД записи о новом пользователе (игроке)-------------------------------------------------------------
     public void creatingPlayer(String fio, String nickname, String birthday, String contacts, String arsenal, boolean orgFlag){
-        String personUID = FirebaseAuth.getInstance().getUid();
+        String personUID = getUserUID();
 
         DatabaseReference db_personFIO;
         DatabaseReference db_personContacts;
@@ -421,7 +392,7 @@ public class FirebaseData {
 
 //---------------создание в БД записи о новом пользователе (организаторе)-------------------------------------------------------------
     public void creatingOrg(String fio, String birthday, boolean orgFlag){
-        final String personUID = FirebaseAuth.getInstance().getUid();
+        final String personUID = getUserUID();
 
         DatabaseReference db_personFIO;
         DatabaseReference db_personBirthday;
@@ -435,9 +406,9 @@ public class FirebaseData {
         db_personBirthday.setValue(birthday);
         db_personOrg.setValue(orgFlag);
     }
+
 //---------------создание в БД записи о новом оргкомитете-------------------------------------------------------------
     public String creatingOrgcom(String orgcomName,String orgcomCity){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         //--------generate random key-------------------------------------------------------------------------
         String newOrgcomKey = database.getReference("quiz").push().getKey();
@@ -445,32 +416,29 @@ public class FirebaseData {
         DatabaseReference db_orgcomName;
         DatabaseReference db_orgcomCity;
 
-
         db_orgcomName = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomName");
         db_orgcomCity = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomCity");
 
         db_orgcomName.setValue(orgcomName);
         db_orgcomCity.setValue(orgcomCity);
 
-        String userId= FirebaseAuth.getInstance().getUid();
+        String userId= getUserUID();
 
         //----------записываем сгенерированный ключ в соответствующее поле в информацию о пользователе------------------------
         final DatabaseReference databaseRef = database.getReference("PersonInfo");
         DatabaseReference user_person_info = databaseRef.child(userId);
         user_person_info.child("OrgcomKey").setValue(newOrgcomKey);
-
         return (newOrgcomKey);
     }
+
 //---------------создание в БД записи о новой команде--------------------------------------------------------------------
     public String creatingTeam(String teamName,String teamCity, String teamYear){
-
         //--------generate random key-------------------------------------------------------------------------
         String newTeamKey = database.getReference("quiz").push().getKey();
 
         DatabaseReference db_teamName;
         DatabaseReference db_teamCity;
         DatabaseReference db_teamYear;
-
 
         db_teamName = database.getReference("TeamInfo/"+newTeamKey+"/TeamName");
         db_teamCity = database.getReference("TeamInfo/"+newTeamKey+"/TeamCity");
@@ -480,7 +448,7 @@ public class FirebaseData {
         db_teamCity.setValue(teamCity);
         db_teamYear.setValue(teamYear);
 
-        String userId=FirebaseAuth.getInstance().getUid();
+        String userId=getUserUID();
 
         //----------записываем сгенерированный ключ в соответствующее поле в информацию о пользователе------------------------
         final DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("PersonInfo");
@@ -495,7 +463,7 @@ public class FirebaseData {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                    if (postSnapShot.child("Status").getValue().toString().equals("рассматривается")){
+                    if (Objects.requireNonNull(postSnapShot.child("Status").getValue()).toString().equals("рассматривается")){
                         postSnapShot.getRef().removeValue();
                     }
                 }
@@ -516,9 +484,7 @@ public class FirebaseData {
         databaseRef.child(personUID).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
-            public void onDataChange(DataSnapshot dataSnapshotInfo) {
-
-                if (dataSnapshotInfo == null) return;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshotInfo) {
                 if ((boolean) dataSnapshotInfo.child("OrgFlag").getValue()){
                     String fio = (String) dataSnapshotInfo.child("FIO").getValue();
                     String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
@@ -532,11 +498,10 @@ public class FirebaseData {
                     String nickname = (String) dataSnapshotInfo.child("Nickname").getValue();
                     String teamKey = (String) dataSnapshotInfo.child("TeamKey").getValue();
                     callback.onPlayerInfoChanged(fio,nickname,birthday,contacts,arsenal,teamKey);
-
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Error
                 Log.d("Error", "databaseError");
             }
@@ -551,21 +516,18 @@ public class FirebaseData {
         databaseRef.child(teamKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null) return;
-                else{
-                    String teamName = (String) snapshot.child("TeamName").getValue();
-                    String teamCity = (String) snapshot.child("TeamCity").getValue();
-                    String teamYear = (String) snapshot.child("TeamYear").getValue();
-                    callback.onTeamInfoChanged(teamName, teamCity, teamYear);
-                }
+                String teamName = (String) snapshot.child("TeamName").getValue();
+                String teamCity = (String) snapshot.child("TeamCity").getValue();
+                String teamYear = (String) snapshot.child("TeamYear").getValue();
+                callback.onTeamInfoChanged(teamName, teamCity, teamYear);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
 //------------------проверяем, нет ли уже в эту команду, соответствующую переданному teamKey -----------------------------
 //-----------------------заявки со статусом "рассматривается"-----------------------------------------------------------------
     public interface checkPersonsRequestsCallback{
@@ -579,22 +541,17 @@ public class FirebaseData {
         databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null) return;
-                else {
-                    for (DataSnapshot postSnapShot : snapshot.getChildren()) {
-                        if (postSnapShot.child("TeamKey").getValue().toString().equals(teamKey)){
-                            if (postSnapShot.child("Status").getValue().toString().equals("рассматривается")) {
-                                f[0] = true;
-                            }
+                for (DataSnapshot postSnapShot : snapshot.getChildren()) {
+                    if (Objects.requireNonNull(postSnapShot.child("TeamKey").getValue()).toString().equals(teamKey)){
+                        if (Objects.requireNonNull(postSnapShot.child("Status").getValue()).toString().equals("рассматривается")) {
+                            f[0] = true;
                         }
                     }
                 }
                 callback.onPersonRequestsResultChanged(f[0]);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -602,7 +559,7 @@ public class FirebaseData {
     public void requestToConnect(String teamKey){
         //--------generate random key-------------------------------------------------------------------------
         String newKey = database.getReference("quiz").push().getKey();
-        String userUID=FirebaseAuth.getInstance().getUid();
+        String userUID=getUserUID();
 
         DatabaseReference db_userUID;
         DatabaseReference db_teamKey;
@@ -697,7 +654,7 @@ public class FirebaseData {
                         String teamKey = (String) snapshot.child("TeamKey").getValue();
                         final String playerUID = (String) snapshot.child("UserUID").getValue();
                         final String status = (String) snapshot.child("Status").getValue();
-                        if (status!=null) {
+                        if (status!=null & playerUID!=null & teamKey!=null) {
 
                             getTeamInfo(new teamInfoCallback() {
                                 @Override
@@ -748,14 +705,13 @@ public class FirebaseData {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null) return;
                 if (snapshot.child(requestKey).getValue() != null) {
                     DatabaseReference db_status;
                     db_status = database.getReference("RequestsToConnectTeam/" + requestKey + "/Status");
                     db_status.setValue("одобрена");
                 //----записываем игроку команду, в которой приняли заявку, остальные заявки этого пользователя удаляем из бд------------
-                    String teamKey =snapshot.child(requestKey).child("TeamKey").getValue().toString();
-                    String playerUID =snapshot.child(requestKey).child("UserUID").getValue().toString();
+                    String teamKey = Objects.requireNonNull(snapshot.child(requestKey).child("TeamKey").getValue()).toString();
+                    String playerUID = Objects.requireNonNull(snapshot.child(requestKey).child("UserUID").getValue()).toString();
 
                     //----------записываем ключ в информацию о пользователе------------------------
                     DatabaseReference db_teamKey;
@@ -771,7 +727,7 @@ public class FirebaseData {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                                if (postSnapShot.child("Status").getValue().toString().equals("рассматривается")){
+                                if (Objects.requireNonNull(postSnapShot.child("Status").getValue()).toString().equals("рассматривается")){
                                     postSnapShot.getRef().removeValue();
                                 }
                             }
@@ -783,7 +739,6 @@ public class FirebaseData {
                     callback.onChangeRequestStatus(false);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
@@ -795,7 +750,6 @@ public class FirebaseData {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot == null) return;
                 if (snapshot.child(requestKey).getValue() != null) {
                     DatabaseReference db_status;
                     db_status = database.getReference("RequestsToConnectTeam/" + requestKey + "/Status");
@@ -818,7 +772,6 @@ public class FirebaseData {
     }
     public void onRequestApprove(final onRequestApproveCallback callback){
         final DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
-
         final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(getUserUID());
         databaseQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -827,7 +780,7 @@ public class FirebaseData {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.child("Status").getValue()!=null) {
-                    if (snapshot.child("Status").getValue().toString().equals("одобрена")){
+                    if (Objects.requireNonNull(snapshot.child("Status").getValue()).toString().equals("одобрена")){
                     callback.onRequestApprove();}
                 }
             }

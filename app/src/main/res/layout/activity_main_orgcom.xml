@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/multicam"
+    android:background="@drawable/multicam_alpha08"
     tools:context=".Activities.MainOrgcomActivity">
 
 
@@ -29,13 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.4">
 
-            <ImageView
-                android:id="@+id/team_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/logo_clean" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,59 +79,48 @@
 
 
                     <Button
-                        android:id="@+id/members"
+                        android:id="@+id/orgcom_members"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-                        android:text="команда"
+                        android:text="Оргкомитет"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="-57dp" />
 
                     <Button
-                        android:id="@+id/games"
+                        android:id="@+id/orgcom_polygon"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="16dp"
-                        android:text="игры"
-                        app:layout_constraintTop_toBottomOf="@+id/members"
+                        android:text="Полигоны"
+                        app:layout_constraintTop_toBottomOf="@+id/orgcom_members"
                         tools:layout_editor_absoluteX="39dp" />
 
                     <Button
-                        android:id="@+id/stats"
+                        android:id="@+id/orgcom_games"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/games"
+                        android:layout_below="@+id/orgcom_polygon"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Statistic"
+                        android:text="Игры"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/games" />
+                        app:layout_constraintTop_toBottomOf="@+id/orgcom_polygon" />
 
                     <Button
-                        android:id="@+id/news"
+                        android:id="@+id/orgcom_statistic"
                         style="@style/buttonStyleBorderSand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/stats"
+                        android:layout_below="@+id/orgcom_games"
                         android:layout_marginTop="16dp"
-                        android:text="новости"
+                        android:text="Статистика"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/stats" />
-
-                    <Button
-                        android:id="@+id/calendar"
-                        style="@style/buttonStyleBorderSand"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/stats"
-                        android:layout_marginTop="16dp"
-                        android:text="календарь"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/news" />
+                        app:layout_constraintTop_toBottomOf="@+id/orgcom_games" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

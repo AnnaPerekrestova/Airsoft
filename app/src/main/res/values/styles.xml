@@ -26,6 +26,6 @@
     </style>
 
     <style name="multicam">
-        <item name="android:background">@drawable/multicam</item>
+        <item name="android:background">@drawable/multicam_alpha04</item>
     </style>
 </resources>

@@ -12,11 +12,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseData fbData = new FirebaseData().getInstance();
+    public FirebaseData fbData = FirebaseData.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,47 +24,40 @@ public class MainActivity extends AppCompatActivity {
 
         addListenerOnButton();
         getData();
-
     }
 
     //---------------Вывод названия команды----------------------------------------------------------
     public void getData(){
-        fbData.getTeamName(new FirebaseData.teamCallback() {
-            @Override
-            public void onTeamIdChanged(final String teamKey) {
+        if (fbData.getUserUID()!=null) {
+            fbData.getTeamName(new FirebaseData.teamCallback() {
+                @Override
+                public void onTeamIdChanged(final String teamKey) {}
 
-            }
-
-            @Override
-            public void onTeamNameChanged(String teamName) {
-                ((TextView) findViewById(R.id.text_team_name)).setText(teamName);
+                @Override
+                public void onTeamNameChanged(String teamName) {
+                    ((TextView) findViewById(R.id.text_team_name)).setText(teamName);
 //---------------Делаем название команды видимым и добавляем информацию о команде при клике---------------------------------------
-                findViewById(R.id.text_team_name).setVisibility(View.VISIBLE);
+                    findViewById(R.id.text_team_name).setVisibility(View.VISIBLE);
+                }
+            });
+            fbData.getTeamKey(new FirebaseData.teamCallback() {
+                @Override
+                public void onTeamIdChanged(final String teamKey) {
+                    findViewById(R.id.text_team_name).setOnClickListener(new View.OnClickListener() {
 
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(".TeamInfoActivity");
+                            i.putExtra("teamKey", teamKey);
+                            startActivity(i);
+                        }
+                    });
+                }
 
-
-            }
-        });
-        fbData.getTeamKey(new FirebaseData.teamCallback() {
-            @Override
-            public void onTeamIdChanged(final String teamKey) {
-                findViewById(R.id.text_team_name).setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(".TeamInfoActivity");
-                        i.putExtra("teamKey", teamKey);
-                        startActivity(i);
-                    }
-                });
-            }
-
-            @Override
-            public void onTeamNameChanged(String teamName) {
-
-
-            }
-        });
+                @Override
+                public void onTeamNameChanged(String teamName) {}
+            });
+        }
     }
 
 
@@ -130,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
                         builder.setPositiveButton("Да", new DialogInterface.OnClickListener() { // Кнопка Удалить
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //---выход из аккаунта------------------------------
-                                FirebaseAuth.getInstance().signOut();
+                                fbData.deLogin();
                                 finish();
                                 // Отпускает диалоговое окно
                             }
@@ -154,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String personUID = fbData.getUserUID();
-//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(".PlayerInfo");
                 intent.putExtra("playerID", personUID);
                 startActivity(intent);

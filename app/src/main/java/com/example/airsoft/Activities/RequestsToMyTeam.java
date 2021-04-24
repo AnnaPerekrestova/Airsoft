@@ -4,16 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-
-import com.example.airsoft.Adapters.MyRequestsAdapter;
 import com.example.airsoft.Adapters.RequestsToMyTeamAdapter;
-import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.Classes.RequestClass;
 import com.example.airsoft.R;
 import com.example.airsoft.RecyclerTouchListener;
@@ -26,13 +21,13 @@ import java.util.List;
 public class RequestsToMyTeam extends AppCompatActivity {
     RequestsToMyTeamAdapter requestsToMyTeamAdapter;
     List<RequestClass> requestsToMyTeamList= new ArrayList<>();
-    FirebaseData fbData = new FirebaseData().getInstance();
-    private RecyclerView recyclerView;
+    FirebaseData fbData = FirebaseData.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requests_to_my_team);
-        recyclerView = (RecyclerView) findViewById(R.id.requests_to_my_team_recycler);
+        RecyclerView recyclerView = findViewById(R.id.requests_to_my_team_recycler);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
         recyclerView.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));
 
@@ -65,27 +60,19 @@ public class RequestsToMyTeam extends AppCompatActivity {
         addSwitchListener();
     }
     public void updateRecycler(){
-
         fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
-
             @Override
             public void onRequestsToMyTeamListChanged() {
-//                finish();
-//                startActivity(getIntent());
                 requestsToMyTeamList.clear();
                 addAllToRecycler();
                 requestsToMyTeamAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
-
-            }
+            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) { }
 
             @Override
-            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
-
-            }
+            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) { }
         });
     }
     private void addSwitchListener() {
@@ -105,18 +92,14 @@ public class RequestsToMyTeam extends AppCompatActivity {
                 }
             }
         });
-
     }
     public void addFilteredToRecycler(){
         fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
             @Override
-            public void onRequestsToMyTeamListChanged() {
-
-            }
+            public void onRequestsToMyTeamListChanged() {}
 
             @Override
-            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
-            }
+            public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) { }
 
             @Override
             public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
@@ -126,12 +109,9 @@ public class RequestsToMyTeam extends AppCompatActivity {
     }
 
     public void addAllToRecycler(){
-
         fbData.getRequestRequestsToMyTeamIfChanged(new FirebaseData.requestsToMyTeamListIfChangedCallback() {
             @Override
-            public void onRequestsToMyTeamListChanged() {
-
-            }
+            public void onRequestsToMyTeamListChanged() {}
 
             @Override
             public void onAllRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
@@ -139,13 +119,9 @@ public class RequestsToMyTeam extends AppCompatActivity {
             }
 
             @Override
-            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) {
-
-            }
+            public void onFilteredRequestsToMyTeamListChanged(String requestKey, String playerUID, String teamName, String status) { }
         });
     }
-
-
 
     private void addRow(final String requestKey, final String playerUID, final String teamName, final String status) {
         fbData.getPersonInfo(new FirebaseData.personInfoCallback() {
@@ -163,9 +139,7 @@ public class RequestsToMyTeam extends AppCompatActivity {
             }
 
             @Override
-            public void onOrgInfoChanged(String fio, String birthday) {
-
-            }
+            public void onOrgInfoChanged(String fio, String birthday) {}
         },playerUID);
     }
 }
