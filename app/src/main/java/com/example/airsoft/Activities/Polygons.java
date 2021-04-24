@@ -91,7 +91,7 @@ public class Polygons extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(".CreatePolygon");
+                        Intent i = new Intent(".CreatingPolygon");
                         startActivity(i);
                     }
                 }

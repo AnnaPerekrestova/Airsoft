@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,6 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         player.setNickname(nick);
         player.setFio(fio);
         membersList.add(player);
-
         mAdapter.notifyDataSetChanged();
     }
     public void addNewMember(View view) {
@@ -121,5 +121,9 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         finish();
     }
 
+    public void requestsToMyTeam(View view){
+        Intent i = new Intent(".RequestsToMyTeam");
+        startActivity(i);
+    }
 
 }

@@ -1,4 +1,6 @@
 package com.example.airsoft.Adapters;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +40,7 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.request_to_my_team_list_row, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new RequestsToMyTeamAdapter.MyViewHolder(itemView);
     }
 
     @Override
@@ -92,6 +94,16 @@ public class RequestsToMyTeamAdapter extends RecyclerView.Adapter<RequestsToMyTe
                        request.setStatus("отклонена");
                    }
                },request.getRequestKey());
+
+           }
+       });
+       holder.playerFIO.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               String personUID = (String) request.getUserUID();
+               Intent intent = new Intent(".PlayerInfo");
+               intent.putExtra("playerID", personUID);
+               v.getContext().startActivity(intent);
            }
        });
     }

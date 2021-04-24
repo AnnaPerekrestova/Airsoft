@@ -40,23 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.text_team_name).setVisibility(View.VISIBLE);
                 }
             });
-            fbData.getTeamKey(new FirebaseData.teamCallback() {
-                @Override
-                public void onTeamIdChanged(final String teamKey) {
-                    findViewById(R.id.text_team_name).setOnClickListener(new View.OnClickListener() {
 
-                        @Override
-                        public void onClick(View v) {
-                            Intent i = new Intent(".TeamInfoActivity");
-                            i.putExtra("teamKey", teamKey);
-                            startActivity(i);
-                        }
-                    });
-                }
-
-                @Override
-                public void onTeamNameChanged(String teamName) {}
-            });
         }
     }
 
@@ -75,8 +59,17 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".MembersRecyclerActivity");
-                        startActivity(i);
+                        fbData.getTeamKey(new FirebaseData.teamCallback() {
+                            @Override
+                            public void onTeamIdChanged(final String teamKey) {
+                                Intent i = new Intent(".TeamInfoActivity");
+                                i.putExtra("teamKey", teamKey);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onTeamNameChanged(String teamName) {}
+                        });;
                     }
                 }
 

@@ -4,6 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/multicam"
     tools:context=".Activities.CreatingPolygon">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <TextView
+                android:id="@+id/creating_polygon_appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Добавление полигона"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+
+        <EditText
+            android:id="@+id/creating_polygon_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Название"
+            android:inputType="text"
+            android:padding="15dp"
+            android:imeOptions="actionNext"
+            android:layout_marginHorizontal="16dp" />
+
+
+
+        <EditText
+
+            android:id="@+id/creating_polygon_adress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="Адрес"
+            android:inputType="text"
+            android:padding="15dp"
+            android:imeOptions="actionNext"
+            android:layout_marginHorizontal="16dp" />
+
+
+        <EditText
+
+            android:id="@+id/creating_polygon_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:hint="Описание"
+            android:inputType="text"
+            tools:ignore="Autofill,LabelFor"
+            android:padding="15dp"
+            android:imeOptions="actionDone"
+            android:layout_marginHorizontal="16dp" />
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/creating_polygon_save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сохранить"
+        android:layout_margin="16dp"
+        style="@style/buttonStyleBorderSand"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

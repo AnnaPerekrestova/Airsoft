@@ -37,24 +37,7 @@ public class RequestsToMyTeam extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(requestsToMyTeamAdapter);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-//                RequestClass selectedMember = requestsToMyTeamList.get(position);
-////                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
-//
-//                String personUID = (String) selectedMember.getUserUID();
-////                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(".PlayerInfo");
-//                intent.putExtra("playerID", personUID);
-//                startActivity(intent);
-            }
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
         addAllToRecycler();
         updateRecycler();
         addSwitchListener();

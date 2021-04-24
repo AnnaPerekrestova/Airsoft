@@ -41,14 +41,12 @@ public class TeamInfoActivity extends AppCompatActivity {
                 if (teamKey == "no info"){
                     findViewById(R.id.button_save_changes).setVisibility(View.INVISIBLE);
                     findViewById(R.id.button_request_to_connect).setVisibility(View.VISIBLE);
-                    findViewById(R.id.requests_to_my_team_button).setVisibility(View.INVISIBLE);
 
 //                    findViewById(R.id.team_info_description)
                 }
                 else{
                     findViewById(R.id.button_request_to_connect).setVisibility(View.INVISIBLE);
                     findViewById(R.id.button_save_changes).setVisibility(View.VISIBLE);
-                    findViewById(R.id.requests_to_my_team_button).setVisibility(View.VISIBLE);
                 }
             }
 
@@ -71,7 +69,7 @@ public class TeamInfoActivity extends AppCompatActivity {
     }
     private void addListenerOnButton(final String teamKey){
         Button requestToConnect =  findViewById(R.id.button_request_to_connect);
-        Button requestsToMyTeam =  findViewById(R.id.requests_to_my_team_button);
+        Button members =  findViewById(R.id.team_members_button);
         requestToConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,13 +91,14 @@ public class TeamInfoActivity extends AppCompatActivity {
 
             }
         });
-        requestsToMyTeam.setOnClickListener(new View.OnClickListener() {
+        members.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(".RequestsToMyTeam");
+                Intent i = new Intent(".MembersRecyclerActivity");
                 startActivity(i);
             }
         });
+
     }
 
     private void onRequestApprove(){

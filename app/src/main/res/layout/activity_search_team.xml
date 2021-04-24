@@ -34,9 +34,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
+        android:scrollbarSize="5dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/my_requests"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTeamCity"
-        app:layout_constraintBottom_toTopOf="@id/my_requests"/>
+        app:layout_constraintTop_toBottomOf="@+id/searchTeamCity" />
 
     <Button
         android:id="@+id/my_requests"

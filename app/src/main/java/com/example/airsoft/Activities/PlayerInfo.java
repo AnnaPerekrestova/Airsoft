@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.airsoft.R;
@@ -13,6 +16,8 @@ import com.example.data.FirebaseData;
 public class PlayerInfo extends AppCompatActivity {
 
     FirebaseData fbData = new FirebaseData().getInstance();
+    Button leave_team;
+    Button members;
     TextView txt_birthday;
     TextView txt_fio;
     TextView txt_arsenal;
@@ -30,7 +35,46 @@ public class PlayerInfo extends AppCompatActivity {
 
 //------Заполняем  информацию----------------------------------------------------------------------
         getMemberInfo();
+        personInfo();
+
+        leave_team  = findViewById(R.id.leave_the_team);
+        members  = findViewById(R.id.team_members_button);
+
+        addListenerOnButton();
     }
+
+    public void personInfo(){
+        if (personUID.equals(fbData.getUserUID()))  {
+            findViewById(R.id.leave_the_team).setVisibility(View.VISIBLE);
+        }
+        else {
+            return;
+        }
+
+    }
+
+    public void addListenerOnButton(){
+        leave_team.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fbData.LeaveFromTeam();
+                        finish();
+                        Intent i = new Intent(".SearchTeamActivity");
+                        startActivity(i);
+                    }
+                }
+
+        );
+        members.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".MembersRecyclerActivity");
+                startActivity(i);
+            }
+        });
+    }
+
 //-----Мполучаем информацию об игроке из БД и заполняем ею элементы----------------------------------------------------
     private void getMemberInfo() {
         //заполняем элементы активности

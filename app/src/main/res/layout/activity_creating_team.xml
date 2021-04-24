@@ -8,6 +8,11 @@
     tools:context=".Activities.CreatingTeam">
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,7 +93,7 @@
                 android:maxLength="4"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Дата основания команды"
+                android:hint="Год основания команды"
                 android:padding="15dp" />
 
 
@@ -141,6 +146,9 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    </ScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -202,9 +202,11 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/leave_the_team"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Выйти из команды"
+                android:visibility="invisible"
                 android:layout_margin="15dp"
                 style="@style/buttonStyleBorderSand"
                 app:layout_constraintStart_toStartOf="parent"
