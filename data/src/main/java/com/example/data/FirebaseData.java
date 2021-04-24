@@ -368,19 +368,12 @@ public class FirebaseData {
     public void creatingPlayer(String fio, String nickname, String birthday, String contacts, String arsenal, boolean orgFlag){
         String personUID = getUserUID();
 
-        DatabaseReference db_personFIO;
-        DatabaseReference db_personContacts;
-        DatabaseReference db_personArsenal;
-        DatabaseReference db_personBirthday;
-        DatabaseReference db_personNickname;
-        DatabaseReference db_personOrg;
-
-        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
-        db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
-        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
-        db_personContacts = database.getReference("PersonInfo/"+personUID+"/Contacts");
-        db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
-        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
+        DatabaseReference db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
+        DatabaseReference db_personNickname = database.getReference("PersonInfo/"+personUID+"/Nickname");
+        DatabaseReference db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
+        DatabaseReference db_personContacts = database.getReference("PersonInfo/"+personUID+"/Contacts");
+        DatabaseReference db_personArsenal = database.getReference("PersonInfo/"+personUID+"/Arsenal");
+        DatabaseReference db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
 
         db_personFIO.setValue(fio);
         db_personNickname.setValue(nickname);
@@ -394,13 +387,9 @@ public class FirebaseData {
     public void creatingOrg(String fio, String birthday, boolean orgFlag){
         final String personUID = getUserUID();
 
-        DatabaseReference db_personFIO;
-        DatabaseReference db_personBirthday;
-        DatabaseReference db_personOrg;
-
-        db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
-        db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
-        db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
+        DatabaseReference db_personFIO = database.getReference("PersonInfo/"+personUID+"/FIO");
+        DatabaseReference db_personBirthday = database.getReference("PersonInfo/"+personUID+"/Birthday");
+        DatabaseReference db_personOrg = database.getReference("PersonInfo/"+personUID+"/OrgFlag");
 
         db_personFIO.setValue(fio);
         db_personBirthday.setValue(birthday);
@@ -413,11 +402,8 @@ public class FirebaseData {
         //--------generate random key-------------------------------------------------------------------------
         String newOrgcomKey = database.getReference("quiz").push().getKey();
 
-        DatabaseReference db_orgcomName;
-        DatabaseReference db_orgcomCity;
-
-        db_orgcomName = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomName");
-        db_orgcomCity = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomCity");
+        DatabaseReference db_orgcomName = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomName");
+        DatabaseReference db_orgcomCity = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomCity");
 
         db_orgcomName.setValue(orgcomName);
         db_orgcomCity.setValue(orgcomCity);
@@ -436,13 +422,9 @@ public class FirebaseData {
         //--------generate random key-------------------------------------------------------------------------
         String newTeamKey = database.getReference("quiz").push().getKey();
 
-        DatabaseReference db_teamName;
-        DatabaseReference db_teamCity;
-        DatabaseReference db_teamYear;
-
-        db_teamName = database.getReference("TeamInfo/"+newTeamKey+"/TeamName");
-        db_teamCity = database.getReference("TeamInfo/"+newTeamKey+"/TeamCity");
-        db_teamYear = database.getReference("TeamInfo/"+newTeamKey+"/TeamYear");
+        DatabaseReference db_teamName = database.getReference("TeamInfo/"+newTeamKey+"/TeamName");
+        DatabaseReference db_teamCity = database.getReference("TeamInfo/"+newTeamKey+"/TeamCity");
+        DatabaseReference db_teamYear = database.getReference("TeamInfo/"+newTeamKey+"/TeamYear");
 
         db_teamName.setValue(teamName);
         db_teamCity.setValue(teamCity);
@@ -573,7 +555,7 @@ public class FirebaseData {
         db_status.setValue("рассматривается");
     }
 
-//------------------получение списка заявок текущего пользователя--------------------------------------------------
+//------------------получение списка заявок текущего пользователя-------------------------------------------------------
 //-----------------проверяем наличие изменений в списке заявок от текущего пользователя-------------------------------------
     public interface myRequestsListIfChangedCallback{
         void onMyRequestsListChanged();
@@ -809,6 +791,71 @@ public class FirebaseData {
     public void LeaveFromTeam(){
         DatabaseReference databaseRef = database.getReference("PersonInfo");
         databaseRef.child(getUserUID()).child("TeamKey").getRef().removeValue();
+    }
+
+
+//---------------------создание в БД новой записи о полигоне-------------------------------------------------------------
+    public void creatingNewPolygon(final String polygonName, final String polygonAddress, final boolean polygonActuality){
+        getOrgcomKey(new orgcomCallback() {
+            @Override
+            public void onOrgcomIdChanged(String orgcomKey) {
+                //--------generate random key-------------------------------------------------------------------------
+                String newPolygonKey = database.getReference("quiz").push().getKey();
+
+                DatabaseReference db_polygonOrgcomID = database.getReference("Polygons/"+newPolygonKey+"/PolygonOrgcomID");
+                DatabaseReference db_polygonName = database.getReference("Polygons/"+newPolygonKey+"/PolygonName");
+                DatabaseReference db_polygonAddress = database.getReference("Polygons/"+newPolygonKey+"/PolygonAddress");
+                DatabaseReference db_polygonActuality = database.getReference("Polygons/"+newPolygonKey+"/PolygonActuality");
+
+                db_polygonOrgcomID.setValue(orgcomKey);
+                db_polygonName.setValue(polygonName);
+                db_polygonAddress.setValue(polygonAddress);
+                db_polygonActuality.setValue(polygonActuality);
+            }
+
+            @Override
+            public void onOrgcomNameChanged(String orgcomName) {}
+        });
+
+
+
+    }
+    //-------------------------------получаем список всех команд в БД---------------------------------------------------------
+    public interface polygonListCallback{
+        void onPolygonListChanged(String polygonKey,String polygonName,
+                                  String polygonAddress,String polygonOrgcomID, boolean polygonActuality);
+    }
+    public void getPolygonsList(final polygonListCallback callback){
+        getOrgcomKey(new orgcomCallback() {
+            @Override
+            public void onOrgcomIdChanged(final String orgcomKey) {
+                final DatabaseReference databaseReference = database.getReference("Polygons");
+                final Query databaseQuery = databaseReference.orderByChild("PolygonOrgcomID").equalTo(orgcomKey);
+                databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                            final String polygonKey = postSnapShot.getKey();
+                            if (polygonKey != null) {
+                                String polygonName =  (String)postSnapShot.child("PolygonName").getValue();
+                                String polygonAddress =  (String)postSnapShot.child("PolygonAddress").getValue();
+                                boolean polygonActuality =  (boolean) postSnapShot.child("PolygonActuality").getValue();
+                                callback.onPolygonListChanged(polygonKey,polygonName,polygonAddress,orgcomKey,polygonActuality);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Error
+                        Log.d("Error", "databaseError");
+                    }
+                });
+            }
+
+            @Override
+            public void onOrgcomNameChanged(String orgcomName) {}
+        });
+
     }
 }
 
