@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onTeamIdChanged(final String teamKey) {
                                 Intent i = new Intent(".TeamInfoActivity");
-                                i.putExtra("teamKey", teamKey);
                                 startActivity(i);
                             }
 
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String personUID = fbData.getUserUID();
                 Intent intent = new Intent(".PlayerInfo");
-                intent.putExtra("playerID", personUID);
                 startActivity(intent);
             }
         });

@@ -9,11 +9,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.airsoft.Adapters.TeamAdapter;
 import com.example.airsoft.Classes.TeamClass;
@@ -21,7 +19,6 @@ import com.example.airsoft.R;
 import com.example.airsoft.RecyclerTouchListener;
 import com.example.airsoft.RecyclerViewDecorator;
 import com.example.data.FirebaseData;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +26,14 @@ import java.util.List;
 public class SearchTeamActivity extends AppCompatActivity {
     TeamAdapter teamAdapter;
     List<TeamClass> teamsList= new ArrayList<>();
-    FirebaseData fbData = new FirebaseData().getInstance();
-    private RecyclerView recyclerView;
+    FirebaseData fbData = FirebaseData.getInstance();
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_team);
-        recyclerView = (RecyclerView) findViewById(R.id.teams_list_recycler);
+        recyclerView = findViewById(R.id.teams_list_recycler);
 
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
         recyclerView.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));
@@ -50,27 +48,37 @@ public class SearchTeamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 TeamClass selectedTeam = teamsList.get(position);
-//                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
-
-                String teamKey = (String) selectedTeam.getTeamKey();
-//                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
+                String teamKey = selectedTeam.getTeamKey();
                 Intent intent = new Intent(".TeamInfoActivity");
                 intent.putExtra("teamKey", teamKey);
                 startActivity(intent);
             }
 
             @Override
-            public void onLongClick(View view, int position) {
-
-            }
-//
-//
+            public void onLongClick(View view, int position) {}
         }));
+        updateRecycler();
         addToTeamRecycler();
         addListenerOnButton();
         onRequestApprove();
 
     }
+    public void updateRecycler(){
+
+        fbData.getTeamsList(new FirebaseData.teamsListCallback() {
+
+            @Override
+            public void onTeamsListChanged(String teamKey, String teamName, String teamCity, String teamYear) { }
+
+            @Override
+            public void onTeamsListChanged() {
+                teamsList.clear();
+                addToTeamRecycler();
+                teamAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 //------Обрабатываем нажатие кнопки назад на устройстве---------
     @Override
     public void onBackPressed() {
@@ -115,6 +123,9 @@ public class SearchTeamActivity extends AppCompatActivity {
                 int teamAge= getCurrentYear()-Integer.parseInt(teamYear) ;
                 addRow(teamKey,teamName,teamCity,String.valueOf(teamAge));
             }
+
+            @Override
+            public void onTeamsListChanged() {}
         });
 
     }

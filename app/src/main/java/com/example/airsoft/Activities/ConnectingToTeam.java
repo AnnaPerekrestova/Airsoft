@@ -31,28 +31,32 @@ public class ConnectingToTeam extends AppCompatActivity {
                     public void onClick(View view) {
 //----------------------считываем введенный ключ--------------------------------------------------------------
                         String key = ((EditText)findViewById(R.id.team_key)).getText().toString();
-                        //--вносим изменения в бд (присоединяем персон к команде)-----------------------------
-                        FirebaseData fbData = new FirebaseData().getInstance();
-                        fbData.setTeamKeyIfExist(new FirebaseData.checkTeamExistCallback() {
-                            @Override
-                            public void onTeamExistChanged(boolean f, String teamName) {
-                                if (f){
-                                    //--высвечиваем уведомление о причоединении к команде---------------------------------
+                        if (key.equals("")){
+                            Toast.makeText(ConnectingToTeam.this, "Введите ключ",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //--вносим изменения в бд (присоединяем персон к команде)-----------------------------
+                            FirebaseData fbData = FirebaseData.getInstance();
+                            fbData.setTeamKeyIfExist(new FirebaseData.checkTeamExistCallback() {
+                                @Override
+                                public void onTeamExistChanged(boolean f, String teamName) {
+                                    if (f) {
+                                        //--высвечиваем уведомление о причоединении к команде---------------------------------
 
-                                    Toast.makeText(ConnectingToTeam.this, "Вы успешно присоединены к команде "+ teamName+"!",
-                                            Toast.LENGTH_SHORT).show();
-                                    //--уходим на главную активность------------------------------------------------------
-                                    Intent i = new Intent(".MainActivity");
-                                    startActivity(i);
-                                    finish();
+                                        Toast.makeText(ConnectingToTeam.this, "Вы успешно присоединены к команде " + teamName + "!",
+                                                Toast.LENGTH_SHORT).show();
+                                        //--уходим на главную активность------------------------------------------------------
+                                        Intent i = new Intent(".MainActivity");
+                                        startActivity(i);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(ConnectingToTeam.this, "Команда, соответствующая введенному ключу, отсутствует",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                                else {
-                                    Toast.makeText(ConnectingToTeam.this, "Команда, соответствующая введенному ключу, отсутствует",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }, key);
-
+                            }, key);
+                        }
 
                     }
                 }

@@ -69,9 +69,6 @@ public class MyRequests extends AppCompatActivity {
 
             @Override
             public void onMyRequestsListChanged() {
-//                finish();
-//                startActivity(getIntent());
-//                finish();
                 myRequestsList.clear();
                 addToRecycler();
                 myRequestAdapter.notifyDataSetChanged();

@@ -30,6 +30,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="81dp"
+
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
         <Button
             android:id="@+id/requests_to_my_team_button"
             style="@style/buttonStyleBorderSand"
@@ -57,7 +68,6 @@
         app:srcCompat="@android:drawable/ic_input_add"
         tools:ignore="OnClick" />
 
-    <include layout="@layout/content_members_recycler" />
 
 
 

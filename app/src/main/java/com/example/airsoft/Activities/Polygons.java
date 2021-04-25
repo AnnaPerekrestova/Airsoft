@@ -61,13 +61,32 @@ public class Polygons extends AppCompatActivity {
 
     }));
         addToPolygonsRecycler();
-}
+        updateRecycler();
+    }
+    public void updateRecycler(){
+
+        fbData.getPolygonsList(new FirebaseData.polygonListCallback() {
+
+            @Override
+            public void onPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) { }
+
+            @Override
+            public void onPolygonListChanged() {
+                polygonsList.clear();
+                addToPolygonsRecycler();
+                polygonsAdapter.notifyDataSetChanged();
+            }
+        });
+    }
     public void addToPolygonsRecycler(){
         fbData.getPolygonsList(new FirebaseData.polygonListCallback() {
             @Override
             public void onPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) {
                 addRow(polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonActuality, polygonDescription);
             }
+
+            @Override
+            public void onPolygonListChanged() {}
         });
     }
 

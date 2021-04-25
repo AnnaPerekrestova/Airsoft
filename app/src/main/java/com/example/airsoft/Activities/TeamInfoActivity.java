@@ -2,6 +2,7 @@ package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +15,7 @@ import com.example.data.FirebaseData;
 
 public class TeamInfoActivity extends AppCompatActivity {
 
-    String teamKey;
+    String thisTeamKey;
     FirebaseData fbData = new FirebaseData().getInstance();
 
 
@@ -25,12 +26,29 @@ public class TeamInfoActivity extends AppCompatActivity {
 
         //-----Получаем значения переданные через intent------------------------------------------------------------
         Intent intent = getIntent();
-        teamKey = intent.getStringExtra("teamKey");
+        if (intent.getStringExtra("teamKey")==null){
+            fbData.getTeamKey(new FirebaseData.teamCallback() {
+                @Override
+                public void onTeamIdChanged(String teamKey) {
+                    thisTeamKey=teamKey;
+                    getData(thisTeamKey);
+                    memberOfTeamChecker();
+                    addListenerOnButton(thisTeamKey);
+                    onRequestApprove();
+                }
 
-        getData(teamKey);
-        memberOfTeamChecker();
-        addListenerOnButton(teamKey);
-        onRequestApprove();
+                @Override
+                public void onTeamNameChanged(String teamName) {}
+            });
+        }
+        else {
+            thisTeamKey = intent.getStringExtra("teamKey");
+            getData(thisTeamKey);
+            memberOfTeamChecker();
+            addListenerOnButton(thisTeamKey);
+            onRequestApprove();
+        }
+
     }
 
     private void memberOfTeamChecker() {
@@ -38,7 +56,7 @@ public class TeamInfoActivity extends AppCompatActivity {
             @Override
             public void onTeamIdChanged(String teamKey) {
 //-------------------проверяем, состоит ли участник в команде. Если нет, значит он ищет новую и подгоняем интерфейс для вступления------------------
-                if (teamKey == "no info"){
+                if (teamKey.equals("no info")){
                     findViewById(R.id.button_save_changes).setVisibility(View.INVISIBLE);
                     findViewById(R.id.button_request_to_connect).setVisibility(View.VISIBLE);
 
@@ -59,6 +77,7 @@ public class TeamInfoActivity extends AppCompatActivity {
 
     private void getData(String teamKey){
         fbData.getTeamInfo(new FirebaseData.teamInfoCallback()  {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
                 ((TextView) findViewById(R.id.text_team_name)).setText(teamName);
@@ -95,6 +114,7 @@ public class TeamInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(".MembersRecyclerActivity");
+                i.putExtra("teamKey", thisTeamKey);
                 startActivity(i);
             }
         });

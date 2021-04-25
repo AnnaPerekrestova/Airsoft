@@ -24,7 +24,8 @@ public class MembersRecyclerActivity extends AppCompatActivity {
     private List<PlayerClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MembersAdapter mAdapter;
-    FirebaseData fbData = new FirebaseData().getInstance();
+    FirebaseData fbData = FirebaseData.getInstance();
+    String thisTeamKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,26 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_members_recycler);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_members);
+        //-----Получаем значения переданные через intent------------------------------------------------------------
+        Intent intent = getIntent();
+        if (intent.getStringExtra("teamKey")==null){
+            fbData.getTeamKey(new FirebaseData.teamCallback() {
+                @Override
+                public void onTeamIdChanged(String teamKey) {
+                    thisTeamKey=teamKey;
+                    addToMembersRecycler();
+                }
+
+                @Override
+                public void onTeamNameChanged(String teamName) {}
+            });
+        }
+        else {
+            thisTeamKey = intent.getStringExtra("teamKey");
+            addToMembersRecycler();
+        }
+
+        recyclerView = findViewById(R.id.recycler_view_members);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
         recyclerView.addItemDecoration(new RecyclerViewDecorator(this, LinearLayoutManager.VERTICAL, 16));
 
@@ -60,41 +80,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
             }
 
-//            @Override
-//            public void onLongClick(View view, int position) {
-//                MembersClass selected_member = membersList.get(position);
-//                final String id_member_to_del = (String) selected_member.getNickname();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MembersRecyclerActivity.this);
-//                builder.setTitle("Удаление игрока");
-//                builder.setMessage("Вы действительно хотите удалить выбранного игрока?");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("Удалить", new DialogInterface.OnClickListener() { // Кнопка Удалить
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(getApplicationContext(), id_member_to_del + " Удален из команды", Toast.LENGTH_SHORT).show();
-//                        DatabaseReference db_actually;
-//                        db_actually = database.getReference("Members/members_nicknames/" + id_member_to_del + "/Actually");
-//                        db_actually.setValue(0);
-//                        dialog.dismiss();
-//                        Intent i = new Intent(".MembersRecyclerActivity");
-//                        startActivity(i);
-//                        finish();
-//                        // Отпускает диалоговое окно
-//                    }
-//
-//                });
-//                builder.setNegativeButton("Оставить", new DialogInterface.OnClickListener() { // Кнопка Оставить
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss(); // Отпускает диалоговое окно
-//                    }
-//
-//                });
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//            }
         }));
-        addToMembersRecycler();
     }
     public void addToMembersRecycler(){
         fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback(){
@@ -104,7 +90,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
                 addRow(playerUID, nickname, fio);
             }
 
-        });
+        },thisTeamKey);
     }
 
     private void addRow(String playerUID, String nick, String fio ) {

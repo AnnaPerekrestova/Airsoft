@@ -76,9 +76,7 @@ public class FirebaseData {
                 else {callback.onTeamIdChanged(Objects.requireNonNull(snapshot.child("TeamKey").getValue()).toString());}
            }
            @Override
-           public void onCancelled(@NonNull DatabaseError error) {
-               System.out.println("Unable to attach listener");
-               }
+           public void onCancelled(@NonNull DatabaseError error) {}
            }
         );
     }
@@ -184,46 +182,36 @@ public class FirebaseData {
         );
     }
 
-//---------получаем список UID пользователей, присоединенных к команде активного пользователя-----------------------------
+//---------получаем список UID пользователей, присоединенных к команде teamKey-----------------------------
     public interface teamMembersUIDListCallback {
         void onTeamMembersUIDListChanged(List<String> teamMembersUIDList);
     }
 
-    private void getTeamMembersUIDList(final teamMembersUIDListCallback callback){
+    private void getTeamMembersUIDList(final teamMembersUIDListCallback callback, String teamKey){
         final List<String> membersUIDList = new ArrayList<>();
-        getTeamKey(new teamCallback(){
-
+        final DatabaseReference databaseReference = database.getReference("PersonInfo");
+        final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(teamKey);
+        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onTeamIdChanged(String teamKey) {
-                final DatabaseReference databaseReference = database.getReference("PersonInfo");
-                final Query databaseQuery = databaseReference.orderByChild("TeamKey").equalTo(teamKey);
-                databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                            membersUIDList.add(postSnapShot.getKey());
-                        }
-                        callback.onTeamMembersUIDListChanged(membersUIDList);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Error
-                        Log.d("Error", "databaseError");
-                    }
-                });
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
+                    membersUIDList.add(postSnapShot.getKey());
+                }
+                callback.onTeamMembersUIDListChanged(membersUIDList);
             }
-
             @Override
-            public void onTeamNameChanged(String teamName) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Error
+                Log.d("Error", "databaseError");
             }
         });
+
     }
 //-------по каждому участнику команды, к которой прикреплен текущий пользователь, получаем фио и ник-----------------
     public interface teamMembersDataCallback{
         void onTeamMemberDataChanged(String playerUID ,String nickname, String fio);
     }
-    public void getTeamMembersData(final teamMembersDataCallback callback) {
+    public void getTeamMembersData(final teamMembersDataCallback callback, String teamKey) {
         getTeamMembersUIDList(new teamMembersUIDListCallback() {
             @Override
             public void onTeamMembersUIDListChanged(List<String> teamMembersUIDList) {
@@ -246,45 +234,56 @@ public class FirebaseData {
                     });
                 }
             }
-        });
+        }, teamKey);
     }
 
 //-------------------------------получаем список всех команд в БД---------------------------------------------------------
     public interface teamsListCallback{
         void onTeamsListChanged(String teamKey ,String teamName, String teamCity, String teamYear);
+        void onTeamsListChanged();
     }
     public void getTeamsList(final teamsListCallback callback){
         final DatabaseReference databaseReference = database.getReference("TeamInfo");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                    final String teamKey = postSnapShot.getKey();
-                    final DatabaseReference databaseReference = database.getReference("TeamInfo");
-
-                    if (teamKey != null) {
-                        databaseReference.child(teamKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-
-                                String teamName =  (String)dataSnapshot2.child("TeamName").getValue();
-                                String teamCity =  (String)dataSnapshot2.child("TeamCity").getValue();
-                                String teamYear =  (String)dataSnapshot2.child("TeamYear").getValue();
-                                callback.onTeamsListChanged(teamKey,teamName,teamCity,teamYear);
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                // Error
-                                Log.d("Error", "databaseError");
-                            }
-                        });
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                final String teamKey = snapshot.getKey();
+                if (teamKey != null) {
+                    String teamName =  (String)snapshot.child("TeamName").getValue();
+                    String teamCity =  (String)snapshot.child("TeamCity").getValue();
+                    String teamYear =  (String)snapshot.child("TeamYear").getValue();
+                    if (teamName!=null & teamCity!=null & teamYear!=null) {
+                        callback.onTeamsListChanged(teamKey, teamName, teamCity, teamYear);
                     }
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Error
-                Log.d("Error", "databaseError");
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                final String teamKey = snapshot.getKey();
+                if (teamKey != null) {
+                    String teamName =  (String)snapshot.child("TeamName").getValue();
+                    String teamCity =  (String)snapshot.child("TeamCity").getValue();
+                    String teamYear =  (String)snapshot.child("TeamYear").getValue();
+                    if (teamName!=null & teamCity!=null & teamYear!=null) {
+                        callback.onTeamsListChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                callback.onTeamsListChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -293,46 +292,50 @@ public class FirebaseData {
         void onTeamExistChanged(boolean f, String teamName);
     }
     public void setTeamKeyIfExist(final checkTeamExistCallback callback , final String teamKey){
-        final DatabaseReference databaseReference = database.getReference("TeamInfo");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 if (snapshot.child(teamKey).getValue()!=null){
+        if (!teamKey.equals("")) {
+            final DatabaseReference databaseReference = database.getReference("TeamInfo");
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.child(teamKey).getValue() != null) {
 
-                     String teamName = Objects.requireNonNull(snapshot.child(teamKey).child("TeamName").getValue()).toString();
-                     String userUID = getUserUID();
+                        String teamName = Objects.requireNonNull(snapshot.child(teamKey).child("TeamName").getValue()).toString();
+                        String userUID = getUserUID();
 
-                     //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
-                     final DatabaseReference databaseRef = database.getReference("PersonInfo");
-                     DatabaseReference user_person_info = databaseRef.child(userUID);
-                     user_person_info.child("TeamKey").setValue(teamKey);
+                        //----------записываем введенный ключ в соответствующее поле в информацию о пользователе------------------------
+                        final DatabaseReference databaseRef = database.getReference("PersonInfo");
+                        DatabaseReference user_person_info = databaseRef.child(userUID);
+                        user_person_info.child("TeamKey").setValue(teamKey);
 
-                     //-------------------удаление всех заявок со статусом "рассматривается" пользователя, который вступил в команду---------------------------
-                     DatabaseReference requests = database.getReference("RequestsToConnectTeam");
-                     final Query databaseQuery = requests.orderByChild("UserUID").equalTo(userUID);
-                     databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                         @Override
-                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                             for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                                 if (Objects.requireNonNull(postSnapShot.child("Status").getValue()).toString().equals("рассматривается")){
-                                     postSnapShot.getRef().removeValue();
-                                 }
-                             }
-                         }
-                         @Override
-                         public void onCancelled(@NonNull DatabaseError error) {}
-                     });
-                     callback.onTeamExistChanged(true,teamName);
-                 }
-                 else{
-                     callback.onTeamExistChanged(false,"");
-                 }
-             }
-             @Override
-             public void onCancelled(@NonNull DatabaseError error) {
+                        //-------------------удаление всех заявок со статусом "рассматривается" пользователя, который вступил в команду---------------------------
+                        DatabaseReference requests = database.getReference("RequestsToConnectTeam");
+                        final Query databaseQuery = requests.orderByChild("UserUID").equalTo(userUID);
+                        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot postSnapShot : snapshot.getChildren()) {
+                                    if (Objects.requireNonNull(postSnapShot.child("Status").getValue()).toString().equals("рассматривается")) {
+                                        postSnapShot.getRef().removeValue();
+                                    }
+                                }
+                            }
 
-             }
-        });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
+                        callback.onTeamExistChanged(true, teamName);
+                    } else {
+                        callback.onTeamExistChanged(false, "");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 //-------------------------устанавливаем пользователю ключ оргкомитета (при присоединении по ключу)---------------------------------------------------
     public interface checkOrgcomExistCallback {
@@ -818,14 +821,12 @@ public class FirebaseData {
             @Override
             public void onOrgcomNameChanged(String orgcomName) {}
         });
-
-
-
     }
     //-------------------------------получаем список всех команд в БД---------------------------------------------------------
     public interface polygonListCallback{
         void onPolygonListChanged(String polygonKey,String polygonName, String polygonAddress,
                                   String polygonOrgcomID, boolean polygonActuality, String polygonDescription);
+        void onPolygonListChanged();
     }
     public void getPolygonsList(final polygonListCallback callback){
         getOrgcomKey(new orgcomCallback() {
@@ -833,24 +834,43 @@ public class FirebaseData {
             public void onOrgcomIdChanged(final String orgcomKey) {
                 final DatabaseReference databaseReference = database.getReference("Polygons");
                 final Query databaseQuery = databaseReference.orderByChild("PolygonOrgcomID").equalTo(orgcomKey);
-                databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseQuery.addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postSnapShot: dataSnapshot.getChildren()) {
-                            final String polygonKey = postSnapShot.getKey();
-                            if (polygonKey != null) {
-                                String polygonName =  (String)postSnapShot.child("PolygonName").getValue();
-                                String polygonAddress =  (String)postSnapShot.child("PolygonAddress").getValue();
-                                boolean polygonActuality =  (boolean) postSnapShot.child("PolygonActuality").getValue();
-                                String polygonDescription =  (String)postSnapShot.child("PolygonDescription").getValue();
-                                callback.onPolygonListChanged(polygonKey,polygonName,polygonAddress,orgcomKey,polygonActuality,polygonDescription);
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        final String polygonKey = snapshot.getKey();
+                        if (polygonKey != null) {
+                            String polygonName =  (String)snapshot.child("PolygonName").getValue();
+                            String polygonAddress =  (String)snapshot.child("PolygonAddress").getValue();
+                            boolean polygonActuality =  (boolean) snapshot.child("PolygonActuality").getValue();
+                            String polygonDescription =  (String)snapshot.child("PolygonDescription").getValue();
+                            if (polygonName!=null & polygonAddress!=null & polygonDescription!=null) {
+                                callback.onPolygonListChanged(polygonKey, polygonName, polygonAddress, orgcomKey, polygonActuality, polygonDescription);
                             }
                         }
                     }
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Error
-                        Log.d("Error", "databaseError");
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        String polygonName =  (String)snapshot.child("PolygonName").getValue();
+                        String polygonAddress =  (String)snapshot.child("PolygonAddress").getValue();
+                        String polygonDescription =  (String)snapshot.child("PolygonDescription").getValue();
+                        if (polygonName!=null & polygonAddress!=null & polygonDescription!=null) {
+                            callback.onPolygonListChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        callback.onPolygonListChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
             }
@@ -858,8 +878,146 @@ public class FirebaseData {
             @Override
             public void onOrgcomNameChanged(String orgcomName) {}
         });
-
     }
+    public void creatingNewGame(final String gameName,final String gameDate, final String gamePolygonID, final String gameDescription){
+        getOrgcomKey(new orgcomCallback() {
+            @Override
+            public void onOrgcomIdChanged(String orgcomKey) {
+                //--------generate random key-------------------------------------------------------------------------
+                String newGameKey = database.getReference("quiz").push().getKey();
+
+                DatabaseReference db_gameOrgcomID = database.getReference("Games/"+newGameKey+"/GameOrgcomID");
+                DatabaseReference db_gameName = database.getReference("Games/"+newGameKey+"/GameName");
+                DatabaseReference db_gameDate = database.getReference("Games/"+newGameKey+"/GameDate");
+                DatabaseReference db_gamePolygonID = database.getReference("Games/"+newGameKey+"/GamePolygonID");
+                DatabaseReference db_gameStatus = database.getReference("Games/"+newGameKey+"/GameStatus");
+                DatabaseReference db_gameDescription = database.getReference("Games/"+newGameKey+"/gameDescription");
+
+                db_gameOrgcomID.setValue(orgcomKey);
+                db_gameName.setValue(gameName);
+                db_gameDate.setValue(gameDate);
+                db_gamePolygonID.setValue(gamePolygonID);
+                db_gameStatus.setValue("0");
+                db_gameDescription.setValue(gameDescription);
+            }
+
+            @Override
+            public void onOrgcomNameChanged(String orgcomName) {}
+        });
+    }
+//-----------------------------получаем текстовое значение статуса игры по ключу----------------------------------------------
+    public interface gameStatusValueCallback{
+        void onGameStatusValueChange(String statusValue);
+    }
+    public void getGameStatusValue(final gameStatusValueCallback callback, final String statusKey){
+        database.getReference("GameStatuses").child(getUserUID()).addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                  callback.onGameStatusValueChange(Objects.requireNonNull(snapshot.child(statusKey).getValue()).toString());
+              }
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {}
+          }
+        );
+    }
+//------------получаем список всех игр оргкомитета: на которые идет набор, на которые набор закрыт,-------------------------
+// ----------------------отмененные и прошедшие (у прошедших есть победитель)------------------------------------------------------
+    public interface gamesOfOrgcomCallback{
+        void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                           String polygonID, String gameStatus, String gameDescription);
+        void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                          String polygonID, String gameStatus, String gameDescription);
+        void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                           String polygonID, String gameStatus, String gameDescription, String gameWinner);
+        void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                           String polygonID, String gameStatus, String gameDescription);
+        void onOpeningGamesOfOrgcomChanged();
+        void onClosedGamesOfOrgcomChanged();
+        void onHappensGamesOfOrgcomChanged();
+        void onCancelledGamesOfOrgcomChanged();
+    }
+    public void gamesOfOrgcom(final gamesOfOrgcomCallback callback){
+        getOrgcomKey(new orgcomCallback() {
+            @Override
+            public void onOrgcomIdChanged(final String orgcomKey) {
+                DatabaseReference games = database.getReference("Games");
+                final Query databaseQuery = games.orderByChild("GameOrgcomID").equalTo(orgcomKey);
+                databaseQuery.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        final String gameKey = snapshot.getKey();
+                        final String gameName= (String) snapshot.child("GameName").getValue();
+                        final String gameDate = (String) snapshot.child("GameDate").getValue();
+                        final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
+                        final String gameStatus = (String) snapshot.child("GameStatus").getValue();
+                        final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+
+
+                        if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
+                            if (gameStatus.equals("0")){
+                                callback.onOpeningGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                            }
+                            if (gameStatus.equals("1")){
+                                callback.onClosedGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                            }
+                            if (gameStatus.equals("2")){
+                                callback.onCancelledGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                            }
+                            if (gameStatus.equals("3")){
+                                final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                                callback.onHappensGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        final String gameKey = snapshot.getKey();
+                        final String gameName= (String) snapshot.child("GameName").getValue();
+                        final String gameDate = (String) snapshot.child("GameDate").getValue();
+                        final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
+                        final String gameStatus = (String) snapshot.child("GameStatus").getValue();
+                        final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+
+
+                        if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
+                            if (gameStatus.equals("0")){
+                                callback.onOpeningGamesOfOrgcomChanged();
+                            }
+                            if (gameStatus.equals("1")){
+                                callback.onClosedGamesOfOrgcomChanged();
+                            }
+                            if (gameStatus.equals("2")){
+                                callback.onCancelledGamesOfOrgcomChanged();
+                            }
+                            if (gameStatus.equals("3")) {
+                                final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                                callback.onHappensGamesOfOrgcomChanged();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        callback.onOpeningGamesOfOrgcomChanged();
+                        callback.onClosedGamesOfOrgcomChanged();
+                        callback.onCancelledGamesOfOrgcomChanged();
+                        callback.onHappensGamesOfOrgcomChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
+            }
+
+            @Override
+            public void onOrgcomNameChanged(String orgcomName) {}
+        });
+    }
+
 }
 
 
