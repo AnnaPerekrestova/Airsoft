@@ -134,6 +134,7 @@
         android:layout_height="wrap_content"
         android:text="Далее"
         style="@style/buttonStyleBorderSand"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

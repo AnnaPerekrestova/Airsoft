@@ -421,17 +421,19 @@ public class FirebaseData {
     }
 
 //---------------создание в БД записи о новой команде--------------------------------------------------------------------
-    public String creatingTeam(String teamName,String teamCity, String teamYear){
+    public String creatingTeam(String teamName,String teamCity, String teamYear, String teamDescription){
         //--------generate random key-------------------------------------------------------------------------
         String newTeamKey = database.getReference("quiz").push().getKey();
 
         DatabaseReference db_teamName = database.getReference("TeamInfo/"+newTeamKey+"/TeamName");
         DatabaseReference db_teamCity = database.getReference("TeamInfo/"+newTeamKey+"/TeamCity");
         DatabaseReference db_teamYear = database.getReference("TeamInfo/"+newTeamKey+"/TeamYear");
+        DatabaseReference db_teamDescription = database.getReference("TeamInfo/"+newTeamKey+"/TeamDescription");
 
         db_teamName.setValue(teamName);
         db_teamCity.setValue(teamCity);
         db_teamYear.setValue(teamYear);
+        db_teamDescription.setValue(teamDescription);
 
         String userId=getUserUID();
 
@@ -457,6 +459,11 @@ public class FirebaseData {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
         return(newTeamKey);
+    }
+// ----------Обновление информации о команде-------------------
+    public void changeTeamInfo(String teamDescription, String teamKey) {
+        DatabaseReference db_teamDescription = database.getReference("TeamInfo/" + teamKey + "/TeamDescription");
+        db_teamDescription.setValue(teamDescription);
     }
 
 //-------------------------получаем информацию об игроке по UID----------------------------------------------------
@@ -492,9 +499,9 @@ public class FirebaseData {
             }
         });
     }
-//---------------------------получаем информацию об игроке по teamKey----------------------------------------------------
+//---------------------------получаем информацию о команде по teamKey----------------------------------------------------
     public interface teamInfoCallback{
-        void onTeamInfoChanged(String teamName, String teamCity, String teamYear);
+        void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription);
     }
     public void getTeamInfo(final teamInfoCallback callback, String teamKey){
         DatabaseReference databaseRef = database.getReference("TeamInfo");
@@ -504,7 +511,8 @@ public class FirebaseData {
                 String teamName = (String) snapshot.child("TeamName").getValue();
                 String teamCity = (String) snapshot.child("TeamCity").getValue();
                 String teamYear = (String) snapshot.child("TeamYear").getValue();
-                callback.onTeamInfoChanged(teamName, teamCity, teamYear);
+                String teamDescription = (String) snapshot.child("TeamDescription").getValue();
+                callback.onTeamInfoChanged(teamName, teamCity, teamYear, teamDescription);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -581,7 +589,7 @@ public class FirebaseData {
                         if (teamKey!=null & status!=null){
                             getTeamInfo(new teamInfoCallback() {
                                 @Override
-                                public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
+                                public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                                     callback.onMyRequestsListChanged(requestKey, getUserUID(), teamName, status);
                                 }
                             }, teamKey);
@@ -643,7 +651,7 @@ public class FirebaseData {
 
                             getTeamInfo(new teamInfoCallback() {
                                 @Override
-                                public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
+                                public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                                     callback.onAllRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
                                     if (status.equals("рассматривается")) {
                                         callback.onFilteredRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);

@@ -1,12 +1,15 @@
 package com.example.airsoft.Activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +68,7 @@ public class TeamInfoActivity extends AppCompatActivity {
                 else{
                     findViewById(R.id.button_request_to_connect).setVisibility(View.INVISIBLE);
                     findViewById(R.id.button_save_changes).setVisibility(View.VISIBLE);
+                    findViewById(R.id.team_info_description).setEnabled(true);
                 }
             }
 
@@ -79,16 +83,18 @@ public class TeamInfoActivity extends AppCompatActivity {
         fbData.getTeamInfo(new FirebaseData.teamInfoCallback()  {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
+            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                 ((TextView) findViewById(R.id.text_team_name)).setText(teamName);
-                ((TextView) findViewById(R.id.team_info_age)).setText("Год основания команды: "+teamYear);
-                ((TextView) findViewById(R.id.team_info_city)).setText("Город команды: "+teamCity);
+                ((TextView) findViewById(R.id.team_info_age)).setText(teamYear);
+                ((TextView) findViewById(R.id.team_info_city)).setText(teamCity);
+                ((EditText) findViewById(R.id.team_info_description)).setText(teamDescription);
             }
         },teamKey);
     }
     private void addListenerOnButton(final String teamKey){
         Button requestToConnect =  findViewById(R.id.button_request_to_connect);
         Button members =  findViewById(R.id.team_members_button);
+        Button saveTeamInfo = findViewById(R.id.button_save_changes);
         requestToConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +124,40 @@ public class TeamInfoActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        saveTeamInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(TeamInfoActivity.this);
+                builder.setTitle("Сохранить изменения");
+                builder.setMessage("Перезаписать данные команды?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Да", new DialogInterface.OnClickListener() { // Кнопка Удалить
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveNewTeamInfo();
+                        // Отпускает диалоговое окно
+                    }
 
+                });
+                builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() { // Кнопка Оставить
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); // Отпускает диалоговое окно
+                    }
+
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+    }
+
+    public void saveNewTeamInfo(){
+        final String teamDescription = ((EditText) findViewById(R.id.team_info_description)).getText().toString();
+
+        fbData.changeTeamInfo(teamDescription, thisTeamKey);
+        finish();
     }
 
     private void onRequestApprove(){

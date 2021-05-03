@@ -245,7 +245,7 @@ public class NotificationService extends Service {
                     if ((snapshot.child("Status").getValue().toString().equals("отклонена"))) {
                         fbData.getTeamInfo(new FirebaseData.teamInfoCallback() {
                             @Override
-                            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
+                            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                                 //------------------создаем объект, который откроет нам активность календаря при нажатии на уведомление--------------------
                                 Intent notificationIntent = new Intent(".MyRequests");
                                 PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,
@@ -272,7 +272,7 @@ public class NotificationService extends Service {
                     if (snapshot.child("Status").getValue().toString().equals("одобрена")){
                         fbData.getTeamInfo(new FirebaseData.teamInfoCallback() {
                             @Override
-                            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
+                            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                                 //------------------создаем объект, который откроет нам активность календаря при нажатии на уведомление--------------------
                                 Intent notificationIntent = new Intent(".MainActivity");
                                 PendingIntent contentIntent = PendingIntent.getActivity(NotificationService.this,

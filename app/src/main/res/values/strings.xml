@@ -6,24 +6,23 @@
     <string name="team_list">Состав команды</string>
     <string name="bastardos_inmortales">Bastardos Inmortales</string>
     <string name="add_new_team_member">Добавить нового участника команды</string>
-    <string name="FIO">ФИО</string>
+    <string name="FIO">ФИО:</string>
     <string name="position">Должность</string>
     <string name="player_edit">Редактирование информации об игроке</string>
-    <string name="nickname">Позывной</string>
+    <string name="nickname">Позывной:</string>
     <string name="game_class">Класс</string>
     <string name="weapons_inf">Информация об оружии</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="back">Назад</string>
     <string name="addgame">Добавить игру</string>
-    <string name="gamedate">Дата</string>
     <string name="place">Место</string>
     <string name="winner">Победитель</string>
     <string name="teams">Команды</string>
     <string name="to_main">На главную</string>
     <string name="game_date">Дата</string>
     <string name="new_game">Новая игра</string>
-    <string name="equipment_info">Снаряжение</string>
+    <string name="equipment_info">Снаряжение:</string>
     <string name="new_game_create">Создание новой игры</string>
     <string name="title_activity_test_recycle">TestRecycle</string>
     <!-- Strings used for fragments for navigation -->
@@ -54,8 +53,9 @@
     <string name="e_mail">E-mail</string>
     <string name="password">password</string>
     <string name="backgroundPic">Фон приложения</string>
-    <string name="contacts">Контакты</string>
+    <string name="contacts">Контакты:</string>
     <string name="no_info">Нет информации</string>
-    <string name="birthdate">Дата рождения</string>
-    <string name="team">Команда</string>
+    <string name="birthdate">Дата рождения:</string>
+    <string name="team">Команда:</string>
+    <string name="team_description">Описание команды</string>
 </resources>

@@ -16,6 +16,7 @@ import com.example.data.FirebaseData;
 public class MainActivity extends AppCompatActivity {
 
     public FirebaseData fbData = FirebaseData.getInstance();
+    String personUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonMembers = findViewById(R.id.members);
         Button buttonGames = findViewById(R.id.games);
         Button buttonStatistic = findViewById(R.id.stats);
-        Button buttonCalendar = findViewById(R.id.calendar);
-        ImageButton buttonDelog = findViewById(R.id.delog);
-        ImageButton buttonMyInfo = findViewById(R.id.my_info);
+        Button buttonMyInfo = findViewById(R.id.my_info);
 
         buttonMembers.setOnClickListener(
                 new View.OnClickListener() {
@@ -93,44 +92,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
         );
-        buttonCalendar.setOnClickListener(
+        buttonMyInfo.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".CalendarActivity");
+                        personUID = fbData.getUserUID();
+                        Intent i = new Intent(".PlayerInfo");
+                        i.putExtra("playerID", personUID);
                         startActivity(i);
                     }
                 }
 
-        );
-        buttonDelog.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle("Выход из системы");
-                        builder.setMessage("Вы действительно хотите выйти из аккаунта?");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Да", new DialogInterface.OnClickListener() { // Кнопка Удалить
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                fbData.deLogin();
-                                finish();
-                                // Отпускает диалоговое окно
-                            }
-
-                        });
-                        builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() { // Кнопка Оставить
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss(); // Отпускает диалоговое окно
-                            }
-
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    }
-                }
         );
         buttonMyInfo.setOnClickListener(
                 new View.OnClickListener() {

@@ -11,8 +11,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="50dp">
+        android:layout_height="match_parent">
 
 
         <LinearLayout
@@ -136,10 +135,11 @@
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/team_info_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:padding="15dp"
                     android:hint="@string/no_info"
                     android:textColor="@color/black"
@@ -175,8 +175,34 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <Button
+                    android:id="@+id/button_request_to_connect"
+                    style="@style/buttonStyleBorderSand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="подать заявку на вступление"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/button_save_changes"
+                    style="@style/buttonStyleBorderSand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="сохранение изменений"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
 
     </ScrollView>
@@ -184,32 +210,7 @@
 
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
 
-            <Button
-                android:id="@+id/button_request_to_connect"
-                style="@style/buttonStyleBorderSand"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="подать заявку на вступление"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/button_save_changes"
-                style="@style/buttonStyleBorderSand"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="сохранение изменений"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

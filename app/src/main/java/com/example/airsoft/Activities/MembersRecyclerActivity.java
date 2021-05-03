@@ -81,6 +81,19 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             }
 
         }));
+        fbData.getTeamKey(new FirebaseData.teamCallback() {
+            @Override
+            public void onTeamIdChanged(String teamKey) {
+                if (teamKey.equals(thisTeamKey)){
+                    findViewById(R.id.requests_to_my_team_button).setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTeamNameChanged(String teamName) {
+
+            }
+        });
     }
     public void addToMembersRecycler(){
         fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback(){
@@ -101,6 +114,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
         membersList.add(player);
         mAdapter.notifyDataSetChanged();
     }
+
     public void addNewMember(View view) {
         Intent i = new Intent(".NewMemberActivity");
         startActivity(i);

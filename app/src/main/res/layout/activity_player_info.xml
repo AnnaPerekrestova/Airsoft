@@ -108,10 +108,11 @@
                 android:textColor="@color/black"
                 android:textSize="20dp"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/member_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:padding="15dp"
                 android:hint="@string/no_info"
                 android:textColor="@color/black"
@@ -133,11 +134,12 @@
                 android:textColor="@color/black"
                 android:textSize="20dp"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/member_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
+                android:enabled="false"
                 android:hint="@string/no_info"
                 android:textColor="@color/black"
                 android:textSize="20dp"/>
@@ -158,11 +160,12 @@
                 android:textColor="@color/black"
                 android:textSize="20dp"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/member_arsenal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
+                android:enabled="false"
                 android:text=""
                 android:hint="@string/no_info"
                 android:textColor="@color/black"
@@ -202,19 +205,63 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/leave_the_team"
+                android:id="@+id/save_my_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Выйти из команды"
+                android:text="Сохранить изменения"
                 android:visibility="invisible"
-                android:layout_margin="15dp"
+                android:layout_margin="16dp"
                 style="@style/buttonStyleBorderSand"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/leave_the_team"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выйти из команды"
+                android:visibility="invisible"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                style="@style/buttonStyleBorderSand"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/delog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Выйти из аккаунта"
+                android:visibility="invisible"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                style="@style/buttonStyleBorderSand"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
     </LinearLayout>
+
+
 
     </ScrollView>
 

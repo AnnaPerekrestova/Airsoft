@@ -8,6 +8,13 @@
     tools:context=".Activities.MainOrgcomActivity">
 
 
+
+
+
+
+
+
+
     <ImageButton
         android:id="@+id/delog"
         style="@style/buttonStyleBorderSand"

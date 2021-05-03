@@ -57,6 +57,7 @@ public class CreatingTeam extends AppCompatActivity {
                         String teamName = ((EditText)findViewById(R.id.team_name)).getText().toString();
                         String teamCity = ((EditText)findViewById(R.id.team_city)).getText().toString();
                         String teamYear = ((TextView)findViewById(R.id.team_year )).getText().toString();
+                        String teamDescription = ((TextView)findViewById(R.id.team_description)).getText().toString();
 
                         //------проверяем заполненность полей-----------------------------------------
                         if ((!teamName.equals("")) & (!teamCity.equals("")) & (!teamYear.equals(""))){
@@ -64,7 +65,7 @@ public class CreatingTeam extends AppCompatActivity {
                                 if (!(Integer.parseInt(teamYear)<1900)&!(Integer.parseInt(teamYear)>getCurrentYear())){
                                     //------если заполнено, то добавляем в бд ------------------------
                                     FirebaseData fbData = new FirebaseData().getInstance();
-                                    String teamKey = fbData.creatingTeam(teamName,teamCity,teamYear);
+                                    String teamKey = fbData.creatingTeam(teamName,teamCity,teamYear, teamDescription);
 
                                     //----------высвечиваем ключ------------------------------------------------------------------------------------
                                     EditText key = findViewById(R.id.new_team_key);

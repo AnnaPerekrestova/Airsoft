@@ -96,6 +96,18 @@
                 android:hint="Год основания команды"
                 android:padding="15dp" />
 
+            <EditText
+                android:id="@+id/team_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/team_description"
+                android:padding="15dp"
+                android:singleLine="false"
+                android:textColor="@color/black"
+                tools:ignore="Autofill,LabelFor" />
+
 
             <Button
                 android:id="@+id/create_team_button"

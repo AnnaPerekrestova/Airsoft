@@ -35,7 +35,7 @@ public class RegistrationPersonInfo extends AppCompatActivity {
         final EditText person_position_reg = findViewById(R.id.person_contacts_reg);
         final EditText arsenal_reg = findViewById(R.id.arsenal_reg);
 
-        final Switch switch_to_org = findViewById(R.id.switch_to_org);
+        Switch switch_to_org = findViewById(R.id.switch_to_org);
 
         switch_to_org.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -45,9 +45,6 @@ public class RegistrationPersonInfo extends AppCompatActivity {
                     nickname_reg.setVisibility(View.INVISIBLE);
                     person_position_reg.setVisibility(View.INVISIBLE);
                     arsenal_reg.setVisibility(View.INVISIBLE);
-                    nickname_reg.setText("");
-                    person_position_reg.setText("");
-                    arsenal_reg.setText("");
                     f = true;
                 }else{
                     nickname_reg.setVisibility(View.VISIBLE);
@@ -104,50 +101,54 @@ public class RegistrationPersonInfo extends AppCompatActivity {
     public void addListenerOnButton() {
         Button next = findViewById(R.id.person_info_done);
         next.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //проверка ввода ФИО
-                        if (((EditText)findViewById(R.id.person_fio_reg)).getText().toString().equals("")) {
-                            Toast.makeText(RegistrationPersonInfo.this, "Введите ФИО",
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //проверка ввода ФИО
+                    if (((EditText)findViewById(R.id.person_fio_reg)).getText().toString().equals("")) {
+                        Toast.makeText(RegistrationPersonInfo.this, "Введите ФИО",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        //проверка ввода даты рождения
+                        if (((TextView) findViewById(R.id.birthday_reg)).getText().toString().equals("")) {
+                            Toast.makeText(RegistrationPersonInfo.this, "Введите дату рождения",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            //проверка ввода даты рождения
-                            if (((TextView) findViewById(R.id.birthday_reg)).getText().toString().equals("")) {
-                                Toast.makeText(RegistrationPersonInfo.this, "Введите дату рождения",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Log.d("birthday1", "birthday != ");
-                                Log.d("birthday2", ((TextView) findViewById(R.id.birthday_reg)).getText().toString());
-                                //Проверка флага отвечающего за выбор организатора\игрока
-                                if (f == false) {
-                                    if (((EditText) findViewById(R.id.nickname_reg)).getText().toString().length() > 0) {
+                        else {
+                            //Проверка флага отвечающего за выбор организатора\игрока
 
-                                        //-------------записываем информацию об игроке в бд----------------------
-                                        playerToDB();
+                            if (!f) {
+                                if (((EditText) findViewById(R.id.nickname_reg)).getText().toString().length() > 0) {
 
-                                        //-------переходим в подключение к команде-------------
-                                        Intent i = new Intent(".ConnectingToTeam");
-                                        finish();
-                                        startActivity(i);
-                                    } else {
-                                        Toast.makeText(RegistrationPersonInfo.this, "Введите позывной",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    orgToDB();
-//                                      переходим в подключение к оргкомитету
-                                    Intent i = new Intent(".ConnectingToOrgcom");
+                                    //-------------записываем информацию об игроке в бд----------------------
+                                    playerToDB();
+
+                                    //-------переходим в подключение к команде-------------
+                                    Intent i = new Intent(".ConnectingToTeam");
                                     finish();
                                     startActivity(i);
-
+                                } else {
+                                    Toast.makeText(RegistrationPersonInfo.this, "Введите позывной",
+                                            Toast.LENGTH_SHORT).show();
                                 }
+                            }
+                            if (f) {
+                                orgToDB();
+//                                      переходим в подключение к оргкомитету
+                                Intent i = new Intent(".ConnectingToOrgcom");
+                                finish();
+                                startActivity(i);
+
+                            }
+                            else {
+                                Toast.makeText(RegistrationPersonInfo.this, "Какая-то ошибка",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
                 }
+            }
         );
     }
 
@@ -157,11 +158,11 @@ public class RegistrationPersonInfo extends AppCompatActivity {
         final String personFIO = ((EditText)findViewById(R.id.person_fio_reg)).getText().toString();
         final String personNickname = ((EditText)findViewById(R.id.nickname_reg)).getText().toString();
         final String personBirthday = ((TextView)findViewById(R.id.birthday_reg)).getText().toString();
-        final String personPosition = ((EditText)findViewById(R.id.person_contacts_reg)).getText().toString();
+        final String personContacts = ((EditText)findViewById(R.id.person_contacts_reg)).getText().toString();
         final String personArsenal = ((EditText)findViewById(R.id.arsenal_reg)).getText().toString();
         final boolean personOrgFlag = false;
 
-        fbData.creatingPlayer(personFIO,personNickname,personBirthday,personPosition,personArsenal,personOrgFlag);
+        fbData.creatingPlayer(personFIO,personNickname,personBirthday,personContacts,personArsenal,personOrgFlag);
 
     }
 
