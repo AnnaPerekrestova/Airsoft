@@ -15,21 +15,27 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:visibility">invisible</item>
+<!--        <item name="android:visibility">invisible</item>-->
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="buttonStyleBorderSand">
         <item name="android:textColor">@color/black</item>
-<!--        <item name="android:background">@color/colorYellow</item>-->
+        <item name="android:background">@color/colorYellow</item>
     </style>
 
     <style name="teamlogo">
         <item name="android:visibility">invisible</item>
     </style>
+    <style name="orgcomlogo">
+        <item name="android:visibility">invisible</item>
+    </style>
 
     <style name="multicam">
-<!--        <item name="android:background">@drawable/multicam_alpha04</item>-->
+        <item name="android:background">@drawable/multicam_alpha04</item>
+    </style>
+    <style name="multicam80">
+        <item name="android:background">@drawable/multicam_alpha08</item>
     </style>
 </resources>

@@ -55,7 +55,7 @@
             android:id="@+id/orgcom_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Название оргкомитета"
+            android:hint="Название"
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor"
             android:padding="15dp"
@@ -69,7 +69,18 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:hint="Город оргкомитета"
+            android:hint="Город проведения большинства игр"
+            android:padding="15dp"
+            android:textColor="@color/black"
+            tools:ignore="Autofill,LabelFor" />
+
+        <EditText
+            android:id="@+id/orgcom_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:hint="Описание"
             android:padding="15dp"
             android:textColor="@color/black"
             tools:ignore="Autofill,LabelFor" />

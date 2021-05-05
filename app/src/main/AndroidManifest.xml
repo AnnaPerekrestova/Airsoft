@@ -9,7 +9,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.CreatingPolygon"
+        <activity
+            android:name=".GamesListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".GamesListActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter></activity>
+        <activity
+            android:name=".GamesViewSelectOrgcom"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".GamesViewSelectOrgcom" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreatingGameActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".CreatingGameActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".OrgcomInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".OrgcomInfoActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".OrgInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".OrgInfoActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.CreatingPolygon"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".CreatingPolygon" />
@@ -17,7 +62,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.Polygons"
+        <activity
+            android:name=".Activities.Polygons"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".Polygons" />
@@ -61,7 +107,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SearchTeamActivity"
+        <activity
+            android:name=".Activities.SearchTeamActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".SearchTeamActivity" />
@@ -69,49 +116,63 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainOrgcomActivity">
+        <activity
+            android:name=".Activities.MainOrgcomActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".MainOrgcomActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CreatingOrgcomActivity">
+        <activity
+            android:name=".Activities.CreatingOrgcomActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".CreatingOrgcomActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ConnectingToOrgcom">
+        <activity
+            android:name=".Activities.ConnectingToOrgcom"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".ConnectingToOrgcom" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SearchNewGameActivity">
+        <activity
+            android:name=".Activities.SearchNewGameActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".SearchNewGameActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.PlannedGamesActivity">
+        <activity
+            android:name=".Activities.PlannedGamesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".PlannedGamesActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.PreviousGamesActivity">
+        <activity
+            android:name=".Activities.PreviousGamesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".PreviousGamesActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.GamesViewSelectActivity">
+        <activity
+            android:name=".Activities.GamesViewSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".GamesViewSelectActivity" />
 

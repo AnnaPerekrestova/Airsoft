@@ -157,7 +157,26 @@ public class FirebaseData {
           }
         );
     }
+//---------------------------получаем информацию о оргкомитете по OrgcomKey----------------------------------------------------
+    public interface orgcomInfoCallback{
+        void onOrgcomInfoChanged(String orgcomName, String orgcomCity, String orgcomDescription);
+    }
+    public void getOrgcomInfo(final orgcomInfoCallback callback, String orgcomKey){
+        DatabaseReference databaseRef = database.getReference("OrgcomInfo");
+        databaseRef.child(orgcomKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String orgcomName = (String) snapshot.child("OrgcomName").getValue();
+                String orgcomCity = (String) snapshot.child("OrgcomCity").getValue();
+                String orgcomDescription = (String) snapshot.child("OrgcomDescription").getValue();
+                callback.onOrgcomInfoChanged(orgcomName, orgcomCity, orgcomDescription);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
 //----------------------получаем OrgFlag активного пользователя----------------------------------------------------------------------------
     public interface orgFlagCallback {
         void onOrgFlagChanged(boolean orgFlag);
@@ -400,16 +419,18 @@ public class FirebaseData {
     }
 
 //---------------создание в БД записи о новом оргкомитете-------------------------------------------------------------
-    public String creatingOrgcom(String orgcomName,String orgcomCity){
+    public String creatingOrgcom(String orgcomName,String orgcomCity, String orgcomDescription){
 
         //--------generate random key-------------------------------------------------------------------------
         String newOrgcomKey = database.getReference("quiz").push().getKey();
 
         DatabaseReference db_orgcomName = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomName");
         DatabaseReference db_orgcomCity = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomCity");
+        DatabaseReference db_orgcomDescription = database.getReference("OrgcomInfo/"+newOrgcomKey+"/OrgcomDescription");
 
         db_orgcomName.setValue(orgcomName);
         db_orgcomCity.setValue(orgcomCity);
+        db_orgcomDescription.setValue(orgcomDescription);
 
         String userId= getUserUID();
 
@@ -469,7 +490,7 @@ public class FirebaseData {
 //-------------------------получаем информацию об игроке по UID----------------------------------------------------
     public interface personInfoCallback{
         void onPlayerInfoChanged(String fio, String nickname, String birthday, String contacts, String arsenal, String teamKey);
-        void onOrgInfoChanged(String fio, String birthday);
+        void onOrgInfoChanged(String fio, String birthday, String contacts, String orgcomKey);
     }
     public void getPersonInfo(final personInfoCallback callback, String personUID){
         DatabaseReference databaseRef = database.getReference("PersonInfo");
@@ -480,7 +501,9 @@ public class FirebaseData {
                 if ((boolean) dataSnapshotInfo.child("OrgFlag").getValue()){
                     String fio = (String) dataSnapshotInfo.child("FIO").getValue();
                     String birthday = (String) dataSnapshotInfo.child("Birthday").getValue();
-                    callback.onOrgInfoChanged(fio,birthday);
+                    String contacts = (String) dataSnapshotInfo.child("Contacts").getValue();
+                    String orgcomKey = (String) dataSnapshotInfo.child("OrgcomKey").getValue();
+                    callback.onOrgInfoChanged(fio,birthday, contacts, orgcomKey);
                 }
                 if (!((boolean) dataSnapshotInfo.child("OrgFlag").getValue())){
                     String fio = (String) dataSnapshotInfo.child("FIO").getValue();
@@ -803,7 +826,11 @@ public class FirebaseData {
         DatabaseReference databaseRef = database.getReference("PersonInfo");
         databaseRef.child(getUserUID()).child("TeamKey").getRef().removeValue();
     }
-
+//----------------------покинуть оргкомитет (удаляем ключ-значение OrgcomKey)---------------------------------------------
+    public void LeaveFromOrgcom(){
+        DatabaseReference databaseRef = database.getReference("PersonInfo");
+        databaseRef.child(getUserUID()).child("OrgcomKey").getRef().removeValue();
+    }
 
 //---------------------создание в БД новой записи о полигоне-------------------------------------------------------------
     public void creatingNewPolygon(final String polygonName, final String polygonAddress, final String polygonDescription){

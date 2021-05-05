@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/multicam"
-    tools:context=".Activities.MyRequests">
-
-
+    tools:context=".GamesListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,17 +13,17 @@
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/my_request_appbar"
+            android:id="@+id/games_list_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <TextView
-                android:id="@+id/my_request_txt"
+                android:id="@+id/games_list_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="Мои запросы на вступление"
+                android:text="Список игр"
                 android:textAlignment="center"
                 android:textSize="25sp"
 
@@ -34,7 +32,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_requests_recycler"
+            android:id="@+id/games_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -51,6 +49,5 @@
 
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

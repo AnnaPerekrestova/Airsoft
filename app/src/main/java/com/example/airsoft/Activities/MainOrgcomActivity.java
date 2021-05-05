@@ -17,6 +17,7 @@ import com.example.data.FirebaseData;
 
 public class MainOrgcomActivity extends AppCompatActivity {
 
+    String personUID;
     public FirebaseData fbData = FirebaseData.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,52 +35,46 @@ public class MainOrgcomActivity extends AppCompatActivity {
             @Override
             public void onOrgcomNameChanged(String orgcomName) {
                 ((TextView) findViewById(R.id.text_orgcom_name)).setText(orgcomName);
+                ((TextView) findViewById(R.id.text_orgcom_name)).setVisibility(View.VISIBLE);
             }
         });
     }
     private void addListenerOnButton() {
-        ImageButton buttonDelog = findViewById(R.id.delog);
         Button buttonPolygons = findViewById(R.id.orgcom_polygon);
+        Button orgInfo = findViewById(R.id.org_info);
+        Button ogrcomInfo = findViewById(R.id.orgcom_info);
+        Button orgcomGames = findViewById(R.id.orgcom_games);
 
-        buttonDelog.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainOrgcomActivity.this);
-                        builder.setTitle("Выход из системы");
-                        builder.setMessage("Вы действительно хотите выйти из аккаунта?");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Да", new DialogInterface.OnClickListener() { // Кнопка Удалить
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //---выход из аккаунта------------------------------
-                                fbData.deLogin();
-                                finish();
-                                // Отпускает диалоговое окно
-                            }
-
-                        });
-                        builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() { // Кнопка Оставить
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss(); // Отпускает диалоговое окно
-                            }
-
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    }
-                }
-        );
         buttonPolygons.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(".Polygons");
-                        startActivity(i);
-                    }
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(".Polygons");
+                    startActivity(i);
                 }
+            }
         );
+        orgInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".OrgInfoActivity");
+                startActivity(i);
+            }
+        });
+        ogrcomInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".OrgcomInfoActivity");
+                startActivity(i);
+            }
+        });
+        orgcomGames.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".GamesViewSelectOrgcom");
+                startActivity(i);
+            }
+        });
     }
 }
 

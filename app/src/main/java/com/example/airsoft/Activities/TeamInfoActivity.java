@@ -34,10 +34,9 @@ public class TeamInfoActivity extends AppCompatActivity {
                 @Override
                 public void onTeamIdChanged(String teamKey) {
                     thisTeamKey=teamKey;
-                    getData(thisTeamKey);
-                    memberOfTeamChecker();
-                    addListenerOnButton(thisTeamKey);
-                    onRequestApprove();
+                    findViewById(R.id.button_request_to_connect).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.button_save_changes).setVisibility(View.VISIBLE);
+                    findViewById(R.id.team_info_description).setEnabled(true);
                 }
 
                 @Override
@@ -46,38 +45,17 @@ public class TeamInfoActivity extends AppCompatActivity {
         }
         else {
             thisTeamKey = intent.getStringExtra("teamKey");
-            getData(thisTeamKey);
-            memberOfTeamChecker();
-            addListenerOnButton(thisTeamKey);
-            onRequestApprove();
+            findViewById(R.id.button_save_changes).setVisibility(View.INVISIBLE);
+            findViewById(R.id.button_request_to_connect).setVisibility(View.VISIBLE);
+
+
         }
+        getData(thisTeamKey);
+        addListenerOnButton(thisTeamKey);
+        onRequestApprove();
 
     }
 
-    private void memberOfTeamChecker() {
-        fbData.getTeamKey(new FirebaseData.teamCallback() {
-            @Override
-            public void onTeamIdChanged(String teamKey) {
-//-------------------проверяем, состоит ли участник в команде. Если нет, значит он ищет новую и подгоняем интерфейс для вступления------------------
-                if (teamKey.equals("no info")){
-                    findViewById(R.id.button_save_changes).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.button_request_to_connect).setVisibility(View.VISIBLE);
-
-//                    findViewById(R.id.team_info_description)
-                }
-                else{
-                    findViewById(R.id.button_request_to_connect).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.button_save_changes).setVisibility(View.VISIBLE);
-                    findViewById(R.id.team_info_description).setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onTeamNameChanged(String teamName) {
-
-            }
-        });
-    }
 
     private void getData(String teamKey){
         fbData.getTeamInfo(new FirebaseData.teamInfoCallback()  {

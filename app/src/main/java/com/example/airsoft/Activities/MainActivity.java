@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onTeamNameChanged(String teamName) {}
-                        });;
+                        });
                     }
                 }
 
@@ -96,22 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        personUID = fbData.getUserUID();
                         Intent i = new Intent(".PlayerInfo");
-                        i.putExtra("playerID", personUID);
                         startActivity(i);
                     }
                 }
 
         );
-        buttonMyInfo.setOnClickListener(
-                new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String personUID = fbData.getUserUID();
-                Intent intent = new Intent(".PlayerInfo");
-                startActivity(intent);
-            }
-        });
     }
 }

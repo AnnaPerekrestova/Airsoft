@@ -198,7 +198,7 @@ public class NotificationService extends Service {
                                 }
 
                                 @Override
-                                public void onOrgInfoChanged(String fio, String birthday) {
+                                public void onOrgInfoChanged(String fio, String birthday, String con, String orgcomn) {
 
                                 }
                             },snapshot.child("UserUID").getValue().toString());

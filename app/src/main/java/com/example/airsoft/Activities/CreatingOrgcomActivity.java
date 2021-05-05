@@ -28,12 +28,13 @@ public class CreatingOrgcomActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String orgcomName = ((EditText)findViewById(R.id.orgcom_name)).getText().toString();
-                        String orgcomCity = ((EditText)findViewById(R.id.orgcom_city)).getText().toString();;
+                        String orgcomCity = ((EditText)findViewById(R.id.orgcom_city)).getText().toString();
+                        String orgcomDescription = ((EditText)findViewById(R.id.orgcom_description)).getText().toString();
                         //------проверяем заполненность полей-----------------------------------------
                         if ((!orgcomName.equals("")) & (!orgcomCity.equals(""))){
                             //------если заполнено, то добавляем в бд ------------------------
                             FirebaseData fbData = new FirebaseData().getInstance();
-                            String orgcomKey =  fbData.creatingOrgcom(orgcomName,orgcomCity);
+                            String orgcomKey =  fbData.creatingOrgcom(orgcomName,orgcomCity, orgcomDescription);
                             EditText key = findViewById(R.id.new_orgcom_key);
                             key.setText(orgcomKey);
 

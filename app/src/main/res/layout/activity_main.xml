@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    style="@style/multicam"
     tools:context=".Activities.MainActivity">
-<!--    android:background="@drawable/multicam_alpha08">-->
 
 
     <ScrollView

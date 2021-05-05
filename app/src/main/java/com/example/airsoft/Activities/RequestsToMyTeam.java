@@ -122,7 +122,7 @@ public class RequestsToMyTeam extends AppCompatActivity {
             }
 
             @Override
-            public void onOrgInfoChanged(String fio, String birthday) {}
+            public void onOrgInfoChanged(String fio, String birthday, String con, String orgcom) {}
         },playerUID);
     }
 }

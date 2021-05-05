@@ -7,6 +7,10 @@
     style="@style/multicam"
     tools:context=".Activities.CreatingPolygon">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,18 +77,19 @@
             android:imeOptions="actionDone"
             android:layout_marginHorizontal="16dp" />
 
+        <Button
+            android:id="@+id/creating_polygon_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сохранить"
+            android:layout_margin="16dp"
+            style="@style/buttonStyleBorderSand"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/creating_polygon_save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Сохранить"
-        android:layout_margin="16dp"
-        style="@style/buttonStyleBorderSand"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

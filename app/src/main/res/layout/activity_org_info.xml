@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/multicam"
-    tools:context=".Activities.TeamInfoActivity">
-
-
+    tools:context=".OrgInfoActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,13 +25,13 @@
                 android:theme="@style/AppTheme.AppBarOverlay">
 
                 <TextView
-                    android:id="@+id/team_info_appbar"
+                    android:id="@+id/org_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Информация о команде"
                     android:padding="15dp"
+                    android:text="Информация об организаторе"
                     android:textAlignment="center"
-                    android:textColor="#fff"
+                    android:textColor="@color/black"
                     android:textSize="25sp"
 
                     />
@@ -47,16 +45,43 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/team_info_name_txt"
+                    android:id="@+id/org_fio_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="Название:"
+                    android:text="@string/FIO"
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
 
                 <TextView
-                    android:id="@+id/text_team_name"
+                    android:id="@+id/org_fio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:hint="@string/no_info"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/org_birthday_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="@string/birthdate"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/org_birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
@@ -73,74 +98,20 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/team_info_city_txt"
+                    android:id="@+id/org_contacts_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="Город:"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"/>
-
-                <TextView
-                    android:id="@+id/team_info_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:hint="@string/no_info"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/team_info_age_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:text="Год основания:"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"/>
-
-                <TextView
-                    android:id="@+id/team_info_age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:hint="@string/no_info"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"/>
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/team_info_description_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:text="Описание:"
+                    android:text="@string/contacts"
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
 
                 <EditText
-                    android:id="@+id/team_info_description"
+                    android:id="@+id/org_contacts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
                     android:padding="15dp"
+                    android:enabled="false"
                     android:hint="@string/no_info"
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -155,61 +126,91 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/team_info_members_txt"
+                    android:id="@+id/org_orgcom_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
-                    android:text="Участники:"
+                    android:text="Оргкомитет:"
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
 
-                <Button
-                    android:id="@+id/team_members_button"
-                    style="@style/buttonStyleBorderSand"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/org_orgcom_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:text="Состав команды"
-                    />
+                    android:padding="15dp"
+                    android:hint="@string/no_info"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"/>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button_request_to_connect"
-                    style="@style/buttonStyleBorderSand"
+                    android:id="@+id/save_my_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="подать заявку на вступление"
+                    android:text="Сохранить изменения"
                     android:visibility="invisible"
+                    android:layout_margin="16dp"
+                    style="@style/buttonStyleBorderSand"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button_save_changes"
-                    style="@style/buttonStyleBorderSand"
+                    android:id="@+id/leave_the_orgcom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="сохранение изменений"
+                    android:text="Выйти из оргкомитета"
                     android:visibility="invisible"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    style="@style/buttonStyleBorderSand"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/delog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Выйти из аккаунта"
+                    android:visibility="invisible"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    style="@style/buttonStyleBorderSand"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
 
         </LinearLayout>
 
 
+
     </ScrollView>
-
-
-
-
 
 
 
