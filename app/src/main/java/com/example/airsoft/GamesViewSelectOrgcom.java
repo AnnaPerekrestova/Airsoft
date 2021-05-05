@@ -31,6 +31,7 @@ public class GamesViewSelectOrgcom extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(".GamesListActivity");
+                i.putExtra("listType","orgcomPlaning");
                 startActivity(i);
             }
         });

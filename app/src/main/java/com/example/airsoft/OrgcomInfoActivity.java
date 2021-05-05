@@ -28,6 +28,7 @@ public class OrgcomInfoActivity extends AppCompatActivity {
                 @Override
                 public void onOrgcomIdChanged(String orgcomKey) {
                     thisOrgcomKey=orgcomKey;
+                    getData(thisOrgcomKey);
                     findViewById(R.id.orgcom_info_description).setEnabled(true);
                     findViewById(R.id.button_save_changes).setVisibility(View.VISIBLE);
                 }
@@ -40,9 +41,9 @@ public class OrgcomInfoActivity extends AppCompatActivity {
         }
         else {
             thisOrgcomKey = intent.getStringExtra("orgcomKey");
-
+            getData(thisOrgcomKey);
         }
-        getData(thisOrgcomKey);
+
         addListenerOnButton(thisOrgcomKey);
     }
 

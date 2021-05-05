@@ -94,7 +94,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/map"
+                    android:id="@+id/polygon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -104,16 +104,25 @@
                     android:textColor="@color/black"/>
 
                 <Spinner
-                    android:id="@+id/maps"
+                    android:id="@+id/new_game_polygons_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:spinnerMode="dialog"
                     android:textAlignment="center" />
 
+
             </LinearLayout>
 
-
+            <TextView
+                android:id="@+id/new_game_polygon_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:id="@+id/new_game_description"
@@ -128,6 +137,7 @@
 
                 />
             <Button
+                android:id="@+id/button_creating_new_game"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Создать игру"

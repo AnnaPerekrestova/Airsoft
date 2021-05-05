@@ -16,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +35,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 public class NewGameRecyclerActivity extends AppCompatActivity {
     TextView currentDateTime;
@@ -97,25 +95,11 @@ public class NewGameRecyclerActivity extends AppCompatActivity {
 
 
 //-----------Выпадающий список для выбора карты --------------------------------------------------------------------
-        spinnerMaps = (Spinner) findViewById(R.id.maps);
+        spinnerMaps = (Spinner) findViewById(R.id.polygons_spinner);
         adapterMaps = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getMapsList());
         adapterMaps.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMaps.setAdapter(adapterMaps);
 
-        AdapterView.OnItemSelectedListener teamSelectedListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Получаем выбранный объект
-                String item = (String) parent.getItemAtPosition(position);
-                selectedTeam = item;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        };
-        //spinnerTeams.setOnItemSelectedListener(teamSelectedListe);
 
         AdapterView.OnItemSelectedListener mapSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override

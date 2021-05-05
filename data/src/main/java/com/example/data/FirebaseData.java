@@ -858,20 +858,23 @@ public class FirebaseData {
         });
     }
     //-------------------------------получаем список всех команд в БД---------------------------------------------------------
-    public interface polygonListCallback{
-        void onPolygonListChanged(String polygonKey,String polygonName, String polygonAddress,
+    public interface orgcomPolygonListCallback{
+        void onOrgcomPolygonListChanged(String polygonKey,String polygonName, String polygonAddress,
                                   String polygonOrgcomID, boolean polygonActuality, String polygonDescription);
-        void onPolygonListChanged();
+        void onOrgcomPolygonListChanged();
+        void onPolygonNamesListChanged(List<String> polygonNamesList);
     }
-    public void getPolygonsList(final polygonListCallback callback){
+    public void getOrgcomPolygonsList(final orgcomPolygonListCallback callback){
         getOrgcomKey(new orgcomCallback() {
             @Override
             public void onOrgcomIdChanged(final String orgcomKey) {
+                final List<String> polygonNamesList = new ArrayList<>();
                 final DatabaseReference databaseReference = database.getReference("Polygons");
                 final Query databaseQuery = databaseReference.orderByChild("PolygonOrgcomID").equalTo(orgcomKey);
                 databaseQuery.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                         final String polygonKey = snapshot.getKey();
                         if (polygonKey != null) {
                             String polygonName =  (String)snapshot.child("PolygonName").getValue();
@@ -879,9 +882,11 @@ public class FirebaseData {
                             boolean polygonActuality =  (boolean) snapshot.child("PolygonActuality").getValue();
                             String polygonDescription =  (String)snapshot.child("PolygonDescription").getValue();
                             if (polygonName!=null & polygonAddress!=null & polygonDescription!=null) {
-                                callback.onPolygonListChanged(polygonKey, polygonName, polygonAddress, orgcomKey, polygonActuality, polygonDescription);
+                                callback.onOrgcomPolygonListChanged(polygonKey, polygonName, polygonAddress, orgcomKey, polygonActuality, polygonDescription);
+                                polygonNamesList.add(polygonName);
                             }
                         }
+                        callback.onPolygonNamesListChanged(polygonNamesList);
                     }
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -889,13 +894,13 @@ public class FirebaseData {
                         String polygonAddress =  (String)snapshot.child("PolygonAddress").getValue();
                         String polygonDescription =  (String)snapshot.child("PolygonDescription").getValue();
                         if (polygonName!=null & polygonAddress!=null & polygonDescription!=null) {
-                            callback.onPolygonListChanged();
+                            callback.onOrgcomPolygonListChanged();
                         }
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                        callback.onPolygonListChanged();
+                        callback.onOrgcomPolygonListChanged();
                     }
 
                     @Override
@@ -914,6 +919,31 @@ public class FirebaseData {
             public void onOrgcomNameChanged(String orgcomName) {}
         });
     }
+    public interface polygonInfoCallback{
+        void onPolygonIDByNameChanged(String polygonID);
+
+        void onPolygonAddressByNameChanged(String polygonAddress);
+    }
+    public void getPolygonInfoByName(final polygonInfoCallback callback, String polygonName){
+        final DatabaseReference databaseReference = database.getReference("Polygons");
+        final Query databaseQuery = databaseReference.orderByChild("PolygonName").equalTo(polygonName);
+        databaseQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapShot: snapshot.getChildren()){
+                    callback.onPolygonIDByNameChanged(postSnapShot.getKey());
+
+                    callback.onPolygonAddressByNameChanged(Objects.requireNonNull(postSnapShot.child("PolygonAddress").getValue()).toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void creatingNewGame(final String gameName,final String gameDate, final String gamePolygonID, final String gameDescription){
         getOrgcomKey(new orgcomCallback() {
             @Override
@@ -962,12 +992,15 @@ public class FirebaseData {
                                            String polygonID, String gameStatus, String gameDescription);
         void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
                                           String polygonID, String gameStatus, String gameDescription);
+        void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                      String polygonID, String gameStatus, String gameDescription);
         void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
                                            String polygonID, String gameStatus, String gameDescription, String gameWinner);
         void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
                                            String polygonID, String gameStatus, String gameDescription);
         void onOpeningGamesOfOrgcomChanged();
         void onClosedGamesOfOrgcomChanged();
+        void onRunningGamesOfOrgcomChanged();
         void onHappensGamesOfOrgcomChanged();
         void onCancelledGamesOfOrgcomChanged();
     }
@@ -1000,6 +1033,9 @@ public class FirebaseData {
                                 callback.onCancelledGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
                             if (gameStatus.equals("3")){
+                                callback.onRunningGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                            }
+                            if (gameStatus.equals("4")){
                                 final String gameWinner = (String) snapshot.child("gameWinner").getValue();
                                 callback.onHappensGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
                             }
@@ -1026,7 +1062,9 @@ public class FirebaseData {
                                 callback.onCancelledGamesOfOrgcomChanged();
                             }
                             if (gameStatus.equals("3")) {
-                                final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                                callback.onRunningGamesOfOrgcomChanged();
+                            }
+                            if (gameStatus.equals("4")) {
                                 callback.onHappensGamesOfOrgcomChanged();
                             }
                         }
@@ -1037,6 +1075,7 @@ public class FirebaseData {
                         callback.onOpeningGamesOfOrgcomChanged();
                         callback.onClosedGamesOfOrgcomChanged();
                         callback.onCancelledGamesOfOrgcomChanged();
+                        callback.onRunningGamesOfOrgcomChanged();
                         callback.onHappensGamesOfOrgcomChanged();
                     }
 

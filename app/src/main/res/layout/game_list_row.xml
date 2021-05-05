@@ -14,7 +14,7 @@
     android:paddingTop="@dimen/row_padding_vertical">
 
     <TextView
-        android:id="@+id/recycler_date_time_game_row"
+        android:id="@+id/recycler_game_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -26,15 +26,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/recycler_map_game_row"
+        android:id="@+id/recycler_game_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/recycler_date_time_game_row"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@id/recycler_game_name" />
+    <TextView
+        android:id="@+id/recycler_game_polygon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_game_date" />
+    <TextView
+        android:id="@+id/recycler_game_winner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf= "@id/recycler_game_polygon"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

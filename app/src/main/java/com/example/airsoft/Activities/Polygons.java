@@ -65,28 +65,38 @@ public class Polygons extends AppCompatActivity {
     }
     public void updateRecycler(){
 
-        fbData.getPolygonsList(new FirebaseData.polygonListCallback() {
+        fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
 
             @Override
-            public void onPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) { }
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) { }
 
             @Override
-            public void onPolygonListChanged() {
+            public void onOrgcomPolygonListChanged() {
                 polygonsList.clear();
                 addToPolygonsRecycler();
                 polygonsAdapter.notifyDataSetChanged();
             }
+
+            @Override
+            public void onPolygonNamesListChanged(List<String> polygonNamesList) {
+
+            }
         });
     }
     public void addToPolygonsRecycler(){
-        fbData.getPolygonsList(new FirebaseData.polygonListCallback() {
+        fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
             @Override
-            public void onPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) {
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) {
                 addRow(polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonActuality, polygonDescription);
             }
 
             @Override
-            public void onPolygonListChanged() {}
+            public void onOrgcomPolygonListChanged() {}
+
+            @Override
+            public void onPolygonNamesListChanged(List<String> polygonNamesList) {
+
+            }
         });
     }
 
