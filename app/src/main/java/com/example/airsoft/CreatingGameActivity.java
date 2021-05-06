@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.example.airsoft.Classes.PolygonClass;
 import com.example.data.FirebaseData;
 import java.util.Calendar;
 import java.util.List;
@@ -107,7 +109,7 @@ public class CreatingGameActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Получаем выбранный объект
                 selectedPolygon = (String) parent.getItemAtPosition(position);
-                fbData.getPolygonInfoByName(new FirebaseData.polygonInfoCallback() {
+                fbData.getPolygonInfoByName(new FirebaseData.polygonInfoByNameCallback() {
                     @Override
                     public void onPolygonIDByNameChanged(String polygonID) {         }
 
@@ -125,6 +127,7 @@ public class CreatingGameActivity extends AppCompatActivity {
             }
         });
     }
+
     public void addListenerOnButton(){
         Button buttonCreateNewGame = findViewById(R.id.button_creating_new_game);
 
@@ -132,7 +135,7 @@ public class CreatingGameActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fbData.getPolygonInfoByName(new FirebaseData.polygonInfoCallback() {
+                        fbData.getPolygonInfoByName(new FirebaseData.polygonInfoByNameCallback() {
                             @Override
                             public void onPolygonIDByNameChanged(String polygonID) {
                                 String gameName = ((EditText)findViewById(R.id.new_game_name)).getText().toString();

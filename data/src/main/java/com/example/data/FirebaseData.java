@@ -919,12 +919,12 @@ public class FirebaseData {
             public void onOrgcomNameChanged(String orgcomName) {}
         });
     }
-    public interface polygonInfoCallback{
+    public interface polygonInfoByNameCallback{
         void onPolygonIDByNameChanged(String polygonID);
 
         void onPolygonAddressByNameChanged(String polygonAddress);
     }
-    public void getPolygonInfoByName(final polygonInfoCallback callback, String polygonName){
+    public void getPolygonInfoByName(final polygonInfoByNameCallback callback, String polygonName){
         final DatabaseReference databaseReference = database.getReference("Polygons");
         final Query databaseQuery = databaseReference.orderByChild("PolygonName").equalTo(polygonName);
         databaseQuery.addValueEventListener(new ValueEventListener() {
@@ -934,6 +934,30 @@ public class FirebaseData {
                     callback.onPolygonIDByNameChanged(postSnapShot.getKey());
 
                     callback.onPolygonAddressByNameChanged(Objects.requireNonNull(postSnapShot.child("PolygonAddress").getValue()).toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public interface polygonInfoCallback{
+        void onPolygonInfoChanged(String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription);
+    }
+    public void getPolygonInfo(final polygonInfoCallback callback, String polygonID){
+        final DatabaseReference databaseReference = database.getReference("Polygons");
+        databaseReference.child(polygonID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapShot: snapshot.getChildren()){
+                    String polygonName = (String) postSnapShot.child("PolygonName").getValue();
+                    String polygonAddress = (String)postSnapShot.child("PolygonAddress").getValue();
+                    String polygonOrgcomID = (String)postSnapShot.child("PolygonOrgcomID").getValue();
+                    boolean polygonActuality = (boolean)postSnapShot.child("PolygonActuality").getValue();
+                    String polygonDescription = (String) postSnapShot.child("PolygonDescription").getValue();
+                    callback.onPolygonInfoChanged(polygonName,polygonAddress,polygonOrgcomID,polygonActuality,polygonDescription);
                 }
             }
 
@@ -962,28 +986,13 @@ public class FirebaseData {
                 db_gameName.setValue(gameName);
                 db_gameDate.setValue(gameDate);
                 db_gamePolygonID.setValue(gamePolygonID);
-                db_gameStatus.setValue("0");
+                db_gameStatus.setValue("открыт набор на игру");
                 db_gameDescription.setValue(gameDescription);
             }
 
             @Override
             public void onOrgcomNameChanged(String orgcomName) {}
         });
-    }
-//-----------------------------получаем текстовое значение статуса игры по ключу----------------------------------------------
-    public interface gameStatusValueCallback{
-        void onGameStatusValueChange(String statusValue);
-    }
-    public void getGameStatusValue(final gameStatusValueCallback callback, final String statusKey){
-        database.getReference("GameStatuses").child(getUserUID()).addValueEventListener(new ValueEventListener() {
-              @Override
-              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  callback.onGameStatusValueChange(Objects.requireNonNull(snapshot.child(statusKey).getValue()).toString());
-              }
-              @Override
-              public void onCancelled(@NonNull DatabaseError error) {}
-          }
-        );
     }
 //------------получаем список всех игр оргкомитета: на которые идет набор, на которые набор закрыт,-------------------------
 // ----------------------отмененные и прошедшие (у прошедших есть победитель)------------------------------------------------------
@@ -1023,19 +1032,19 @@ public class FirebaseData {
 
 
                         if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
-                            if (gameStatus.equals("0")){
+                            if (gameStatus.equals("открыт набор на игру")){
                                 callback.onOpeningGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
-                            if (gameStatus.equals("1")){
+                            if (gameStatus.equals("набор на игру закрыт")){
                                 callback.onClosedGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
-                            if (gameStatus.equals("2")){
+                            if (gameStatus.equals("игра отменена")){
                                 callback.onCancelledGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
-                            if (gameStatus.equals("3")){
+                            if (gameStatus.equals("игра идет")){
                                 callback.onRunningGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
-                            if (gameStatus.equals("4")){
+                            if (gameStatus.equals("игра прошла")){
                                 final String gameWinner = (String) snapshot.child("gameWinner").getValue();
                                 callback.onHappensGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
                             }
@@ -1052,19 +1061,19 @@ public class FirebaseData {
 
 
                         if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
-                            if (gameStatus.equals("0")){
+                            if (gameStatus.equals("открыт набор на игру")){
                                 callback.onOpeningGamesOfOrgcomChanged();
                             }
-                            if (gameStatus.equals("1")){
+                            if (gameStatus.equals("набор на игру закрыт")){
                                 callback.onClosedGamesOfOrgcomChanged();
                             }
-                            if (gameStatus.equals("2")){
+                            if (gameStatus.equals("игра отменена")){
                                 callback.onCancelledGamesOfOrgcomChanged();
                             }
-                            if (gameStatus.equals("3")) {
+                            if (gameStatus.equals("игра идет")) {
                                 callback.onRunningGamesOfOrgcomChanged();
                             }
-                            if (gameStatus.equals("4")) {
+                            if (gameStatus.equals("игра прошла")) {
                                 callback.onHappensGamesOfOrgcomChanged();
                             }
                         }
@@ -1091,6 +1100,138 @@ public class FirebaseData {
             public void onOrgcomNameChanged(String orgcomName) {}
         });
     }
+    //------------получаем список всех игр команды: на которые идет набор, на которые набор закрыт,-------------------------
+// ----------------------отмененные и прошедшие (у прошедших есть победитель)------------------------------------------------------
+    public interface gamesOfTeamCallback{
+        void onOpeningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                           String polygonID, String gameStatus, String gameDescription);
+        void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                          String polygonID, String gameStatus, String gameDescription);
+        void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                           String polygonID, String gameStatus, String gameDescription);
+        void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+                                           String polygonID, String gameStatus, String gameDescription, String gameWinner);
+//        void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
+//                                             String polygonID, String gameStatus, String gameDescription);
+        void onOpeningGamesOfTeamChanged();
+        void onClosedGamesOfTeamChanged();
+        void onRunningGamesOfTeamChanged();
+        void onHappensGamesOfTeamChanged();
+//        void onCancelledGamesOfTeamChanged();
+    }
+    public void gamesOfTeam(final gamesOfTeamCallback callback){
+        DatabaseReference games = database.getReference("Games");
+        games.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                final String gameKey = snapshot.getKey();
+                final String gameName= (String) snapshot.child("GameName").getValue();
+                final String gameOrgcomID = (String) snapshot.child("GameOrgcomID").getValue();
+                final String gameDate = (String) snapshot.child("GameDate").getValue();
+                final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
+                final String gameStatus = (String) snapshot.child("GameStatus").getValue();
+                final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+
+
+                if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
+                    if (gameStatus.equals("открыт набор на игру")){
+                        callback.onOpeningGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                    }
+                    if (gameStatus.equals("набор на игру закрыт")){
+                        callback.onClosedGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                    }
+//                    if (gameStatus.equals("игра отменена")){
+//                        callback.(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+//                    }
+                    if (gameStatus.equals("игра идет")){
+                        callback.onRunningGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
+                    }
+                    if (gameStatus.equals("игра прошла")){
+                        final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                        callback.onHappensGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
+                    }
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                final String gameKey = snapshot.getKey();
+                final String gameName= (String) snapshot.child("GameName").getValue();
+                final String gameDate = (String) snapshot.child("GameDate").getValue();
+                final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
+                final String gameStatus = (String) snapshot.child("GameStatus").getValue();
+                final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+
+
+                if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
+                    if (gameStatus.equals("открыт набор на игру")){
+                        callback.onOpeningGamesOfTeamChanged();
+                    }
+                    if (gameStatus.equals("набор на игру закрыт")){
+                        callback.onClosedGamesOfTeamChanged();
+                    }
+//                    if (gameStatus.equals("игра отменена")){
+//                        callback.onCancelledGamesOfOrgcomChanged();
+//                    }
+                    if (gameStatus.equals("игра идет")) {
+                        callback.onRunningGamesOfTeamChanged();
+                    }
+                    if (gameStatus.equals("игра прошла")) {
+                        callback.onHappensGamesOfTeamChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                callback.onOpeningGamesOfTeamChanged();
+                callback.onClosedGamesOfTeamChanged();
+//                callback.onCancelledGamesOfOrgcomChanged();
+                callback.onRunningGamesOfTeamChanged();
+                callback.onHappensGamesOfTeamChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+    }
+    public interface gameInfoCallback{
+        void onGameInfoChanged(String orgcomID, String gameName, String gameDate,
+                                  String polygonID, String gameStatus, String gameDescription, String gameWinner);
+    }
+    public void getGameInfo(final gameInfoCallback callback, final String gameKey){
+        final DatabaseReference databaseReference = database.getReference("Games");
+        databaseReference.child(gameKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapShot: snapshot.getChildren()){
+
+                    final String gameOrgcomID= (String) postSnapShot.child("GameOrgcomID").getValue();
+                    final String gameName= (String) postSnapShot.child("GameName").getValue();
+                    final String gameDate = (String) postSnapShot.child("GameDate").getValue();
+                    final String gamePolygonID = (String) postSnapShot.child("GamePolygonID").getValue();
+                    final String gameStatus = (String) postSnapShot.child("GameStatus").getValue();
+                    final String gameDescription = (String) postSnapShot.child("gameDescription").getValue();
+                    if (gameStatus.equals("игра прошла")) {
+                        final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                        callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
+                    }else{
+                        callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,null);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
 }
 
