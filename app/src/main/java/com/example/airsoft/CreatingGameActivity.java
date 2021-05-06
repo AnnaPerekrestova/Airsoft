@@ -88,7 +88,7 @@ public class CreatingGameActivity extends AppCompatActivity {
         spinnerPolygons = findViewById(R.id.new_game_polygons_spinner);
         fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
             @Override
-            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) {            }
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude) {            }
 
             @Override
             public void onOrgcomPolygonListChanged() {            }

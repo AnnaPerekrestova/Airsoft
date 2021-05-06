@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/multicam"
-    tools:context=".Activities.GameInfoActivity">
-
+    tools:context=".PolygonInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,17 +16,17 @@
 
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar_game_info"
+            android:id="@+id/appbar_polygon_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <TextView
-                android:id="@+id/appbar_game_info_txt"
+                android:id="@+id/appbar_polygon_info_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="@string/GameInfo"
+                android:text="информация о полигоне"
                 android:textColor="@color/black"
                 android:textAlignment="center"
                 android:textSize="25sp"
@@ -44,22 +43,22 @@
             android:layout_marginHorizontal="16dp">
 
             <TextView
-                android:id="@+id/game_info_name_txt"
+                android:id="@+id/polygon_info_name_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:text="Название игры:"/>
+                android:text="Название полигона:"/>
 
 
             <TextView
-                android:id="@+id/game_info_name"
+                android:id="@+id/polygon_info_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:hint="Название игры"/>
+                android:hint="Название полигона"/>
 
 
         </LinearLayout>
@@ -74,25 +73,54 @@
             android:layout_marginHorizontal="16dp">
 
             <TextView
-                android:id="@+id/GameDataTime_text"
+                android:id="@+id/polygon_info_adress_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/GameDataTime_text"
+                android:text="Адрес полигона:"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_weight="1"
                 />
             <TextView
-                android:id="@+id/GameDataTime"
+                android:id="@+id/polygon_info_adress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="time"
+                android:text=""
+                android:hint="адрес"
                 android:textSize="18sp"
                 android:layout_weight="1"
                 />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+
+            >
+
+            <TextView
+                android:id="@+id/polygon_info_description_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Описание:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/polygon_info_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:hint="описание"
+                android:textSize="18sp" />
+
+        </LinearLayout>
 
         <fragment
             android:id="@+id/map"
@@ -133,6 +161,5 @@
 
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

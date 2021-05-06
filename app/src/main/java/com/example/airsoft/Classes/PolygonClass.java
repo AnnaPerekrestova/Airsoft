@@ -3,6 +3,7 @@ package com.example.airsoft.Classes;
 public class PolygonClass {
     private String polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonDescription;
     private boolean polygonActuality;
+    private Double polygonLongitude, polygonLatitude;
 
     public PolygonClass(String polygonKey){
         this.polygonKey=polygonKey;
@@ -25,4 +26,10 @@ public class PolygonClass {
 
     public String getPolygonDescription(){return polygonDescription;}
     public void setPolygonDescription(String polygonDescription){this.polygonDescription=polygonDescription;}
+
+    public Double getPolygonLongitude(){return polygonLongitude;}
+    public void setPolygonLongitude(Double polygonLongitude){this.polygonLongitude=polygonLongitude;}
+
+    public Double getPolygonLatitude(){return polygonLatitude;}
+    public void setPolygonLatitude(Double polygonLatitude){this.polygonLatitude=polygonLatitude;}
 }

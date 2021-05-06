@@ -44,18 +44,39 @@
                 android:layout_marginTop="16dp"
                 android:hint="Название игры"/>
 
-            <TextView
-                android:id="@+id/currentDateTime"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
-                android:textAlignment="center"
-                android:hint="время игры"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
-                />
+                <TextView
+                    android:id="@+id/currentDateTime_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Дата и время игры:"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:id="@+id/currentDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:hint="датавремя игры"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    />
+
+
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,6 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginRight="8dp"
                     android:onClick="setDate"
                     android:text="@string/ChageDate"
                     style="@style/buttonStyleBorderSand"/>
@@ -78,6 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:onClick="setTime"
                     android:text="@string/ChageTime"
                     style="@style/buttonStyleBorderSand"/>
@@ -89,17 +112,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-
-                >
+                android:layout_marginHorizontal="16dp">
 
                 <TextView
                     android:id="@+id/polygon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/Map"
-                    android:textAlignment="center"
+                    android:text="Полигон:"
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
@@ -108,21 +128,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:spinnerMode="dialog"
-                    android:textAlignment="center" />
+                    android:spinnerMode="dialog" />
 
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/new_game_polygon_address"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="16dp"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textColor="@color/black"/>
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/new_game_polygon_address_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Адрес полигона:"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/new_game_polygon_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="адрес полигона"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
 
             <EditText
                 android:id="@+id/new_game_description"

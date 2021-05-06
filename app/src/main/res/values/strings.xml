@@ -58,4 +58,5 @@
     <string name="birthdate">Дата рождения:</string>
     <string name="team">Команда:</string>
     <string name="team_description">Описание команды</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

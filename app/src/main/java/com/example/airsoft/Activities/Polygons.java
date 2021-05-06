@@ -44,14 +44,13 @@ public class Polygons extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
         @Override
         public void onClick(View view, int position) {
-//            PlayerClass selectedMember = membersList.get(position);
-////                Toast.makeText(getApplicationContext(), selected_member.getFio() + " is selected!", Toast.LENGTH_SHORT).show();
-//
-//            String personUID = (String) selectedMember.getPlayerUID();
-////                Toast.makeText(getApplicationContext(), nick + " nickname", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(".PlayerInfo");
-//            intent.putExtra("playerID", personUID);
-//            startActivity(intent);
+            PolygonClass selectedPolygon = polygonsList.get(position);
+            Intent intent = new Intent(".PlayerInfo");
+
+            String polygonID = (String) selectedPolygon.getPolygonKey();
+            intent.putExtra("polygonID", polygonID);
+
+            startActivity(intent);
         }
 
         @Override
@@ -68,7 +67,7 @@ public class Polygons extends AppCompatActivity {
         fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
 
             @Override
-            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) { }
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude) { }
 
             @Override
             public void onOrgcomPolygonListChanged() {
@@ -86,8 +85,8 @@ public class Polygons extends AppCompatActivity {
     public void addToPolygonsRecycler(){
         fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
             @Override
-            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription) {
-                addRow(polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonActuality, polygonDescription);
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude) {
+                addRow(polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonActuality, polygonDescription,  polygonLatitude,  polygonLongitude);
             }
 
             @Override
@@ -101,13 +100,15 @@ public class Polygons extends AppCompatActivity {
     }
 
     private void addRow(String polygonKey, String polygonName, String polygonAddress,
-                        String polygonOrgcomID, boolean polygonActuality, String polygonDescroption) {
+                        String polygonOrgcomID, boolean polygonActuality, String polygonDescroption, Double polygonLatitude, Double polygonLongitude) {
         PolygonClass polygon = new PolygonClass(polygonKey);
         polygon.setPolygonName(polygonName);
         polygon.setPolygonAddress(polygonAddress);
         polygon.setPolygonOrgcomID(polygonOrgcomID);
         polygon.setPolygonActuality(polygonActuality);
         polygon.setPolygonDescription(polygonDescroption);
+        polygon.setPolygonLatitude(polygonLatitude);
+        polygon.setPolygonLongitude(polygonLongitude);
         polygonsList.add(polygon);
 
         polygonsAdapter.notifyDataSetChanged();
