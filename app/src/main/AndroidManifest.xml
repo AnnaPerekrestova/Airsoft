@@ -16,13 +16,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.RequestsToGame"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".Activities.RequestsToGame" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity
             android:name=".CreatingRequestToGame"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".CreatingRequestToGame" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter></activity>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Activities.PlayingTeamsActivity"
             android:theme="@style/AppTheme.NoActionBar">

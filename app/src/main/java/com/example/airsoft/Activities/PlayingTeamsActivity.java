@@ -14,6 +14,7 @@ public class PlayingTeamsActivity extends AppCompatActivity {
 
     FirebaseData fbData = FirebaseData.getInstance();
     String  gameID;
+    String orgcomID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class PlayingTeamsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         gameID=intent.getStringExtra("gameID");
+        orgcomID=intent.getStringExtra("orgcomID");
 
         fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
             @Override
@@ -54,6 +56,7 @@ public class PlayingTeamsActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent i = new Intent(".CreatingRequestToGame");
                         i.putExtra("gameID", gameID);
+                        i.putExtra("orgcomID", orgcomID);
                         startActivity(i);
                     }
                 }
@@ -63,8 +66,9 @@ public class PlayingTeamsActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Intent i = new Intent(".GamesViewSelectActivity");
-//                        startActivity(i);
+                        Intent i = new Intent(".Activities.RequestsToGame");
+                        i.putExtra("gameID", gameID);
+                        startActivity(i);
                     }
                 }
 

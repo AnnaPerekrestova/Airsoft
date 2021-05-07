@@ -1241,6 +1241,36 @@ public class FirebaseData {
         });
     }
 
+    //----------создание в БД новой записи заявки на участие команды в игре-----------------------------
+    public void requestToGame(String orgcomID, String gameID, String teamID, String reqGameDescr, String playersCount, String reqGameStatus,  boolean payment){
+        //--------generate random key-------------------------------------------------------------------------
+        String newKey = database.getReference("quiz").push().getKey();
+
+        DatabaseReference db_orgcomID;
+        DatabaseReference db_gameID;
+        DatabaseReference db_teamID;
+        DatabaseReference db_reqGameDescr;
+        DatabaseReference db_playersCount;
+        DatabaseReference db_reqGameStatus;
+        DatabaseReference db_payment;
+
+        db_orgcomID = database.getReference("RequestsToGame/"+newKey+"/OrgcomID");
+        db_gameID = database.getReference("RequestsToGame/"+newKey+"/GameID");
+        db_teamID = database.getReference("RequestsToGame/"+newKey+"/TeamID");
+        db_reqGameDescr = database.getReference("RequestsToGame/"+newKey+"/RequestGameDescription");
+        db_playersCount = database.getReference("RequestsToGame/"+newKey+"/PlayersCount");
+        db_reqGameStatus = database.getReference("RequestsToGame/"+newKey+"/RequestGameStatus");
+        db_payment = database.getReference("RequestsToGame/"+newKey+"/Payment");
+
+        db_orgcomID.setValue(orgcomID);
+        db_gameID.setValue(gameID);
+        db_teamID.setValue(teamID);
+        db_reqGameDescr.setValue(reqGameDescr);
+        db_playersCount.setValue(playersCount);
+        db_reqGameStatus.setValue(reqGameStatus);
+        db_payment.setValue(payment);
+    }
+
 
 }
 

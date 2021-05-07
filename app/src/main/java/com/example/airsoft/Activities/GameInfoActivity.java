@@ -98,6 +98,7 @@ public class GameInfoActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent i = new Intent(".Activities.PlayingTeamsActivity");
                         i.putExtra("gameID", GameID);
+                        i.putExtra("orgcomID", OrgcomID);
                         startActivity(i);
                     }
                 }
