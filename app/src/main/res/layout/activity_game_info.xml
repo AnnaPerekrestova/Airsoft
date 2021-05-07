@@ -227,6 +227,11 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <Spinner
+            android:id="@+id/game_status_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 
