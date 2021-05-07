@@ -81,9 +81,10 @@
             android:textColor="@color/black"
             android:hint="Описание"
             android:inputType="text"
-            tools:ignore="Autofill,LabelFor"
             android:padding="15dp"
+            android:singleLine="false"
             android:imeOptions="actionDone"
+            android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp" />
 
 

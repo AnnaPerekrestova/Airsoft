@@ -1,10 +1,11 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -16,8 +17,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.example.airsoft.Classes.PolygonClass;
+import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 import java.util.Calendar;
 import java.util.List;
@@ -88,7 +90,7 @@ public class CreatingGameActivity extends AppCompatActivity {
         spinnerPolygons = findViewById(R.id.new_game_polygons_spinner);
         fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
             @Override
-            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude) {            }
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID,  String polygonDescription, Double polygonLatitude, Double polygonLongitude) {            }
 
             @Override
             public void onOrgcomPolygonListChanged() {            }
@@ -135,19 +137,36 @@ public class CreatingGameActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fbData.getPolygonInfoByName(new FirebaseData.polygonInfoByNameCallback() {
-                            @Override
-                            public void onPolygonIDByNameChanged(String polygonID) {
-                                String gameName = ((EditText)findViewById(R.id.new_game_name)).getText().toString();
-                                String gameDescription = ((EditText)findViewById(R.id.new_game_description)).getText().toString();
-                                String gameDate = currentDateTime.getText().toString();;
-                                fbData.creatingNewGame(gameName,gameDate,polygonID,gameDescription);
-                            }
+                        final String gameName = ((EditText)findViewById(R.id.new_game_name)).getText().toString();
+                        final String gameDescription = ((EditText)findViewById(R.id.new_game_description)).getText().toString();
+                        final String gameDate = currentDateTime.getText().toString();
+                        if (gameName.equals("")|gameDescription.equals("")){
+                            Toast.makeText(CreatingGameActivity.this, "Введите название и описание игры",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            if (selectedPolygon != null) {
 
-                            @Override
-                            public void onPolygonAddressByNameChanged(String polygonAddress) {      }
-                        }, selectedPolygon);
-                        finish();
+                                fbData.getPolygonInfoByName(new FirebaseData.polygonInfoByNameCallback() {
+                                    @Override
+                                    public void onPolygonIDByNameChanged(String polygonID) {
+                                        fbData.creatingNewGame(gameName, gameDate, polygonID, gameDescription);
+                                    }
+
+                                    @Override
+                                    public void onPolygonAddressByNameChanged(String polygonAddress) {
+                                    }
+                                }, selectedPolygon);
+                                finish();
+                            }
+                            else  {
+                                Toast.makeText(CreatingGameActivity.this, "Перед созданием игры, создайте полигон",
+                                        Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(".CreatingPolygon");
+                                startActivity(i);
+                                finish();
+                            }
+                        }
                     }
                 }
 

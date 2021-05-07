@@ -3,8 +3,10 @@ package com.example.airsoft.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
@@ -22,6 +24,7 @@ public class CreatingPolygon extends AppCompatActivity implements OnMapReadyCall
     FirebaseData fbData = new FirebaseData().getInstance();
     Double latitude;
     Double longitude;
+    boolean fmos = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,23 @@ public class CreatingPolygon extends AppCompatActivity implements OnMapReadyCall
         findViewById(R.id.creating_polygon_save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fbData.creatingNewPolygon(((EditText)findViewById(R.id.creating_polygon_name)).getText().toString(), ((EditText)findViewById(R.id.creating_polygon_adress)).getText().toString(),
-                        ((EditText)findViewById(R.id.creating_polygon_description)).getText().toString(), latitude ,longitude );
-                finish();
+//                проверям, поставил ли организатор точку на карте (место полигона)
+                if ( fmos==true ){
+                    Toast.makeText(CreatingPolygon.this, "Укажите полигон на карте удержанием точки",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+//                    проверка на ввод названия, адреса и описания полигона
+                    if (((EditText) findViewById(R.id.creating_polygon_name)).getText().toString().equals("") | (((EditText) findViewById(R.id.creating_polygon_adress)).getText().toString().equals("")) | (((EditText) findViewById(R.id.creating_polygon_description)).getText().toString().equals(""))){
+                        Toast.makeText(CreatingPolygon.this, "Введите информацию о полигоне",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        fbData.creatingNewPolygon(((EditText) findViewById(R.id.creating_polygon_name)).getText().toString(), ((EditText) findViewById(R.id.creating_polygon_adress)).getText().toString(),
+                                ((EditText) findViewById(R.id.creating_polygon_description)).getText().toString(), latitude, longitude);
+                        finish();
+                    }
+                }
             }
         });
     }
@@ -60,6 +77,7 @@ public class CreatingPolygon extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onMapLongClick(LatLng latLng) {
                 marker[0].remove();
+                fmos=false;
                 latitude = latLng.latitude;
                 longitude = latLng.longitude;
                 marker[0] = mMap.addMarker(new MarkerOptions().position(latLng).title("Полигон"));

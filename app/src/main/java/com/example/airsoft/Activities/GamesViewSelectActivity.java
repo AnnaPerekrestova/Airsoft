@@ -30,7 +30,8 @@ public class GamesViewSelectActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".PreviousGamesActivity");
+                        Intent i = new Intent(".GamesListActivity");
+                        i.putExtra("listType","playerPrev");
                         startActivity(i);
                     }
                 }
@@ -40,7 +41,8 @@ public class GamesViewSelectActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".PlannedGamesActivity");
+                        Intent i = new Intent(".GamesListActivity");
+                        i.putExtra("listType","playerPlaning");
                         startActivity(i);
                     }
                 }
@@ -50,7 +52,8 @@ public class GamesViewSelectActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent i = new Intent(".SearchNewGameActivity");
+                        Intent i = new Intent(".GamesListActivity");
+                        i.putExtra("listType","playerSearch");
                         startActivity(i);
                     }
                 }

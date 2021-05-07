@@ -15,7 +15,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PolygonInfoActivity"></activity>
+        <activity
+            android:name=".CreatingRequestToGame"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".NewRequestToGame" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter></activity>
+        <activity
+            android:name=".Activities.PlayingTeamsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".Activities.PlayingTeamsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.PolygonInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name=".PolygonInfoActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -50,7 +75,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreatingGameActivity"
+            android:name=".Activities.CreatingGameActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name=".CreatingGameActivity" />
@@ -282,7 +307,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.MembersRecyclerActivity"
             android:label="@string/title_activity_members_recycler"

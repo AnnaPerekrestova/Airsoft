@@ -5,7 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/multicam"
-    tools:context=".PolygonInfoActivity">
+    tools:context=".Activities.PolygonInfoActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -131,35 +135,7 @@
             android:layout_marginTop="16dp">
         </fragment>
 
-        <LinearLayout
-            android:id="@+id/game_winner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:visibility="invisible"
-            android:layout_marginHorizontal="16dp"
-            >
-
-            <TextView
-                android:id="@+id/textView_winner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/winner"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/game_winner_string"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="winner"
-                android:textSize="18sp" />
         </LinearLayout>
-
-
-    </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

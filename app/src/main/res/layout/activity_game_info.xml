@@ -86,7 +86,63 @@
                 android:id="@+id/GameDataTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="time"
+                android:hint="time"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/Game_description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Описание игры:"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/Game_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="описание"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/Game_status_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Состояние игры:"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/Game_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="статус игры"
                 android:textSize="18sp"
                 android:layout_weight="1"
                 />
@@ -94,14 +150,26 @@
         </LinearLayout>
 
 
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <Button
+            android:id="@+id/Game_polygon_btn"
+            style="@style/buttonStyleBorderSand"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
+            android:text="Информация о полигоне"
+            android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp">
-        </fragment>
+            />
+
+        <Button
+            android:id="@+id/Game_players_btn"
+            style="@style/buttonStyleBorderSand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Участвующие команды"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            />
+
 
         <LinearLayout
             android:id="@+id/game_winner"

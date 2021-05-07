@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.airsoft.Adapters.GamesAdapter;
 import com.example.airsoft.Adapters.PolygonsAdapter;
@@ -41,114 +44,244 @@ public class GamesListActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(gamesAdapter);
 
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                GameClass selectedgame = gamesList.get(position);
+                Intent intent = new Intent(".GameInfoActivity");
+
+                String gameID = (String) selectedgame.getGameKey();
+                intent.putExtra("gameID",  gameID);
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+
+        }));
+
 
         addToGamesRecycler();
         updateRecycler();
 
-
+        addListenerOnButton();
 //        if (listType.equals("orgcomPlaning")){
 //
 //        }
     }
     public void updateRecycler(){
 
-        fbData.gamesOfOrgcom(new FirebaseData.gamesOfOrgcomCallback() {
-            @Override
-            public void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
-            @Override
-            public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
-            @Override
-            public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
-            @Override
-            public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) { }
-            @Override
-            public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
-
-            @Override
-            public void onOpeningGamesOfOrgcomChanged() {
-                if (listType.equals("orgcomPlaning")){
-                    gamesList.clear();
-                    addToGamesRecycler();
-                    gamesAdapter.notifyDataSetChanged();
+        if (listType.equals("playerSearch")|listType.equals("playerPlaning")|listType.equals("playerPrev")){
+            fbData.gamesOfTeam(new FirebaseData.gamesOfTeamCallback() {
+                @Override
+                public void onOpeningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
                 }
-            }
 
-            @Override
-            public void onClosedGamesOfOrgcomChanged() {
+                @Override
+                public void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
-            }
+                }
 
-            @Override
-            public void onRunningGamesOfOrgcomChanged() {
+                @Override
+                public void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
-            }
+                }
 
-            @Override
-            public void onHappensGamesOfOrgcomChanged() {
+                @Override
+                public void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
 
-            }
+                }
 
-            @Override
-            public void onCancelledGamesOfOrgcomChanged() {
+                @Override
+                public void onOpeningGamesOfTeamChanged() {
+                    if (listType.equals("playerSearch")){
+                        gamesList.clear();
+                        addToGamesRecycler();
+                        gamesAdapter.notifyDataSetChanged();
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onClosedGamesOfTeamChanged() {
+
+                }
+
+                @Override
+                public void onRunningGamesOfTeamChanged() {
+
+                }
+
+                @Override
+                public void onHappensGamesOfTeamChanged() {
+
+                }
+            });
+        }
+        else {
+
+            fbData.gamesOfOrgcom(new FirebaseData.gamesOfOrgcomCallback() {
+                @Override
+                public void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                }
+
+                @Override
+                public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                }
+
+                @Override
+                public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                }
+
+                @Override
+                public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
+                }
+
+                @Override
+                public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                }
+
+                @Override
+                public void onOpeningGamesOfOrgcomChanged() {
+                    if (listType.equals("orgcomPlaning")) {
+                        gamesList.clear();
+                        addToGamesRecycler();
+                        gamesAdapter.notifyDataSetChanged();
+
+                    }
+                }
+
+                @Override
+                public void onClosedGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onRunningGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onHappensGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onCancelledGamesOfOrgcomChanged() {
+
+                }
+            });
+        }
     }
     public void addToGamesRecycler(){
-        fbData.gamesOfOrgcom(new FirebaseData.gamesOfOrgcomCallback() {
-            @Override
-            public void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-                if (listType.equals("orgcomPlaning")){
-                    addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription,null);
+        if (listType.equals("playerSearch")|listType.equals("playerPlaning")|listType.equals("playerPrev")){
+            fbData.gamesOfTeam(new FirebaseData.gamesOfTeamCallback() {
+                @Override
+                public void onOpeningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                    if (listType.equals("playerSearch")){
+                        addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, null);
+                    }
                 }
-            }
 
-            @Override
-            public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                @Override
+                public void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
-            }
+                }
 
-            @Override
-            public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                @Override
+                public void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
-            }
+                }
 
-            @Override
-            public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
+                @Override
+                public void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
 
-            }
+                }
 
-            @Override
-            public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                @Override
+                public void onOpeningGamesOfTeamChanged() {
 
-            }
+                }
 
-            @Override
-            public void onOpeningGamesOfOrgcomChanged() {
+                @Override
+                public void onClosedGamesOfTeamChanged() {
 
-            }
+                }
 
-            @Override
-            public void onClosedGamesOfOrgcomChanged() {
+                @Override
+                public void onRunningGamesOfTeamChanged() {
 
-            }
+                }
 
-            @Override
-            public void onRunningGamesOfOrgcomChanged() {
+                @Override
+                public void onHappensGamesOfTeamChanged() {
 
-            }
+                }
+            });
+        }
+        else {
+            findViewById(R.id.games_recycler).setLayoutParams(new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT, 1));
+            Button create = (Button) findViewById(R.id.create_new_game_btn);
+            create.setVisibility(View.VISIBLE);
+            fbData.gamesOfOrgcom(new FirebaseData.gamesOfOrgcomCallback() {
+                @Override
+                public void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+                    if (listType.equals("orgcomPlaning")) {
+                        addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, null);
+                    }
+                }
 
-            @Override
-            public void onHappensGamesOfOrgcomChanged() {
+                @Override
+                public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
-            }
+                }
 
-            @Override
-            public void onCancelledGamesOfOrgcomChanged() {
+                @Override
+                public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
 
-            }
-        });
+                }
+
+                @Override
+                public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
+                    if (listType.equals("orgcomHappens")) {
+                        addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, gameWinner);
+                    }
+                }
+
+                @Override
+                public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
+
+                }
+
+                @Override
+                public void onOpeningGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onClosedGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onRunningGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onHappensGamesOfOrgcomChanged() {
+
+                }
+
+                @Override
+                public void onCancelledGamesOfOrgcomChanged() {
+
+                }
+            });
+        }
     }
 
     private void addRow(String gameKey, String orgcomID, String gameName, String gameDate,
@@ -163,5 +296,16 @@ public class GamesListActivity extends AppCompatActivity {
         game.setGameWinner(gameWinner);
         gamesList.add(game);
         gamesAdapter.notifyDataSetChanged();
+    }
+
+    private void addListenerOnButton(){
+        Button create = findViewById(R.id.create_new_game_btn);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".CreatingGameActivity");
+                startActivity(i);
+            }
+        });
     }
 }

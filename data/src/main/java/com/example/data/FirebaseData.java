@@ -843,7 +843,7 @@ public class FirebaseData {
                 DatabaseReference db_polygonOrgcomID = database.getReference("Polygons/"+newPolygonKey+"/PolygonOrgcomID");
                 DatabaseReference db_polygonName = database.getReference("Polygons/"+newPolygonKey+"/PolygonName");
                 DatabaseReference db_polygonAddress = database.getReference("Polygons/"+newPolygonKey+"/PolygonAddress");
-                DatabaseReference db_polygonActuality = database.getReference("Polygons/"+newPolygonKey+"/PolygonActuality");
+//                DatabaseReference db_polygonActuality = database.getReference("Polygons/"+newPolygonKey+"/PolygonActuality");
                 DatabaseReference db_polygonDescription = database.getReference("Polygons/"+newPolygonKey+"/PolygonDescription");
                 DatabaseReference db_polygonLatitude = database.getReference("Polygons/"+newPolygonKey+"/PolygonLatitude");
                 DatabaseReference db_polygonLongitude = database.getReference("Polygons/"+newPolygonKey+"/PolygonLongitude");
@@ -851,7 +851,7 @@ public class FirebaseData {
                 db_polygonOrgcomID.setValue(orgcomKey);
                 db_polygonName.setValue(polygonName);
                 db_polygonAddress.setValue(polygonAddress);
-                db_polygonActuality.setValue(true);
+//                db_polygonActuality.setValue(true);
                 db_polygonDescription.setValue(polygonDescription);
                 db_polygonLatitude.setValue(polygonLatitude);
                 db_polygonLongitude.setValue(polygonLongitude);
@@ -864,7 +864,7 @@ public class FirebaseData {
     //-------------------------------получаем список всех команд в БД---------------------------------------------------------
     public interface orgcomPolygonListCallback{
         void onOrgcomPolygonListChanged(String polygonKey,String polygonName, String polygonAddress,
-                                  String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude);
+                                  String polygonOrgcomID, String polygonDescription, Double polygonLatitude, Double polygonLongitude);
         void onOrgcomPolygonListChanged();
         void onPolygonNamesListChanged(List<String> polygonNamesList);
     }
@@ -883,12 +883,12 @@ public class FirebaseData {
                         if (polygonKey != null) {
                             String polygonName =  (String)snapshot.child("PolygonName").getValue();
                             String polygonAddress =  (String)snapshot.child("PolygonAddress").getValue();
-                            boolean polygonActuality =  (boolean) snapshot.child("PolygonActuality").getValue();
+//                            boolean polygonActuality =  (boolean) snapshot.child("PolygonActuality").getValue();
                             String polygonDescription =  (String)snapshot.child("PolygonDescription").getValue();
                             Double polygonLatitude = (Double)snapshot.child("PolygonLatitude").getValue();
                             Double polygonLongitude = (Double)snapshot.child("PolygonLongitude").getValue();
                             if (polygonName!=null & polygonAddress!=null & polygonDescription!=null) {
-                                callback.onOrgcomPolygonListChanged(polygonKey, polygonName, polygonAddress, orgcomKey, polygonActuality, polygonDescription, polygonLatitude, polygonLongitude);
+                                callback.onOrgcomPolygonListChanged(polygonKey, polygonName, polygonAddress, orgcomKey,  polygonDescription, polygonLatitude, polygonLongitude);
                                 polygonNamesList.add(polygonName);
                             }
                         }
@@ -950,21 +950,23 @@ public class FirebaseData {
         });
     }
     public interface polygonInfoCallback{
-        void onPolygonInfoChanged(String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription);
+        void onPolygonInfoChanged(String polygonName, String polygonAddress, String polygonOrgcomID,  String polygonDescription, Double polygonLatitude, Double polygonLongitude);
     }
     public void getPolygonInfo(final polygonInfoCallback callback, String polygonID){
         final DatabaseReference databaseReference = database.getReference("Polygons");
         databaseReference.child(polygonID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                    String polygonName = (String) postSnapShot.child("PolygonName").getValue();
-                    String polygonAddress = (String)postSnapShot.child("PolygonAddress").getValue();
-                    String polygonOrgcomID = (String)postSnapShot.child("PolygonOrgcomID").getValue();
-                    boolean polygonActuality = (boolean)postSnapShot.child("PolygonActuality").getValue();
-                    String polygonDescription = (String) postSnapShot.child("PolygonDescription").getValue();
-                    callback.onPolygonInfoChanged(polygonName,polygonAddress,polygonOrgcomID,polygonActuality,polygonDescription);
-                }
+
+                    String polygonName = (String) snapshot.child("PolygonName").getValue();
+                    String polygonAddress = (String)snapshot.child("PolygonAddress").getValue();
+                    String polygonOrgcomID = (String)snapshot.child("PolygonOrgcomID").getValue();
+//                    boolean polygonActuality = (boolean)postSnapShot.child("PolygonActuality").getValue();
+                    String polygonDescription = (String) snapshot.child("PolygonDescription").getValue();
+                    Double polygonLatitude = (Double)snapshot.child("PolygonLatitude").getValue();
+                    Double polygonLongitude = (Double)snapshot.child("PolygonLongitude").getValue();
+                    callback.onPolygonInfoChanged(polygonName,polygonAddress,polygonOrgcomID,polygonDescription,polygonLatitude,polygonLongitude);
+
             }
 
             @Override
@@ -1214,21 +1216,19 @@ public class FirebaseData {
         databaseReference.child(gameKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapShot: snapshot.getChildren()){
-
-                    final String gameOrgcomID= (String) postSnapShot.child("GameOrgcomID").getValue();
-                    final String gameName= (String) postSnapShot.child("GameName").getValue();
-                    final String gameDate = (String) postSnapShot.child("GameDate").getValue();
-                    final String gamePolygonID = (String) postSnapShot.child("GamePolygonID").getValue();
-                    final String gameStatus = (String) postSnapShot.child("GameStatus").getValue();
-                    final String gameDescription = (String) postSnapShot.child("gameDescription").getValue();
-                    if (gameStatus.equals("игра прошла")) {
-                        final String gameWinner = (String) snapshot.child("gameWinner").getValue();
-                        callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
-                    }else{
-                        callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,null);
-                    }
+                final String gameOrgcomID= (String) snapshot.child("GameOrgcomID").getValue();
+                final String gameName= (String) snapshot.child("GameName").getValue();
+                final String gameDate = (String) snapshot.child("GameDate").getValue();
+                final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
+                final String gameStatus = (String) snapshot.child("GameStatus").getValue();
+                final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+                if (gameStatus.equals("игра прошла")) {
+                    final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                    callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
+                }else{
+                    callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,null);
                 }
+
             }
 
             @Override

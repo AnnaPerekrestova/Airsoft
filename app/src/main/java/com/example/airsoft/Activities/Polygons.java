@@ -45,10 +45,10 @@ public class Polygons extends AppCompatActivity {
         @Override
         public void onClick(View view, int position) {
             PolygonClass selectedPolygon = polygonsList.get(position);
-            Intent intent = new Intent(".PlayerInfo");
+            Intent intent = new Intent(".PolygonInfoActivity");
 
             String polygonID = (String) selectedPolygon.getPolygonKey();
-            intent.putExtra("polygonID", polygonID);
+            intent.putExtra("polygonID",  polygonID);
 
             startActivity(intent);
         }
@@ -67,7 +67,7 @@ public class Polygons extends AppCompatActivity {
         fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
 
             @Override
-            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude) { }
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID,  String polygonDescription, Double polygonLatitude, Double polygonLongitude) { }
 
             @Override
             public void onOrgcomPolygonListChanged() {
@@ -85,8 +85,8 @@ public class Polygons extends AppCompatActivity {
     public void addToPolygonsRecycler(){
         fbData.getOrgcomPolygonsList(new FirebaseData.orgcomPolygonListCallback() {
             @Override
-            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID, boolean polygonActuality, String polygonDescription, Double polygonLatitude, Double polygonLongitude) {
-                addRow(polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonActuality, polygonDescription,  polygonLatitude,  polygonLongitude);
+            public void onOrgcomPolygonListChanged(String polygonKey, String polygonName, String polygonAddress, String polygonOrgcomID,  String polygonDescription, Double polygonLatitude, Double polygonLongitude) {
+                addRow(polygonKey, polygonName, polygonAddress, polygonOrgcomID, polygonDescription,  polygonLatitude,  polygonLongitude);
             }
 
             @Override
@@ -100,12 +100,13 @@ public class Polygons extends AppCompatActivity {
     }
 
     private void addRow(String polygonKey, String polygonName, String polygonAddress,
-                        String polygonOrgcomID, boolean polygonActuality, String polygonDescroption, Double polygonLatitude, Double polygonLongitude) {
+                        String polygonOrgcomID, String polygonDescroption, Double polygonLatitude, Double polygonLongitude) {
         PolygonClass polygon = new PolygonClass(polygonKey);
+        polygon.setPolygonKey(polygonKey);
         polygon.setPolygonName(polygonName);
         polygon.setPolygonAddress(polygonAddress);
         polygon.setPolygonOrgcomID(polygonOrgcomID);
-        polygon.setPolygonActuality(polygonActuality);
+//        polygon.setPolygonActuality(polygonActuality);
         polygon.setPolygonDescription(polygonDescroption);
         polygon.setPolygonLatitude(polygonLatitude);
         polygon.setPolygonLongitude(polygonLongitude);
@@ -123,6 +124,7 @@ public class Polygons extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent i = new Intent(".CreatingPolygon");
                         startActivity(i);
+                        finish();
                     }
                 }
         );

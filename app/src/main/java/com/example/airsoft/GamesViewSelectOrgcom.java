@@ -17,16 +17,9 @@ public class GamesViewSelectOrgcom extends AppCompatActivity {
         addListenerOnButton();
     }
     private void addListenerOnButton(){
-        Button create = findViewById(R.id.create_new_game_orgcom);
         Button planing = findViewById(R.id.planing_games_orgcom);
         Button prev = findViewById(R.id.prev_games_orgcom);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(".CreatingGameActivity");
-                startActivity(i);
-            }
-        });
+
         planing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/multicam"
-    tools:context=".CreatingGameActivity">
+    tools:context=".Activities.CreatingGameActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="адрес полигона"
+                    android:hint="Создайте полигон"
                     android:layout_marginLeft="8dp"
                     android:textSize="18sp" />
 
