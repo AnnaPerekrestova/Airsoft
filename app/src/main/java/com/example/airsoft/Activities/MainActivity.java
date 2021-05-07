@@ -58,16 +58,8 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fbData.getTeamKey(new FirebaseData.teamCallback() {
-                            @Override
-                            public void onTeamIdChanged(final String teamKey) {
-                                Intent i = new Intent(".TeamInfoActivity");
-                                startActivity(i);
-                            }
-
-                            @Override
-                            public void onTeamNameChanged(String teamName) {}
-                        });
+                        Intent i = new Intent(".TeamInfoActivity");
+                        startActivity(i);
                     }
                 }
 

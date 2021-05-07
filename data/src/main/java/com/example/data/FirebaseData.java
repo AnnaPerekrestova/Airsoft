@@ -1038,7 +1038,7 @@ public class FirebaseData {
                         final String gameDate = (String) snapshot.child("GameDate").getValue();
                         final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
                         final String gameStatus = (String) snapshot.child("GameStatus").getValue();
-                        final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+                        final String gameDescription = (String) snapshot.child("GameDescription").getValue();
 
 
                         if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
@@ -1055,7 +1055,7 @@ public class FirebaseData {
                                 callback.onRunningGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
                             if (gameStatus.equals("игра прошла")){
-                                final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                                final String gameWinner = (String) snapshot.child("GameWinner").getValue();
                                 callback.onHappensGamesOfOrgcomChanged(gameKey,orgcomKey,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
                             }
                         }
@@ -1067,7 +1067,7 @@ public class FirebaseData {
                         final String gameDate = (String) snapshot.child("GameDate").getValue();
                         final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
                         final String gameStatus = (String) snapshot.child("GameStatus").getValue();
-                        final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+                        final String gameDescription = (String) snapshot.child("GameDescription").getValue();
 
 
                         if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
@@ -1141,7 +1141,7 @@ public class FirebaseData {
                 final String gameDate = (String) snapshot.child("GameDate").getValue();
                 final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
                 final String gameStatus = (String) snapshot.child("GameStatus").getValue();
-                final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+                final String gameDescription = (String) snapshot.child("GameDescription").getValue();
 
 
                 if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){
@@ -1158,7 +1158,7 @@ public class FirebaseData {
                         callback.onRunningGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                     }
                     if (gameStatus.equals("игра прошла")){
-                        final String gameWinner = (String) snapshot.child("gameWinner").getValue();
+                        final String gameWinner = (String) snapshot.child("GameWinner").getValue();
                         callback.onHappensGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
                     }
                 }
@@ -1170,7 +1170,7 @@ public class FirebaseData {
                 final String gameDate = (String) snapshot.child("GameDate").getValue();
                 final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
                 final String gameStatus = (String) snapshot.child("GameStatus").getValue();
-                final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+                final String gameDescription = (String) snapshot.child("GameDescription").getValue();
 
 
                 if (gameKey!=null & gameName!=null & gameDate!=null & gamePolygonID!=null & gameStatus!=null & gameDescription!=null){

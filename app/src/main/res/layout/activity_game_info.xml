@@ -138,8 +138,8 @@
                 android:layout_weight="1"
                 />
 
-            <TextView
-                android:id="@+id/Game_status"
+            <Spinner
+                android:id="@+id/game_status_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="статус игры"
@@ -228,7 +228,7 @@
         </LinearLayout>
 
         <Spinner
-            android:id="@+id/game_status_spinner"
+            android:id="@+id/game_status_spinner2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -18,6 +18,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
+import com.example.airsoft.RecyclerViewDecorator;
+import com.example.data.FirebaseData;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -98,17 +113,9 @@ public class GameInfoActivity extends AppCompatActivity {
                     }
                 }
 
-        );
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void fillGameInfo(String name, String date, String descr){
-        TextView gname = (TextView) findViewById(R.id.game_info_name);
-        TextView gdate = (TextView) findViewById(R.id.GameDataTime);
-        TextView gdescr = (TextView) findViewById(R.id.Game_description);
-
         gname.setText(name);
         gdate.setText(date);
         gdescr.setText(descr);
+        gsides.setText(gameSides);
     }
 }

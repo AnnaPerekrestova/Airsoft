@@ -40,5 +40,34 @@ public class PlayingTeamsActivity extends AppCompatActivity {
 
             }
         });
+
+        addListenerOnButton();
+    }
+
+    public void addListenerOnButton() {
+        Button createReq = findViewById(R.id.playing_teams_requst_to_play);
+        Button checkReqs = findViewById(R.id.playing_teams_new_requsts);
+
+        createReq.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(".CreatingRequestToGame");
+                        i.putExtra("gameID", gameID);
+                        startActivity(i);
+                    }
+                }
+
+        );
+        checkReqs.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        Intent i = new Intent(".GamesViewSelectActivity");
+//                        startActivity(i);
+                    }
+                }
+
+        );
     }
 }

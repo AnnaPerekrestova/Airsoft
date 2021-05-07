@@ -19,7 +19,7 @@
             android:name=".CreatingRequestToGame"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name=".NewRequestToGame" />
+                <action android:name=".CreatingRequestToGame" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter></activity>
