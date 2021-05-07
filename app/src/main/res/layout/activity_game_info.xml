@@ -149,6 +149,34 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/Game_sides_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Стороны:"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/Game_sides"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="стороны"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/Game_polygon_btn"
