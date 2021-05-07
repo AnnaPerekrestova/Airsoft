@@ -976,7 +976,7 @@ public class FirebaseData {
         });
     }
 
-    public void creatingNewGame(final String gameName,final String gameDate, final String gamePolygonID, final String gameDescription){
+    public void creatingNewGame(final String gameName,final String gameDate, final String gamePolygonID, final String gameDescription, final String gameSides){
         getOrgcomKey(new orgcomCallback() {
             @Override
             public void onOrgcomIdChanged(String orgcomKey) {
@@ -988,7 +988,8 @@ public class FirebaseData {
                 DatabaseReference db_gameDate = database.getReference("Games/"+newGameKey+"/GameDate");
                 DatabaseReference db_gamePolygonID = database.getReference("Games/"+newGameKey+"/GamePolygonID");
                 DatabaseReference db_gameStatus = database.getReference("Games/"+newGameKey+"/GameStatus");
-                DatabaseReference db_gameDescription = database.getReference("Games/"+newGameKey+"/gameDescription");
+                DatabaseReference db_gameDescription = database.getReference("Games/"+newGameKey+"/GameDescription");
+                DatabaseReference db_gameSides = database.getReference("Games/"+newGameKey+"/GameSides");
 
                 db_gameOrgcomID.setValue(orgcomKey);
                 db_gameName.setValue(gameName);
@@ -996,6 +997,7 @@ public class FirebaseData {
                 db_gamePolygonID.setValue(gamePolygonID);
                 db_gameStatus.setValue("открыт набор на игру");
                 db_gameDescription.setValue(gameDescription);
+                db_gameSides.setValue(gameSides);
             }
 
             @Override
@@ -1209,7 +1211,7 @@ public class FirebaseData {
     }
     public interface gameInfoCallback{
         void onGameInfoChanged(String orgcomID, String gameName, String gameDate,
-                                  String polygonID, String gameStatus, String gameDescription, String gameWinner);
+                                  String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides);
     }
     public void getGameInfo(final gameInfoCallback callback, final String gameKey){
         final DatabaseReference databaseReference = database.getReference("Games");
@@ -1221,12 +1223,13 @@ public class FirebaseData {
                 final String gameDate = (String) snapshot.child("GameDate").getValue();
                 final String gamePolygonID = (String) snapshot.child("GamePolygonID").getValue();
                 final String gameStatus = (String) snapshot.child("GameStatus").getValue();
-                final String gameDescription = (String) snapshot.child("gameDescription").getValue();
+                final String gameDescription = (String) snapshot.child("GameDescription").getValue();
+                final String gameSides = (String) snapshot.child("GameSides").getValue();
                 if (gameStatus.equals("игра прошла")) {
-                    final String gameWinner = (String) snapshot.child("gameWinner").getValue();
-                    callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner);
+                    final String gameWinner = (String) snapshot.child("GameWinner").getValue();
+                    callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,gameWinner,gameSides);
                 }else{
-                    callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,null);
+                    callback.onGameInfoChanged(gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription,null,gameSides);
                 }
 
             }

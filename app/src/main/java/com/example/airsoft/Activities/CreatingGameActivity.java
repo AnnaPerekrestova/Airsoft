@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -140,8 +141,11 @@ public class CreatingGameActivity extends AppCompatActivity {
                         final String gameName = ((EditText)findViewById(R.id.new_game_name)).getText().toString();
                         final String gameDescription = ((EditText)findViewById(R.id.new_game_description)).getText().toString();
                         final String gameDate = currentDateTime.getText().toString();
-                        if (gameName.equals("")|gameDescription.equals("")){
-                            Toast.makeText(CreatingGameActivity.this, "Введите название и описание игры",
+                        final String gameSide1 = ((EditText)findViewById(R.id.new_game_side1)).getText().toString();
+                        final String gameSide2 = ((EditText)findViewById(R.id.new_game_side2)).getText().toString();
+                        final String gameSide3 = ((EditText)findViewById(R.id.new_game_side3)).getText().toString();
+                        if (gameName.equals("")|gameDescription.equals("")|gameSide1.equals("")|gameSide2.equals("")){
+                            Toast.makeText(CreatingGameActivity.this, "Введите данные о игре",
                                     Toast.LENGTH_SHORT).show();
                         }
                         else {
@@ -150,7 +154,8 @@ public class CreatingGameActivity extends AppCompatActivity {
                                 fbData.getPolygonInfoByName(new FirebaseData.polygonInfoByNameCallback() {
                                     @Override
                                     public void onPolygonIDByNameChanged(String polygonID) {
-                                        fbData.creatingNewGame(gameName, gameDate, polygonID, gameDescription);
+                                        final String sides = gameSide1+","+gameSide2+","+gameSide3;
+                                        fbData.creatingNewGame(gameName, gameDate, polygonID, gameDescription, sides);
                                     }
 
                                     @Override

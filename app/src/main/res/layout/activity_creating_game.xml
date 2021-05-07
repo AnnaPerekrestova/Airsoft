@@ -158,9 +158,51 @@
                     android:layout_marginLeft="8dp"
                     android:textSize="18sp" />
 
-
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/new_game_polygon_sides_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Названия сторон:"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/new_game_side1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Сторона 1"
+                        android:text="Желтые"/>
+                    <EditText
+                        android:id="@+id/new_game_side2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Сторона 2"
+                        android:text="Синие"/>
+                    <EditText
+                        android:id="@+id/new_game_side3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="3-я сторона"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/new_game_description"
