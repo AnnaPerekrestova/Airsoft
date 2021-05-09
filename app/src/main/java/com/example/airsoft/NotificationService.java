@@ -226,7 +226,7 @@ public class NotificationService extends Service {
             public void onTeamNameChanged(String teamName) {
 
             }
-        });
+        },fbData.getUserUID());
     }
     private void myRequestStatusChanged() {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("RequestsToConnectTeam");

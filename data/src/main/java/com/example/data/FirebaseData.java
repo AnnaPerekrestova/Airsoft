@@ -65,9 +65,9 @@ public class FirebaseData {
         void onTeamIdChanged(String teamKey);
         void onTeamNameChanged(String teamName);
     }
-    public void getTeamKey(final teamCallback callback){
+    public void getTeamKey(final teamCallback callback, String userUID){
         DatabaseReference databaseRef = database.getReference("PersonInfo");
-        databaseRef.child(getUserUID()).addValueEventListener(new ValueEventListener() {
+        databaseRef.child(userUID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child("TeamKey").getValue() == null) {
@@ -647,7 +647,7 @@ public class FirebaseData {
             public void onTeamNameChanged(String teamName) {
 
             }
-        });
+        }, getUserUID());
     }
 //--------------получаем список заявок в команду, к которой прикреплен текущий пользователь-------------------------------
 //------------два callback'a - один для всех заявок, другой только для тех, которые рассматриваются----------------
@@ -709,7 +709,7 @@ public class FirebaseData {
             public void onTeamNameChanged(String teamName) {
 
             }
-        });
+        },getUserUID());
     }
 //------------проверяем смену статуса заявки, обрабатываем одобрение и отклонение заявки------------------------------
     public interface changeRequestStatusCallback{
@@ -1426,6 +1426,20 @@ public class FirebaseData {
             }
         });
     }
+    public void takePartInTheGame(String gameKey, String teamID, String userUID, boolean f){
+        DatabaseReference db_userUID = database.getReference("TakePartInTheGame/"+gameKey+"/"+userUID);
+
+        db_userUID.setValue(f);
+    }
+    public void changeGameStatus(String gameKey, String gameStatus){
+        DatabaseReference db_gameStatus = database.getReference("Games/"+gameKey+"/GameStatus");
+        db_gameStatus.setValue(gameStatus);
+    }
+    public void changeGameWinner(String gameKey, String gameWinner){
+        DatabaseReference db_gameStatus = database.getReference("Games/"+gameKey+"/GameWinner");
+        db_gameStatus.setValue(gameWinner);
+    }
+
 
 }
 

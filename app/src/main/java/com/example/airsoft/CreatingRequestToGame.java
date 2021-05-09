@@ -46,7 +46,7 @@ public class CreatingRequestToGame extends AppCompatActivity {
             public void onTeamNameChanged(String teamName) {
 
             }
-        });
+        },fbData.getUserUID());
 
         addListenerOnButton();
     }

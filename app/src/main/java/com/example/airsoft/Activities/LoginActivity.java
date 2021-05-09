@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onTeamNameChanged(String teamName) {
 
                             }
-                        });
+                        }, fbData.getUserUID());
                     }
                 }
 

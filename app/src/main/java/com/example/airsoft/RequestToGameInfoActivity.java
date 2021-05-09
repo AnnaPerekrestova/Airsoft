@@ -2,6 +2,9 @@ package com.example.airsoft;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -10,11 +13,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.ServiceWorkerClient;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.airsoft.Activities.PlayerInfo;
+import com.example.airsoft.Adapters.MembersAdapter;
+import com.example.airsoft.Adapters.MembersGameAdapter;
 import com.example.airsoft.Adapters.RequestsToGameAdapter;
+import com.example.airsoft.Classes.PlayerClass;
 import com.example.airsoft.Classes.RequestToGameClass;
 import com.example.data.FirebaseData;
 
@@ -22,7 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestToGameInfoActivity extends AppCompatActivity {
-
+    private List<PlayerClass> membersList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private MembersGameAdapter mAdapter;
     FirebaseData fbData = FirebaseData.getInstance();
     String requestID;
     String gamename;
@@ -49,6 +58,7 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         requestID=intent.getStringExtra("requestID");
 
+
         getinfo();
 
         addListenerOnButton();
@@ -57,6 +67,18 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
         fbData.getRequestToGameInfo(new FirebaseData.requestToGameInfoCallback() {
             @Override
             public void onRequestToGameInfoChanged(String gameID, String orgcomID, boolean payment, String playersCount, String description, String status, final String teamID) {
+
+                recyclerView = findViewById(R.id.recycler_view_members);
+//------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
+                recyclerView.addItemDecoration(new RecyclerViewDecorator(RequestToGameInfoActivity.this, LinearLayoutManager.VERTICAL, 16));
+
+                mAdapter = new MembersGameAdapter(membersList,gameID);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(mAdapter);
+
+
                 paymentf = payment;
                 pcount = playersCount;
                 descr = description;
@@ -74,8 +96,17 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
                             }
                         }, teamID);
 
+
                     }
                 },gameID);
+
+
+                fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback() {
+                    @Override
+                    public void onTeamMemberDataChanged(String playerUID, String nickname, String fio) {
+                        addRow(playerUID, nickname, fio);
+                    }
+                },teamID);
 
             }
         }, requestID);
@@ -102,6 +133,14 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
             payments.setText("Не оплачено");
         }
 
+    }
+    private void addRow(String playerUID, String nick, String fio ) {
+        PlayerClass player = new PlayerClass( playerUID );
+        player.setPlayerUID(playerUID);
+        player.setNickname(nick);
+        player.setFio(fio);
+        membersList.add(player);
+        mAdapter.notifyDataSetChanged();
     }
 
     public void addListenerOnButton(){

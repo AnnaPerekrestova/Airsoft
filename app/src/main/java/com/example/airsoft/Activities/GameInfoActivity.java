@@ -18,24 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-import com.example.airsoft.RecyclerViewDecorator;
-import com.example.data.FirebaseData;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class GameInfoActivity extends AppCompatActivity {
 
@@ -43,6 +25,10 @@ public class GameInfoActivity extends AppCompatActivity {
     String GameID;
     String PolygonID;
     String OrgcomID;
+    String GameStatus;
+
+    Spinner spinnerStatuses = findViewById(R.id.game_status_spinner);
+    Spinner winnerSpinner = findViewById(R.id.game_winner_spinner);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +38,36 @@ public class GameInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         GameID = intent.getStringExtra("gameID");
 
-
-        Spinner spinnerStatuses = findViewById(R.id.game_status_spinner);
-        String[] statusesList= {"открыт набор на игру","набор на игру закрыт","игра отменена","игра идет","игра прошла"};
-        ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
-        adapterStatuses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerStatuses.setAdapter(adapterStatuses);
         spinnerStatuses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Получаем выбранный объект
                 String selectedStatus = (String) parent.getItemAtPosition(position);
+                if (!GameStatus.equals(selectedStatus)){
+                    if (selectedStatus.equals("набор на игру закрыт")){
+                        //сменить статус в бд
+                        fbData.changeGameStatus(GameID,"набор на игру закрыт");
+                    }
+                    if (selectedStatus.equals("игра отменена")) {
+                        //сменить статус в бд
+                        fbData.changeGameStatus(GameID,"игра отменена");
+                    }
+                    if (selectedStatus.equals("игра идет")) {
+                        //сменить статус в бд, перерисовать активность
+                        fbData.changeGameStatus(GameID,"игра идет");
+                        finish();
+                        startActivity(getIntent());
+
+                    }
+                    if (selectedStatus.equals("игра прошла")) {
+                        //сменить статус в бд, перерисовать активность
+                        fbData.changeGameStatus(GameID,"игра прошла");
+                        finish();
+                        startActivity(getIntent());
+                        winnerSpinner.setVisibility(View.VISIBLE);
+                    }
+                }
+
 
             }
 
@@ -71,18 +76,60 @@ public class GameInfoActivity extends AppCompatActivity {
 
             }
         });
+        spinnerStatuses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Получаем выбранный объект
+                String selectedWinner = (String) parent.getItemAtPosition(position);
+                fbData.changeGameWinner(GameID,selectedWinner);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         addListenerOnButton();
         getData();
 
-    }
 
+
+    }
     public void getData(){
         fbData.getGameInfo(new FirebaseData.gameInfoCallback() {
             @Override
             public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {
-                fillGameInfo(gameName, gameDate, gameDescription);
+                fillGameInfo(gameName, gameDate, gameDescription, gameSides);
                 PolygonID = polygonID;
                 OrgcomID = orgcomID;
+                GameStatus = gameStatus;
+                if (gameStatus.equals("открыт набор на игру")){
+                    String[] statusesList= {"открыт набор на игру","набор на игру закрыт","игра отменена","игра идет"};
+                    ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
+                    adapterStatuses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerStatuses.setAdapter(adapterStatuses);
+                }
+                if (gameStatus.equals("игра идет")){
+                    String[] statusesList= {"игра идет","игра прошла"};
+                    ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
+                    adapterStatuses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerStatuses.setAdapter(adapterStatuses);
+                }
+                if (gameStatus.equals("игра прошла")){
+                    String[] sidesList= gameSides.split(",");
+                    ArrayAdapter<String> adapterWinner = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
+                    adapterWinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    winnerSpinner.setAdapter(adapterWinner);
+
+                    String[] statusesList= {"игра прошла"};
+                    ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
+                    adapterStatuses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerStatuses.setAdapter(adapterStatuses);
+                }
+
             }
         },GameID);
     }
@@ -102,8 +149,7 @@ public class GameInfoActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 }
-
-        );
+);
         buttonPolygon.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -113,6 +159,20 @@ public class GameInfoActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 }
+
+        );
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void fillGameInfo(String name, String date, String descr, String gameSides){
+        String[] allsides=gameSides.split(",");
+        for (String side : allsides){
+            Log.d("testsides", side);
+        }
+        TextView gname = (TextView) findViewById(R.id.game_info_name);
+        TextView gdate = (TextView) findViewById(R.id.GameDataTime);
+        TextView gdescr = (TextView) findViewById(R.id.Game_description);
+        TextView gsides = (TextView) findViewById(R.id.Game_sides);
 
         gname.setText(name);
         gdate.setText(date);

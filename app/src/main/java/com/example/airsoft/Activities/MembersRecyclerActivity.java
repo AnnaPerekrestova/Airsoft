@@ -45,7 +45,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
 
                 @Override
                 public void onTeamNameChanged(String teamName) {}
-            });
+            },fbData.getUserUID());
         }
         else {
             thisTeamKey = intent.getStringExtra("teamKey");
@@ -93,7 +93,7 @@ public class MembersRecyclerActivity extends AppCompatActivity {
             public void onTeamNameChanged(String teamName) {
 
             }
-        });
+        },fbData.getUserUID());
     }
     public void addToMembersRecycler(){
         fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback(){

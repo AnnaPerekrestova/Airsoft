@@ -41,7 +41,7 @@ public class TeamInfoActivity extends AppCompatActivity {
 
                 @Override
                 public void onTeamNameChanged(String teamName) {}
-            });
+            },fbData.getUserUID());
         }
         else {
             thisTeamKey = intent.getStringExtra("teamKey");
