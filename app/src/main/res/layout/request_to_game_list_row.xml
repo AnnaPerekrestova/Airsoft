@@ -9,11 +9,11 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/request_to_my_team_FIO"
+        android:id="@+id/request_to_game_teamname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/FIO"
-        android:padding="16dp"
+        android:hint="название команды"
+        android:layout_marginHorizontal="16dp"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="16dp"
@@ -21,15 +21,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/request_to_game_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:textSize="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:hint="Статус"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/request_to_game_teamname"/>
+
     <LinearLayout
+        android:id="@+id/approving"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/request_to_my_team_FIO">
+        app:layout_constraintTop_toBottomOf="@+id/request_to_game_status">
 
         <Button
-            android:id="@+id/request_to_my_team_approve"
+            android:id="@+id/request_to_game_approve"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/buttonStyleBorderSand"
@@ -38,29 +51,44 @@
             android:text="Одобрить"
             />
         <Button
-            android:id="@+id/request_to_my_team_dismiss"
+            android:id="@+id/request_to_game_dismiss"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/buttonStyleBorderSand"
             android:layout_weight="1"
             android:layout_marginHorizontal="16dp"
             android:text="Отклонить"
-             />
+            />
 
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/request_to_my_team_status"
+    <LinearLayout
+        android:id="@+id/payment_and_reg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:padding="16dp"
-        android:textSize="16dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:hint="Статус"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/request_to_my_team_FIO"/>
+        app:layout_constraintTop_toBottomOf="@+id/request_to_game_status">
+
+        <Button
+            android:id="@+id/request_to_game_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/buttonStyleBorderSand"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="16dp"
+            android:text="Не оплачено"
+            android:visibility="invisible"
+            />
+
+
+
+
+    </LinearLayout>
+
+
+
 
 
 

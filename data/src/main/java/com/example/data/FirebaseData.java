@@ -1270,7 +1270,162 @@ public class FirebaseData {
         db_reqGameStatus.setValue(reqGameStatus);
         db_payment.setValue(payment);
     }
+    //-------------------получаем информацию о заявке---------------------
+    public interface requestToGameInfoCallback{
+        void onRequestToGameInfoChanged(String gameID, String orgcomID ,boolean payment, String playersCount, String description, String status, String teamID);
+    }
+    public void getRequestToGameInfo(final requestToGameInfoCallback callback, final String requestKey){
+        final DatabaseReference databaseReference = database.getReference("RequestsToGame");
+        databaseReference.child(requestKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final String orgcomID= (String) snapshot.child("OrgcomID").getValue();
+                final String gameID= (String) snapshot.child("GameID").getValue();
+                final boolean payment= (boolean) snapshot.child("Payment").getValue();
+                final String playersCount= (String) snapshot.child("PlayersCount").getValue();
+                final String description= (String) snapshot.child("RequestGameDescription").getValue();
+                final String status= (String) snapshot.child("RequestGameStatus").getValue();
+                final String teamID= (String) snapshot.child("TeamID").getValue();
+                callback.onRequestToGameInfoChanged(gameID, orgcomID, payment, playersCount, description, status, teamID);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    //--------------получаем список заявок участия в игре-------------------------------
+//------------два callback'a - один для принятых, другой только для тех, которые рассматриваются и отклонены----------------
+//-------------проверяем изменения в списке заявок в команду, к которой прикреплен текущий пользователь--------------------
+    public interface requestsToGameListIfChangedCallback{
+        void onRequestsToGameListChanged();
+        void onApproveRequestsToGameListChanged(String requestKey, String teamName, boolean payment, String status);
+        void onNewRequestsToMyTeamListChanged(String requestKey, String teamName, boolean payment, String status);
+    }
+    public void getRequestsToGameListIfChanged(final requestsToGameListIfChangedCallback callback, final String gameID) {
+        final DatabaseReference databaseRef = database.getReference("RequestsToGame");
+        final Query databaseQuery = databaseRef.orderByChild("GameID").equalTo(gameID);
+        databaseQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull final DataSnapshot snapshot, @Nullable String previousChildName) {
+                final String requestKey = snapshot.getKey();
+                String teamID = (String) snapshot.child("TeamID").getValue();
+                final String status = (String) snapshot.child("RequestGameStatus").getValue();
+                if (status!=null & teamID!=null) {
+                    getTeamInfo(new teamInfoCallback() {
+                        @Override
+                        public void onTeamInfoChanged(final String teamName, String teamCity, String teamYear, String teamDescription) {
+                            getGameInfo(new gameInfoCallback() {
+                                @Override
+                                public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {
+                                    boolean payment = (boolean) snapshot.child("Payment").getValue();
+                                    if (status.equals("рассматривается") | status.equals("отклонена")) {
+                                        callback.onNewRequestsToMyTeamListChanged(requestKey, teamName, payment, status);
+                                    }
+                                    if (status.equals("одобрена")) {
+                                        callback.onApproveRequestsToGameListChanged(requestKey, teamName, payment, status);
+                                    }
+                                }
+                            },gameID);
+                        }
+                    }, teamID);
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.child("Status").getValue()!=null){
+                    callback.onRequestsToGameListChanged();}
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                callback.onRequestsToGameListChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    //------------проверяем смену статуса заявки на игру, обрабатываем одобрение и отклонение заявки------------------------------
+    public interface changeRequestToGameStatusCallback{
+        void onChangeRequestToGameStatus(boolean f);
+    }
+    public void approveRequestToGame(final changeRequestToGameStatusCallback callback, final String requestKey){
+        //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
+        final DatabaseReference databaseReference = database.getReference("RequestsToGame");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(requestKey).getValue() != null) {
+                    DatabaseReference db_status;
+                    db_status = database.getReference("RequestsToGame/" + requestKey + "/RequestGameStatus");
+                    db_status.setValue("одобрена");
+
+                    callback.onChangeRequestToGameStatus(true);
+
+                }else {
+                    callback.onChangeRequestToGameStatus(false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+    }
+    public void dismissRequestToGame(final changeRequestToGameStatusCallback callback,final String requestKey){
+        //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
+        final DatabaseReference databaseReference = database.getReference("RequestsToGame");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(requestKey).getValue() != null) {
+                    DatabaseReference db_status;
+                    db_status = database.getReference("RequestsToGame/" + requestKey + "/RequestGameStatus");
+                    db_status.setValue("отклонена");
+                    callback.onChangeRequestToGameStatus(true);
+                }else{
+                    callback.onChangeRequestToGameStatus(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void paymentRequestToGame(final changeRequestToGameStatusCallback callback, final String requestKey, final boolean payment){
+        //----проверяем, актуальна ли все еще эта заявка (не отменена/игрок не вступил в команду)----------
+        final DatabaseReference databaseReference = database.getReference("RequestsToGame");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(requestKey).getValue() != null) {
+                    DatabaseReference db_status;
+                    db_status = database.getReference("RequestsToGame/" + requestKey + "/Payment");
+                    db_status.setValue(payment);
+                    callback.onChangeRequestToGameStatus(true);
+                }else{
+                    callback.onChangeRequestToGameStatus(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }
 
