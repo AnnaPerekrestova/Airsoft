@@ -68,7 +68,7 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
             @Override
             public void onRequestToGameInfoChanged(String gameID, String orgcomID, boolean payment, String playersCount, String description, String status, final String teamID) {
 
-                recyclerView = findViewById(R.id.recycler_view_members);
+                recyclerView = findViewById(R.id.recycler_registration);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
                 recyclerView.addItemDecoration(new RecyclerViewDecorator(RequestToGameInfoActivity.this, LinearLayoutManager.VERTICAL, 16));
 
