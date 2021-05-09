@@ -25,6 +25,7 @@ public class GamesViewSelectActivity extends AppCompatActivity {
         Button prev_games = findViewById(R.id.prev_games);
         Button plan_games = findViewById(R.id.planing_games);
         Button new_games = findViewById(R.id.game_search);
+        Button act_games = findViewById(R.id.actual_games);
 
         prev_games.setOnClickListener(
                 new View.OnClickListener() {
@@ -58,5 +59,13 @@ public class GamesViewSelectActivity extends AppCompatActivity {
                     }
                 }
         );
+        act_games.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(".GamesListActivity");
+                i.putExtra("listType","playerRunning");
+                startActivity(i);
+            }
+        });
     }
 }

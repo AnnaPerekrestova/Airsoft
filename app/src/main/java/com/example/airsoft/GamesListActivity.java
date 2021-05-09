@@ -112,11 +112,23 @@ public class GamesListActivity extends AppCompatActivity {
 
                 @Override
                 public void onRunningGamesOfTeamChanged() {
+                    if (listType.equals("playerRunning")) {
+                        gamesList.clear();
+                        addToGamesRecycler();
+                        gamesAdapter.notifyDataSetChanged();
+
+                    }
 
                 }
 
                 @Override
                 public void onHappensGamesOfTeamChanged() {
+                    if (listType.equals("playerPrev")) {
+                        gamesList.clear();
+                        addToGamesRecycler();
+                        gamesAdapter.notifyDataSetChanged();
+
+                    }
 
                 }
             });
@@ -161,12 +173,22 @@ public class GamesListActivity extends AppCompatActivity {
 
                 @Override
                 public void onRunningGamesOfOrgcomChanged() {
+                    if (listType.equals("orgcomRunning")) {
+                        gamesList.clear();
+                        addToGamesRecycler();
+                        gamesAdapter.notifyDataSetChanged();
 
+                    }
                 }
 
                 @Override
                 public void onHappensGamesOfOrgcomChanged() {
+                    if (listType.equals("orgcomPrev")) {
+                        gamesList.clear();
+                        addToGamesRecycler();
+                        gamesAdapter.notifyDataSetChanged();
 
+                    }
                 }
 
                 @Override
@@ -193,12 +215,16 @@ public class GamesListActivity extends AppCompatActivity {
 
                 @Override
                 public void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
+                    if (listType.equals("playerRunning")){
+                        addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, null);
+                    }
                 }
 
                 @Override
                 public void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
-
+                    if (listType.equals("playerPrev")){
+                        addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, null);
+                    }
                 }
 
                 @Override
@@ -241,12 +267,14 @@ public class GamesListActivity extends AppCompatActivity {
 
                 @Override
                 public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
+                    if (listType.equals("orgcomRunning")) {
+                        addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, null);
+                    }
                 }
 
                 @Override
                 public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
-                    if (listType.equals("orgcomHappens")) {
+                    if (listType.equals("orgcomPrev")) {
                         addRow(gameKey, orgcomID, gameName, gameDate, polygonID, gameStatus, gameDescription, gameWinner);
                     }
                 }

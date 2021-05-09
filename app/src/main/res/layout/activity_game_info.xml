@@ -218,8 +218,8 @@
                 android:textStyle="bold"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/game_winner_string"
+            <Spinner
+                android:id="@+id/game_winner_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

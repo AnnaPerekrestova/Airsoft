@@ -46,6 +46,15 @@
                 android:text="прошедшие игры"
                 app:layout_constraintTop_toBottomOf="@+id/planing_games_orgcom" />
 
+            <Button
+                android:id="@+id/actual_games_orgcom"
+                style="@style/buttonStyleBorderSand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="текущие игры"
+                app:layout_constraintTop_toBottomOf="@+id/prev_games_orgcom" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
