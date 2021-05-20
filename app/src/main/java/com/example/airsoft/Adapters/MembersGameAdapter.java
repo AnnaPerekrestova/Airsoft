@@ -21,9 +21,10 @@ public class MembersGameAdapter extends RecyclerView.Adapter<MembersGameAdapter.
     private List<PlayerClass> membersList;
     private String gameKey;
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView nickname, fio;
         public Switch takePartFlag;
+
 
         MyViewHolder(View view) {
             super(view);
@@ -42,7 +43,7 @@ public class MembersGameAdapter extends RecyclerView.Adapter<MembersGameAdapter.
     @Override
     public MembersGameAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.members_list_row, parent, false);
+                .inflate(R.layout.members_game_list_row, parent, false);
 
         return new MembersGameAdapter.MyViewHolder(itemView);
     }
@@ -52,8 +53,9 @@ public class MembersGameAdapter extends RecyclerView.Adapter<MembersGameAdapter.
         PlayerClass member = membersList.get(position);
         holder.nickname.setText(member.getNickname());
         holder.fio.setText(member.getFio());
-
-        switchChange(holder,member);
+        if (member!=null) {
+            switchChange(holder, member);
+        }
     }
     private void switchChange(MembersGameAdapter.MyViewHolder holder, final PlayerClass member){
         final boolean[] f = {false};

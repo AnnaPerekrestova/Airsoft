@@ -13,50 +13,40 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbarMembersOfTeam"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarMembersOfTeam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/txtMembersOfTeam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.AppBarOverlay"
-                tools:ignore="MissingConstraints">
+                android:padding="15dp"
+                android:text="@string/team_list"
+                android:textAlignment="center"
+                android:textSize="25sp"
 
-                <TextView
-                    android:id="@+id/txtMembersOfTeam"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:text="@string/team_list"
-                    android:textAlignment="center"
-                    android:textSize="25sp"
+                />
 
-                    />
+        </com.google.android.material.appbar.AppBarLayout>
 
-            </com.google.android.material.appbar.AppBarLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_members"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:scrollbars="vertical"
-                app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
+    </LinearLayout>
 
             <Button
                 android:id="@+id/requests_to_my_team_button"
@@ -64,18 +54,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_weight="1"
                 android:visibility="invisible"
                 android:onClick="requestsToMyTeam"
                 android:text="Заявки на вступление в команду"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

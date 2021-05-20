@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatisticActivity extends AppCompatActivity {
+
     private List<PlayerClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private StatsAdapter statsAdapter;
@@ -31,12 +32,14 @@ public class StatisticActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic);
+
         recyclerView = (RecyclerView) findViewById(R.id.stats_recycler);
         statsAdapter = new StatsAdapter(membersList);
         RecyclerView.LayoutManager statsLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(statsLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(statsAdapter);
+
         add_to_members_table();
 
 

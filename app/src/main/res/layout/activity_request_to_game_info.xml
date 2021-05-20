@@ -212,6 +212,34 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/request_to_game_info_side_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Сторона:"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    />
+
+                <Spinner
+                    android:id="@+id/request_to_game_info_side_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="сторона"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/team_info_btn"

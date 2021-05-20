@@ -12,12 +12,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.ServiceWorkerClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.airsoft.Activities.GameInfoActivity;
 import com.example.airsoft.Activities.PlayerInfo;
+import com.example.airsoft.Activities.RequestsToGame;
 import com.example.airsoft.Adapters.MembersAdapter;
 import com.example.airsoft.Adapters.MembersGameAdapter;
 import com.example.airsoft.Adapters.RequestsToGameAdapter;
@@ -41,7 +45,9 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
     boolean paymentf;
     String descr;
     String teamkey;
+    String[] sidesList;
 
+    Spinner spinnerSides;
     TextView gname;
     TextView tname;
     TextView plcount;
@@ -87,7 +93,8 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
                 fbData.getGameInfo(new FirebaseData.gameInfoCallback() {
                     @Override
                     public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {
-                        gamename= gameName;
+                        gamename = gameName;
+                        sidesList = gameSides.split(",");
                         fbData.getTeamInfo(new FirebaseData.teamInfoCallback() {
                             @Override
                             public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
@@ -120,6 +127,13 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
         instatus = (TextView) findViewById(R.id.request_to_game_info_status_spinner);
         payments = (TextView) findViewById(R.id.request_to_game_info_payment);
         tdescr = (TextView) findViewById(R.id.request_to_game_info_description);
+        spinnerSides = findViewById(R.id.request_to_game_info_side_spinner);
+
+
+        ArrayAdapter<String> adapterSide = new ArrayAdapter<String>(RequestToGameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
+        adapterSide.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSides.setAdapter(adapterSide);
+        spinnerSidesListener();
 
         gname.setText(gamename);
         tname.setText(teamname);
@@ -154,5 +168,22 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
+    }
+
+    public  void spinnerSidesListener(){
+        spinnerSides.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Получаем выбранный объект
+                String selectedSide = (String) parent.getItemAtPosition(position);
+                fbData.changeRequestToGameSide(requestID,selectedSide);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }

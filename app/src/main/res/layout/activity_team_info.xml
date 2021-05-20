@@ -33,7 +33,6 @@
                     android:text="Информация о команде"
                     android:padding="15dp"
                     android:textAlignment="center"
-                    android:textColor="#fff"
                     android:textSize="25sp"
 
                     />

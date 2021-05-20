@@ -27,12 +27,6 @@ public class FirebaseData {
         // проверкой» (Double-Checked Locking). Она применяется, чтобы
         // предотвратить создание нескольких объектов-одиночек, если метод будет
         // вызван из нескольких потоков одновременно.
-        //
-        // Хотя переменная `result` вполне оправданно кажется здесь лишней, она
-        // помогает избежать подводных камней реализации DCL в Java.
-        //
-        // Больше об этой проблеме можно почитать здесь:
-        // https://refactoring.guru/ru/java-dcl-issue
         FirebaseData result = instance;
         if (result != null) {
             return result;
@@ -44,8 +38,6 @@ public class FirebaseData {
             return instance;
         }
     }
-
-
 
 
 
@@ -1458,6 +1450,51 @@ public class FirebaseData {
         DatabaseReference db_gameStatus = database.getReference("Games/"+gameKey+"/GameWinner");
         db_gameStatus.setValue(gameWinner);
     }
+    public void changeRequestToGameSide(String requestKey, String side){
+        DatabaseReference db_side = database.getReference("RequestsToGame/"+requestKey+"/Side");
+        db_side.setValue(side);
+    }
+
+
+    //—————-по-идее будет считать статистику—————————-
+    public interface countTeamStatisticCallback{
+        void countTeamGames(int count);
+        void percentOfTeamWins(double percent);
+    }
+
+    public void countTeamStatistic(final countTeamStatisticCallback callback, final String teamID){
+        final int[] countTeamGames = {0};
+        final int[] percentOfTeamWins = {0};
+        final DatabaseReference databaseRef = database.getReference("RequestsToGame");
+        databaseRef.orderByChild("TeamID").equalTo(teamID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapShot: snapshot.getChildren()){
+                    if (postSnapShot.child("Status").getValue().equals("одобрена") & postSnapShot.child("Side").getValue()!=null){
+                        countTeamGames[0] +=1;
+                        callback.countTeamGames(countTeamGames[0]);
+                        final String thisTeamSide = (String) postSnapShot.child("Side").getValue();
+                        String gameKey = (String) postSnapShot.child("GameID").getValue();
+                        getGameInfo(new gameInfoCallback() {
+                            @Override
+                            public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {
+                                if(gameWinner.equals(thisTeamSide)){
+                                    percentOfTeamWins[0] +=1;
+                                    callback.percentOfTeamWins(percentOfTeamWins[0]/countTeamGames[0]);
+                                }
+                            }
+                        },gameKey);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
 
 }

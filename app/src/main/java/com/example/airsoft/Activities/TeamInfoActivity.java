@@ -37,6 +37,7 @@ public class TeamInfoActivity extends AppCompatActivity {
                     findViewById(R.id.button_request_to_connect).setVisibility(View.INVISIBLE);
                     findViewById(R.id.button_save_changes).setVisibility(View.VISIBLE);
                     findViewById(R.id.team_info_description).setEnabled(true);
+                    getData(thisTeamKey);
                 }
 
                 @Override
@@ -47,10 +48,10 @@ public class TeamInfoActivity extends AppCompatActivity {
             thisTeamKey = intent.getStringExtra("teamKey");
             findViewById(R.id.button_save_changes).setVisibility(View.INVISIBLE);
             findViewById(R.id.button_request_to_connect).setVisibility(View.VISIBLE);
-
+            getData(thisTeamKey);
 
         }
-        getData(thisTeamKey);
+
         addListenerOnButton(thisTeamKey);
         onRequestApprove();
 
