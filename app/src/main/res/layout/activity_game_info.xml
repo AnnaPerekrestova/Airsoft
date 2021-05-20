@@ -177,6 +177,33 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/game_winner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            >
+
+            <TextView
+                android:id="@+id/textView_winner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/winner"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/game_winner_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="winner"
+                android:textSize="18sp" />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/Game_polygon_btn"
@@ -199,33 +226,7 @@
             />
 
 
-        <LinearLayout
-            android:id="@+id/game_winner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:visibility="invisible"
-            android:layout_marginHorizontal="16dp"
-            >
 
-            <TextView
-                android:id="@+id/textView_winner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/winner"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-
-            <Spinner
-                android:id="@+id/game_winner_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="winner"
-                android:textSize="18sp" />
-        </LinearLayout>
 
 
 
