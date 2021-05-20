@@ -38,6 +38,21 @@ public class RequestsToGameAdapter extends RecyclerView.Adapter<RequestsToGameAd
             approve = view.findViewById(R.id.request_to_game_approve);
             dismiss = view.findViewById(R.id.request_to_game_dismiss);
             payment = view.findViewById(R.id.request_to_game_payment);
+            fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
+                @Override
+                public void onOrgFlagChanged(boolean orgFlag) {
+                    if (!orgFlag){
+                        approve.setEnabled(false);
+                        dismiss.setEnabled(false);
+                        payment.setEnabled(false);
+                    }
+                }
+
+                @Override
+                public void onOrgFlagNull(String no_info) {
+
+                }
+            });
         }
     }
     public RequestsToGameAdapter(List<RequestToGameClass> requestsToGameList) {
