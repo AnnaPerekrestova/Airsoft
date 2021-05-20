@@ -12,40 +12,41 @@ import com.example.airsoft.R;
 
 import java.util.List;
 
-public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.MyViewHolder> {
+public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.MyViewHolder> {
 
     private List<PlayerClass> membersList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView nickname, percent;
+        public TextView fio,games, percent;
 
         public MyViewHolder(View view) {
             super(view);
-            nickname = (TextView) view.findViewById(R.id.stats_nickname);
-            percent = (TextView) view.findViewById(R.id.stats_percent);
+            fio = view.findViewById(R.id.recycler_stats_fio);
+            games = view.findViewById(R.id.recycler_stats_games);
+            percent = view.findViewById(R.id.recycler_stats_percent);
 
         }
     }
 
 
-    public StatsAdapter(List<PlayerClass> membersList) {
+    public StatisticAdapter(List<PlayerClass> membersList) {
         this.membersList = membersList;
     }
 
     @Override
-    public StatsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StatisticAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.stats_row, parent, false);
 
-        return new StatsAdapter.MyViewHolder(itemView);
+        return new StatisticAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(StatsAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(StatisticAdapter.MyViewHolder holder, int position) {
         PlayerClass member = membersList.get(position);
-        holder.nickname.setText(member.getNickname());
-        String per_str = (String) member.getStatistic();
-        holder.percent.setText(per_str);
+        holder.fio.setText(member.getNickname());
+        holder.games.setText(member.getStatisticGames());
+        holder.percent.setText(member.getStatisticPercent());
 
     }
 

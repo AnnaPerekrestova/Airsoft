@@ -70,6 +70,8 @@ public class GameInfoActivity extends AppCompatActivity {
                 PolygonID = polygonID;
                 OrgcomID = orgcomID;
                 GameStatus = gameStatus;
+
+
                 if (gameStatus.equals("открыт набор на игру")){
                     String[] statusesList= {"открыт набор на игру","набор на игру закрыт","игра отменена","игра идет"};
                     ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
@@ -85,16 +87,15 @@ public class GameInfoActivity extends AppCompatActivity {
                     statusSpinnerListener();
                 }
                 if (gameStatus.equals("игра прошла")){
-//                    String[] sidesList= gameSides.split(",");
-//                    ArrayAdapter<String> adapterWinner = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
-//                    adapterWinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    winnerSpinner.setAdapter(adapterWinner);
-//                    statusSpinnerListener();
+
+                    winnerSpinner.setVisibility(View.VISIBLE);
+
 
                     String[] statusesList= {"игра прошла"};
                     ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
                     adapterStatuses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerStatuses.setAdapter(adapterStatuses);
+                    statusSpinnerListener();
 
                     winnerSpinner.setVisibility(View.VISIBLE);
                     winnerSpinnerListener();
@@ -193,10 +194,7 @@ public class GameInfoActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void fillGameInfo(String name, String date, String descr, String gameSides){
-        String[] allsides=gameSides.split(",");
-        for (String side : allsides){
-            Log.d("testsides", side);
-        }
+
         TextView gname = (TextView) findViewById(R.id.game_info_name);
         TextView gdate = (TextView) findViewById(R.id.GameDataTime);
         TextView gdescr = (TextView) findViewById(R.id.Game_description);

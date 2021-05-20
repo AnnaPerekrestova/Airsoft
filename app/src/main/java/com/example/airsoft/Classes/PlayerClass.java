@@ -1,7 +1,7 @@
 package com.example.airsoft.Classes;
 
 public class PlayerClass {
-    private String playerUID, nickname, fio, statistic;
+    private String playerUID, nickname, fio, statisticGames, statisticPercent;
 
     public PlayerClass(String playerUID) {
         this.playerUID = playerUID;
@@ -32,12 +32,18 @@ public class PlayerClass {
         this.fio = FIO;
     }
 
-    public String getStatistic() {
-        return statistic;
+    public String getStatisticGames() {
+        return statisticGames;
     }
 
-    public void setStatistic(String statistic) {
-        this.statistic = statistic;
+    public void setStatisticGames(String statisticGames) {
+        this.statisticGames = statisticGames;
     }
+
+    public String getStatisticPercent() {
+        return statisticPercent;
+    }
+
+    public void setStatisticPercent(String statisticPercent) { this.statisticPercent = statisticPercent; }
 
 }

@@ -1438,8 +1438,7 @@ public class FirebaseData {
         });
     }
     public void takePartInTheGame(String gameKey, String teamID, String userUID, boolean f){
-        DatabaseReference db_userUID = database.getReference("TakePartInTheGame/"+gameKey+"/"+userUID);
-
+        DatabaseReference db_userUID = database.getReference("TakePartInTheGame/"+gameKey+"/"+teamID+"/"+userUID);
         db_userUID.setValue(f);
     }
     public void changeGameStatus(String gameKey, String gameStatus){
@@ -1497,6 +1496,14 @@ public class FirebaseData {
 
             }
         });
+    }
+    public interface countMemberStatisticCallback{
+        void countMemberGames(String count);
+        void countMemberPercent(String percent);
+    }
+
+    public void countMemberStatistic(countMemberStatisticCallback callback, String teamID){
+
     }
 
 

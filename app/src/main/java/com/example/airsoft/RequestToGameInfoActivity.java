@@ -1,32 +1,21 @@
 package com.example.airsoft;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.ServiceWorkerClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import com.example.airsoft.Activities.GameInfoActivity;
-import com.example.airsoft.Activities.PlayerInfo;
-import com.example.airsoft.Activities.RequestsToGame;
-import com.example.airsoft.Adapters.MembersAdapter;
 import com.example.airsoft.Adapters.MembersGameAdapter;
-import com.example.airsoft.Adapters.RequestsToGameAdapter;
 import com.example.airsoft.Classes.PlayerClass;
-import com.example.airsoft.Classes.RequestToGameClass;
 import com.example.data.FirebaseData;
 
 import java.util.ArrayList;
@@ -99,7 +88,7 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
                             @Override
                             public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                                 teamname = teamName;
-                                fillinfo(gamename, teamname, pcount, istatus, paymentf, descr);
+                                fillInfo(gamename, teamname, pcount, istatus, paymentf, descr);
                             }
                         }, teamID);
 
@@ -120,7 +109,7 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void fillinfo(String gamename, String teamname, String pcount, String istatus, boolean paymentf, String descr){
+    public void fillInfo(String gamename, String teamname, String pcount, String istatus, boolean paymentf, String descr){
         gname = (TextView) findViewById(R.id.request_to_game_info_gamename);
         tname = (TextView) findViewById(R.id.request_to_game_info_teamname);
         plcount = (TextView) findViewById(R.id.request_to_game_info_players_count);
