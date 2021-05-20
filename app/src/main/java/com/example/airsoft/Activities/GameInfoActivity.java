@@ -57,9 +57,6 @@ public class GameInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         GameID = intent.getStringExtra("gameID");
 
-
-
-
         addListenerOnButton();
         getData();
 
@@ -88,11 +85,11 @@ public class GameInfoActivity extends AppCompatActivity {
                     statusSpinnerListener();
                 }
                 if (gameStatus.equals("игра прошла")){
-                    String[] sidesList= gameSides.split(",");
-                    ArrayAdapter<String> adapterWinner = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
-                    adapterWinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    winnerSpinner.setAdapter(adapterWinner);
-                    statusSpinnerListener();
+//                    String[] sidesList= gameSides.split(",");
+//                    ArrayAdapter<String> adapterWinner = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
+//                    adapterWinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    winnerSpinner.setAdapter(adapterWinner);
+//                    statusSpinnerListener();
 
                     String[] statusesList= {"игра прошла"};
                     ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
@@ -169,7 +166,6 @@ public class GameInfoActivity extends AppCompatActivity {
         Button buttonTeams = findViewById(R.id.Game_players_btn);
         Button buttonPolygon = findViewById(R.id.Game_polygon_btn);
 
-
         buttonTeams.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -210,5 +206,12 @@ public class GameInfoActivity extends AppCompatActivity {
         gdate.setText(date);
         gdescr.setText(descr);
         gsides.setText(gameSides);
+
+        //-----заполняем список для выбора победителя-------------
+        String[] sidesList= gameSides.split(",");
+        ArrayAdapter<String> adapterWinner = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
+        adapterWinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        winnerSpinner.setAdapter(adapterWinner);
+        winnerSpinnerListener();
     }
 }

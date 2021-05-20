@@ -1470,7 +1470,7 @@ public class FirebaseData {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapShot: snapshot.getChildren()){
-                    if (postSnapShot.child("Status").getValue().equals("одобрена") & postSnapShot.child("Side").getValue()!=null){
+                    if (postSnapShot.child("RequestGameStatus").getValue().equals("одобрена") & postSnapShot.child("Side").getValue()!=null){
                         countTeamGames[0] +=1;
                         callback.countTeamGames(countTeamGames[0]);
                         final String thisTeamSide = (String) postSnapShot.child("Side").getValue();
@@ -1480,7 +1480,11 @@ public class FirebaseData {
                             public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {
                                 if(gameWinner.equals(thisTeamSide)){
                                     percentOfTeamWins[0] +=1;
-                                    callback.percentOfTeamWins(percentOfTeamWins[0]/countTeamGames[0]);
+                                    double prcOfTeamWins = percentOfTeamWins[0];
+                                    double cntTeamGames = countTeamGames[0];
+//                                    double prc = percentOfTeamWins[0]/countTeamGames[0];
+                                    double prc = prcOfTeamWins/cntTeamGames;
+                                    callback.percentOfTeamWins(prc);
                                 }
                             }
                         },gameKey);

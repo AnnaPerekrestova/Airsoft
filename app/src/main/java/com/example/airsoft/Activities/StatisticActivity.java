@@ -1,6 +1,7 @@
 package com.example.airsoft.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.airsoft.Adapters.StatsAdapter;
@@ -56,6 +57,7 @@ public class StatisticActivity extends AppCompatActivity {
             @Override
             public void onTeamIdChanged(String teamKey) {
                 thisTeamKey=teamKey;
+                getStatistic(thisTeamKey);
             }
 
             @Override
@@ -64,7 +66,7 @@ public class StatisticActivity extends AppCompatActivity {
             }
         },fbData.getUserUID());
 
-        getStatistic(thisTeamKey);
+
 
 
     }
@@ -74,14 +76,16 @@ public class StatisticActivity extends AppCompatActivity {
             @Override
             public void countTeamGames(int count) {
                 allGames = count;
+                fillStatistic(allGames, winPercent);
             }
 
             @Override
             public void percentOfTeamWins(double percent) {
                 winPercent = percent;
+                fillStatistic(allGames, winPercent);
             }
         },teamKey);
-        fillStatistic(allGames, winPercent);
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -89,8 +93,11 @@ public class StatisticActivity extends AppCompatActivity {
         games = (TextView) findViewById(R.id.statistic_games);
         percent = (TextView) findViewById(R.id.statistic_games_prc);
 
+        winPercent = winPercent*100;
+        int percent100 = (int) winPercent;
+
         games.setText(String.valueOf(allGames));
-        percent.setText(String.valueOf(winPercent));
+        percent.setText(String.valueOf(percent100)+"%");
     }
 
 
