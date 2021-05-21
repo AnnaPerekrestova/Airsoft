@@ -18,6 +18,7 @@ import java.util.List;
 
 public class MembersGameAdapter extends RecyclerView.Adapter<MembersGameAdapter.MyViewHolder> {
 
+    FirebaseData fbData = FirebaseData.getInstance();
     private List<PlayerClass> membersList;
     private String gameKey;
 
@@ -31,6 +32,19 @@ public class MembersGameAdapter extends RecyclerView.Adapter<MembersGameAdapter.
             nickname = view.findViewById(R.id.recycler_nickname);
             fio = view.findViewById(R.id.recycler_fio);
             takePartFlag = view.findViewById(R.id.recycler_take_part_switch);
+            fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
+                @Override
+                public void onOrgFlagChanged(boolean orgFlag) {
+                    if (!orgFlag){
+                        takePartFlag.setEnabled(false);
+                    }
+                }
+
+                @Override
+                public void onOrgFlagNull(String no_info) {
+
+                }
+            });
         }
     }
 

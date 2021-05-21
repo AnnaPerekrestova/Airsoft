@@ -57,6 +57,21 @@ public class GameInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         GameID = intent.getStringExtra("gameID");
 
+        fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
+            @Override
+            public void onOrgFlagChanged(boolean orgFlag) {
+                if (!orgFlag){
+                    spinnerStatuses.setEnabled(false);
+                    winnerSpinner.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onOrgFlagNull(String no_info) {
+
+            }
+        });
+
         addListenerOnButton();
         getData();
 

@@ -53,6 +53,20 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         requestID=intent.getStringExtra("requestID");
 
+        fbData.getOrgFlag(new FirebaseData.orgFlagCallback() {
+            @Override
+            public void onOrgFlagChanged(boolean orgFlag) {
+                if (!orgFlag){
+                    spinnerSides = findViewById(R.id.request_to_game_info_side_spinner);
+                    spinnerSides.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onOrgFlagNull(String no_info) {
+
+            }
+        });
 
         getinfo();
 
