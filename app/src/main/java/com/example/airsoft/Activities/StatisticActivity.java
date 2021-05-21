@@ -21,11 +21,12 @@ import java.util.List;
 public class StatisticActivity extends AppCompatActivity {
 
     FirebaseData fbData = FirebaseData.getInstance();
-    String thisTeamKey;
     int allGames;
     double winPercent;
     TextView games;
     TextView percent;
+    String memberGames;
+    String memberPercent;
 
     private List<PlayerClass> membersList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -44,13 +45,12 @@ public class StatisticActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(statsAdapter);
 
-        addToMembersTable();
 
         fbData.getTeamKey(new FirebaseData.teamCallback() {
             @Override
             public void onTeamIdChanged(String teamKey) {
-                thisTeamKey=teamKey;
-                getStatistic(thisTeamKey);
+                getStatistic(teamKey);
+                addToMembersTable(teamKey);
             }
 
             @Override
@@ -59,21 +59,18 @@ public class StatisticActivity extends AppCompatActivity {
             }
         },fbData.getUserUID());
 
-
-
-
     }
 
     public void getStatistic(String teamKey){
         fbData.countTeamStatistic(new FirebaseData.countTeamStatisticCallback() {
             @Override
-            public void countTeamGames(int count) {
-                allGames = count;
+            public void countTeamGames(int games) {
+                allGames = games;
                 fillStatistic(allGames, winPercent);
             }
 
             @Override
-            public void percentOfTeamWins(double percent) {
+            public void countPercentOfTeamWins(double percent) {
                 winPercent = percent;
                 fillStatistic(allGames, winPercent);
             }
@@ -94,17 +91,37 @@ public class StatisticActivity extends AppCompatActivity {
     }
 
 
-    public void addToMembersTable(){
-        fbData.
+    public void addToMembersTable(final String teamKey){
+        fbData.getTeamMembersData(new FirebaseData.teamMembersDataCallback() {
+            @Override
+            public void onTeamMemberDataChanged(final String playerUID, final String nickname, String fio) {
+                fbData.countMemberStatistic(new FirebaseData.countMemberStatisticCallback() {
+
+                    @Override
+                    public void countMemberPercent(String games, String percent) {
+                        addRow(playerUID,nickname,games,percent);
+
+                    }
+                },teamKey,playerUID);
+            }
+        },teamKey);
+
+
     }
 
     private void addRow(String playerUID, String fio,String statsGames,String statsPercent) {
+        for (PlayerClass el: membersList){
+            if (el.getPlayerUID().equals(playerUID)){
+                membersList.remove(el);
+            }
+        }
+
         PlayerClass member = new PlayerClass(playerUID );
-        member.setFio(fio);
+        member.setPlayerUID(playerUID);
+        member.setNickname(fio);
         member.setStatisticGames(statsGames);
         member.setStatisticPercent(statsPercent);
         membersList.add(member);
-
         statsAdapter.notifyDataSetChanged();
     }
 

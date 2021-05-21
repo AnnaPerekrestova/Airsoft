@@ -75,7 +75,7 @@ public class MembersGameAdapter extends RecyclerView.Adapter<MembersGameAdapter.
         final boolean[] f = {false};
         holder.takePartFlag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
             {
                 final String userUID =member.getPlayerUID();
                 final FirebaseData fbData = new FirebaseData().getInstance();

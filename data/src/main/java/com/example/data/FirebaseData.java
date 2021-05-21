@@ -1458,7 +1458,7 @@ public class FirebaseData {
     //—————-по-идее будет считать статистику—————————-
     public interface countTeamStatisticCallback{
         void countTeamGames(int count);
-        void percentOfTeamWins(double percent);
+        void countPercentOfTeamWins(double percent);
     }
 
     public void countTeamStatistic(final countTeamStatisticCallback callback, final String teamID){
@@ -1483,7 +1483,7 @@ public class FirebaseData {
                                     double cntTeamGames = countTeamGames[0];
 //                                    double prc = percentOfTeamWins[0]/countTeamGames[0];
                                     double prc = prcOfTeamWins/cntTeamGames;
-                                    callback.percentOfTeamWins(prc);
+                                    callback.countPercentOfTeamWins(prc);
                                 }
                             }
                         },gameKey);
@@ -1498,12 +1498,41 @@ public class FirebaseData {
         });
     }
     public interface countMemberStatisticCallback{
-        void countMemberGames(String count);
-        void countMemberPercent(String percent);
+        void countMemberPercent(String games, String percent);
     }
 
-    public void countMemberStatistic(countMemberStatisticCallback callback, String teamID){
+    public void countMemberStatistic(final countMemberStatisticCallback callback, final String teamID, final String playerID){
+        final int[] countAllGames = {0};
+        final int[] countMemberGames = {0};
+        final int[] countMemberPercent = {0};
+        final DatabaseReference databaseRef = database.getReference("TakePartInTheGame");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener(){
 
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot games: snapshot.getChildren()){
+                    for (DataSnapshot teams: games.getChildren()) {
+                        if (teams.getKey().equals(teamID)) {
+                            countAllGames[0] += 1;
+                            if (teams.child(playerID).getValue()!=null) {
+                                if (teams.child(playerID).getValue().equals(true)) {
+                                    countMemberGames[0] += 1;
+                                    countMemberPercent[0] += 1;
+                                    double prc = countMemberPercent[0];
+                                    double cntGames = countAllGames[0];
+//                                    double prc = percentOfTeamWins[0]/countTeamGames[0];
+                                    double prc100 = prc / cntGames * 100;
+                                    callback.countMemberPercent(String.valueOf(countMemberGames[0]), String.valueOf((int) prc100) + "%");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
 
