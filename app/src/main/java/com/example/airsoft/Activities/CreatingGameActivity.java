@@ -1,14 +1,12 @@
 package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,20 +17,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 import java.util.Calendar;
 import java.util.List;
 
 public class CreatingGameActivity extends AppCompatActivity {
-
     TextView currentDateTime;
     Calendar dateAndTime = Calendar.getInstance();
     Spinner spinnerPolygons;
     String selectedPolygon;
     FirebaseData fbData = FirebaseData.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +38,6 @@ public class CreatingGameActivity extends AppCompatActivity {
         setInitialDateTime();
         addListenerOnButton();
     }
-
     //----------отображаем диалоговое окно для выбора даты---------------------------------------------------------
     public void setDate(View v) {
         new DatePickerDialog(CreatingGameActivity.this, d,
@@ -52,7 +46,6 @@ public class CreatingGameActivity extends AppCompatActivity {
                 dateAndTime.get(Calendar.DAY_OF_MONTH))
                 .show();
     }
-
     //---------отображаем диалоговое окно для выбора времени-----------------------------------------------------
     public void setTime(View v) {
         new TimePickerDialog(CreatingGameActivity.this, t,
@@ -60,32 +53,30 @@ public class CreatingGameActivity extends AppCompatActivity {
                 dateAndTime.get(Calendar.MINUTE), true)
                 .show();
     }
-
     //------------установка начальных даты и времени----------------------------------------------------------------
     private void setInitialDateTime() {
-
         currentDateTime.setText(DateUtils.formatDateTime(this,
                 dateAndTime.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
                         | DateUtils.FORMAT_SHOW_TIME));
     }
     //-----------установка обработчика выбора времени----------------------------------------------------------
-    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            dateAndTime.set(Calendar.MINUTE, minute);
-            setInitialDateTime();
-        }
-    };
+        TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                dateAndTime.set(Calendar.MINUTE, minute);
+                setInitialDateTime();
+            }
+        };
     //-----------установка обработчика выбора даты---------------------------------------------------------------
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, monthOfYear);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setInitialDateTime();
-        }
-    };
+        DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dateAndTime.set(Calendar.YEAR, year);
+                dateAndTime.set(Calendar.MONTH, monthOfYear);
+                dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                setInitialDateTime();
+            }
+        };
 
     private void createPolygonSpinner(){
         spinnerPolygons = findViewById(R.id.new_game_polygons_spinner);
@@ -103,9 +94,6 @@ public class CreatingGameActivity extends AppCompatActivity {
                 spinnerPolygons.setAdapter(adapterPolygons);
             }
         });
-
-
-
 
         spinnerPolygons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

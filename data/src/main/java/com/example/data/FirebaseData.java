@@ -1,5 +1,4 @@
 package com.example.data;
-
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,22 +10,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-//-----Singleton----------------------------------------------------------------------------------
 public class FirebaseData {
     private static volatile FirebaseData instance;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     public FirebaseData(){}
 
     public static FirebaseData getInstance() {
-        // Техника, которую мы здесь применяем называется «блокировка с двойной
-        // проверкой» (Double-Checked Locking). Она применяется, чтобы
-        // предотвратить создание нескольких объектов-одиночек, если метод будет
-        // вызван из нескольких потоков одновременно.
+        //-----Singleton-------------
         FirebaseData result = instance;
         if (result != null) {
             return result;
@@ -88,16 +82,13 @@ public class FirebaseData {
 
                   }
                   @Override
-                  public void onCancelled(@NonNull DatabaseError error) {
-                  }
+                  public void onCancelled(@NonNull DatabaseError error) {}
               });
 
           }
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-          }
-      }
-    );
+          public void onCancelled(@NonNull DatabaseError error) {          }
+      });
     }
 
 //-------------получаем orgcomKey и orgcomName оргкомитета, к которому прикреплен активный пользователь----------------------------------------------------------
@@ -487,7 +478,6 @@ public class FirebaseData {
     public void getPersonInfo(final personInfoCallback callback, String personUID){
         DatabaseReference databaseRef = database.getReference("PersonInfo");
         databaseRef.child(personUID).addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshotInfo) {
                 if ((boolean) dataSnapshotInfo.child("OrgFlag").getValue()){
@@ -625,14 +615,10 @@ public class FirebaseData {
                     }
 
                     @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
             @Override
@@ -687,14 +673,10 @@ public class FirebaseData {
                     }
 
                     @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
             @Override
@@ -794,18 +776,13 @@ public class FirebaseData {
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-            }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) { }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
     public void cancelRequest(String requestKey){
@@ -835,7 +812,6 @@ public class FirebaseData {
                 DatabaseReference db_polygonOrgcomID = database.getReference("Polygons/"+newPolygonKey+"/PolygonOrgcomID");
                 DatabaseReference db_polygonName = database.getReference("Polygons/"+newPolygonKey+"/PolygonName");
                 DatabaseReference db_polygonAddress = database.getReference("Polygons/"+newPolygonKey+"/PolygonAddress");
-//                DatabaseReference db_polygonActuality = database.getReference("Polygons/"+newPolygonKey+"/PolygonActuality");
                 DatabaseReference db_polygonDescription = database.getReference("Polygons/"+newPolygonKey+"/PolygonDescription");
                 DatabaseReference db_polygonLatitude = database.getReference("Polygons/"+newPolygonKey+"/PolygonLatitude");
                 DatabaseReference db_polygonLongitude = database.getReference("Polygons/"+newPolygonKey+"/PolygonLongitude");
@@ -843,7 +819,6 @@ public class FirebaseData {
                 db_polygonOrgcomID.setValue(orgcomKey);
                 db_polygonName.setValue(polygonName);
                 db_polygonAddress.setValue(polygonAddress);
-//                db_polygonActuality.setValue(true);
                 db_polygonDescription.setValue(polygonDescription);
                 db_polygonLatitude.setValue(polygonLatitude);
                 db_polygonLongitude.setValue(polygonLongitude);
@@ -875,7 +850,6 @@ public class FirebaseData {
                         if (polygonKey != null) {
                             String polygonName =  (String)snapshot.child("PolygonName").getValue();
                             String polygonAddress =  (String)snapshot.child("PolygonAddress").getValue();
-//                            boolean polygonActuality =  (boolean) snapshot.child("PolygonActuality").getValue();
                             String polygonDescription =  (String)snapshot.child("PolygonDescription").getValue();
                             Double polygonLatitude = (Double)snapshot.child("PolygonLatitude").getValue();
                             Double polygonLongitude = (Double)snapshot.child("PolygonLongitude").getValue();
@@ -902,14 +876,10 @@ public class FirebaseData {
                     }
 
                     @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
 
@@ -941,6 +911,7 @@ public class FirebaseData {
             }
         });
     }
+//------------------------------получаем информацию о полигоне-------------------------------------------------
     public interface polygonInfoCallback{
         void onPolygonInfoChanged(String polygonName, String polygonAddress, String polygonOrgcomID,  String polygonDescription, Double polygonLatitude, Double polygonLongitude);
     }
@@ -1113,23 +1084,16 @@ public class FirebaseData {
                                            String polygonID, String gameStatus, String gameDescription);
         void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate,
                                            String polygonID, String gameStatus, String gameDescription, String gameWinner);
-//        void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate,
-//                                             String polygonID, String gameStatus, String gameDescription);
         void onOpeningGamesOfTeamChanged();
         void onClosedGamesOfTeamChanged();
         void onRunningGamesOfTeamChanged();
         void onHappensGamesOfTeamChanged();
-//        void onCancelledGamesOfTeamChanged();
     }
     public void gamesOfTeam(final gamesOfTeamCallback callback){
         getTeamKey(new teamCallback() {
             @Override
             public void onTeamIdChanged(String teamKey) {
-
                 DatabaseReference games = database.getReference("Games");
-
-                DatabaseReference requsts = database.getReference("RequestsToGame");
-                
 
                 games.addChildEventListener(new ChildEventListener() {
                     @Override
@@ -1151,9 +1115,6 @@ public class FirebaseData {
                             if (gameStatus.equals("набор на игру закрыт")){
                                 callback.onClosedGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
-//                    if (gameStatus.equals("игра отменена")){
-//                        callback.(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
-//                    }
                             if (gameStatus.equals("игра идет")){
                                 callback.onRunningGamesOfTeamChanged(gameKey,gameOrgcomID,gameName,gameDate,gamePolygonID,gameStatus,gameDescription);
                             }
@@ -1180,9 +1141,6 @@ public class FirebaseData {
                             if (gameStatus.equals("набор на игру закрыт")){
                                 callback.onClosedGamesOfTeamChanged();
                             }
-//                    if (gameStatus.equals("игра отменена")){
-//                        callback.onCancelledGamesOfOrgcomChanged();
-//                    }
                             if (gameStatus.equals("игра идет")) {
                                 callback.onRunningGamesOfTeamChanged();
                             }
@@ -1196,7 +1154,6 @@ public class FirebaseData {
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         callback.onOpeningGamesOfTeamChanged();
                         callback.onClosedGamesOfTeamChanged();
-//                callback.onCancelledGamesOfOrgcomChanged();
                         callback.onRunningGamesOfTeamChanged();
                         callback.onHappensGamesOfTeamChanged();
                     }
@@ -1214,12 +1171,9 @@ public class FirebaseData {
 
             }
         }, getUserUID());
-
-
-
-
-
     }
+
+//-------------------------------------получение информации об игре---------------------------------------------------------
     public interface gameInfoCallback{
         void onGameInfoChanged(String orgcomID, String gameName, String gameDate,
                                   String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides);
@@ -1252,7 +1206,7 @@ public class FirebaseData {
         });
     }
 
-    //----------создание в БД новой записи заявки на участие команды в игре-----------------------------
+//----------создание в БД новой записи заявки на участие команды в игре-----------------------------
     public void requestToGame(String orgcomID, String gameID, String teamID, String reqGameDescr, String playersCount, String reqGameStatus,  boolean payment){
         //--------generate random key-------------------------------------------------------------------------
         String newKey = database.getReference("quiz").push().getKey();
@@ -1283,7 +1237,7 @@ public class FirebaseData {
     }
     //-------------------получаем информацию о заявке---------------------
     public interface requestToGameInfoCallback{
-        void onRequestToGameInfoChanged(String gameID, String orgcomID ,boolean payment, String playersCount, String description, String status, String teamID);
+        void onRequestToGameInfoChanged(String gameID, String orgcomID ,boolean payment, String playersCount, String description, String status, String teamID, String side);
     }
     public void getRequestToGameInfo(final requestToGameInfoCallback callback, final String requestKey){
         final DatabaseReference databaseReference = database.getReference("RequestsToGame");
@@ -1297,16 +1251,19 @@ public class FirebaseData {
                 final String description= (String) snapshot.child("RequestGameDescription").getValue();
                 final String status= (String) snapshot.child("RequestGameStatus").getValue();
                 final String teamID= (String) snapshot.child("TeamID").getValue();
-                callback.onRequestToGameInfoChanged(gameID, orgcomID, payment, playersCount, description, status, teamID);
+                if (snapshot.child("Side").getValue()!=null){
+                    final String side= (String) snapshot.child("Side").getValue();
+                    callback.onRequestToGameInfoChanged(gameID, orgcomID, payment, playersCount, description, status, teamID, side);
+                }else{
+                    callback.onRequestToGameInfoChanged(gameID, orgcomID, payment, playersCount, description, status, teamID, null);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
-    //--------------получаем список заявок участия в игре-------------------------------
+//--------------получаем список заявок на участие в игре-------------------------------
 //------------два callback'a - один для принятых, другой только для тех, которые рассматриваются и отклонены----------------
 //-------------проверяем изменения в списке заявок в команду, к которой прикреплен текущий пользователь--------------------
     public interface requestsToGameListIfChangedCallback{
@@ -1355,16 +1312,11 @@ public class FirebaseData {
             }
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-
     }
 
     //------------проверяем смену статуса заявки на игру, обрабатываем одобрение и отклонение заявки------------------------------
@@ -1437,25 +1389,29 @@ public class FirebaseData {
             }
         });
     }
+//----------------------новая запись об участии игрока в игре--------------------------------------------------
     public void takePartInTheGame(String gameKey, String teamID, String userUID, boolean f){
         DatabaseReference db_userUID = database.getReference("TakePartInTheGame/"+gameKey+"/"+teamID+"/"+userUID);
         db_userUID.setValue(f);
     }
+//-------------------------------смена статуса игры -----------------------------------------------------------
     public void changeGameStatus(String gameKey, String gameStatus){
         DatabaseReference db_gameStatus = database.getReference("Games/"+gameKey+"/GameStatus");
         db_gameStatus.setValue(gameStatus);
     }
+//-----------------------------смена или запись победителя в игре----------------------------------------------
     public void changeGameWinner(String gameKey, String gameWinner){
         DatabaseReference db_gameStatus = database.getReference("Games/"+gameKey+"/GameWinner");
         db_gameStatus.setValue(gameWinner);
     }
+//---------------------------смена или запись стороны команды (заявки) в игре------------------------------------
     public void changeRequestToGameSide(String requestKey, String side){
         DatabaseReference db_side = database.getReference("RequestsToGame/"+requestKey+"/Side");
         db_side.setValue(side);
     }
 
 
-    //—————-по-идее будет считать статистику—————————-
+//----------------------------подсчет статистики команды-----------------------------------------------------------
     public interface countTeamStatisticCallback{
         void countTeamGames(int count);
         void countPercentOfTeamWins(double percent);
@@ -1497,6 +1453,7 @@ public class FirebaseData {
             }
         });
     }
+//-----------------------------------------подсчтет статистики по игроку-------------------------------------------------------
     public interface countMemberStatisticCallback{
         void countMemberPercent(String games, String percent);
     }
@@ -1534,89 +1491,4 @@ public class FirebaseData {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-
-
-
 }
-
-
-//public interface myRequestsListCallback{
-//    void onMyRequestsListChanged(String requestKey, String userUID,String teamName ,String status);
-//}
-//
-//    public void getMyRequest(final myRequestsListCallback callback){
-//        DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
-//        final Query databaseQuery = databaseRef.orderByChild("UserUID").equalTo(getUserUID());
-//        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot == null) return;
-//                else{
-//                    for (DataSnapshot postSnapShot: snapshot.getChildren()) {
-//                        final String requestKey = postSnapShot.getKey().toString();
-//                        String teamKey = (String) postSnapShot.child("TeamKey").getValue();
-//                        final String status = (String) postSnapShot.child("Status").getValue();
-//
-//                        getTeamInfo(new teamInfoCallback() {
-//                            @Override
-//                            public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
-//                                callback.onMyRequestsListChanged(requestKey, getUserUID(), teamName, status);
-//                            }
-//                        }, teamKey);
-//
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });
-//    }
-
-//    public interface requestsToMyTeamListCallback{
-//        void onAllRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
-//        void onFilteredRequestsToMyTeamListChanged(String requestKey,String playerUID,String teamName ,String status);
-//    }
-//
-//    public void getRequestRequestsToMyTeam(final requestsToMyTeamListCallback callback) {
-//        final DatabaseReference databaseRef = database.getReference("RequestsToConnectTeam");
-//        getTeamKey(new teamCallback() {
-//            @Override
-//            public void onTeamIdChanged(String teamKey) {
-//                final Query databaseQuery = databaseRef.orderByChild("TeamKey").equalTo(teamKey);
-//                databaseQuery.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        if (snapshot == null) return;
-//                        else {
-//                            for (DataSnapshot postSnapShot : snapshot.getChildren()) {
-//                                final String requestKey = postSnapShot.getKey();
-//                                String teamKey = (String) postSnapShot.child("TeamKey").getValue();
-//                                final String playerUID = (String) postSnapShot.child("UserUID").getValue();
-//                                final String status = (String) postSnapShot.child("Status").getValue();
-//                                if (status!=null) {
-//
-//                                    getTeamInfo(new teamInfoCallback() {
-//                                        @Override
-//                                        public void onTeamInfoChanged(String teamName, String teamCity, String teamYear) {
-//                                            callback.onAllRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
-//                                            if (status.equals("рассматривается")) {
-//                                                callback.onFilteredRequestsToMyTeamListChanged(requestKey, playerUID, teamName, status);
-//                                            }
-//                                        }
-//                                    }, teamKey);
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                    }
-//                });
-//            }
-//            @Override
-//            public void onTeamNameChanged(String teamName) {
-//            }
-//        });
-//    }

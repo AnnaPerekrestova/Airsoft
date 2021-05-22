@@ -1,22 +1,20 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
 import com.example.airsoft.Adapters.GamesAdapter;
-import com.example.airsoft.Adapters.PolygonsAdapter;
 import com.example.airsoft.Classes.GameClass;
-import com.example.airsoft.Classes.PolygonClass;
+import com.example.airsoft.R;
+import com.example.airsoft.RecyclerTouchListener;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.example.data.FirebaseData;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,29 +70,28 @@ public class GamesListActivity extends AppCompatActivity {
 //
 //        }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
     public void updateRecycler(){
 
         if (listType.equals("playerSearch")|listType.equals("playerPlaning")|listType.equals("playerPrev")){
             fbData.gamesOfTeam(new FirebaseData.gamesOfTeamCallback() {
                 @Override
-                public void onOpeningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
-                }
+                public void onOpeningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
-                }
+                public void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
-                }
+                public void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
-
-                }
+                public void onHappensGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) { }
 
                 @Override
                 public void onOpeningGamesOfTeamChanged() {
@@ -106,9 +103,7 @@ public class GamesListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onClosedGamesOfTeamChanged() {
-
-                }
+                public void onClosedGamesOfTeamChanged() { }
 
                 @Override
                 public void onRunningGamesOfTeamChanged() {
@@ -118,7 +113,6 @@ public class GamesListActivity extends AppCompatActivity {
                         gamesAdapter.notifyDataSetChanged();
 
                     }
-
                 }
 
                 @Override
@@ -137,24 +131,19 @@ public class GamesListActivity extends AppCompatActivity {
 
             fbData.gamesOfOrgcom(new FirebaseData.gamesOfOrgcomCallback() {
                 @Override
-                public void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-                }
+                public void onOpeningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-                }
+                public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-                }
+                public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) {
-                }
+                public void onHappensGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner) { }
 
                 @Override
-                public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-                }
+                public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
                 public void onOpeningGamesOfOrgcomChanged() {
@@ -167,9 +156,7 @@ public class GamesListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onClosedGamesOfOrgcomChanged() {
-
-                }
+                public void onClosedGamesOfOrgcomChanged() { }
 
                 @Override
                 public void onRunningGamesOfOrgcomChanged() {
@@ -209,9 +196,7 @@ public class GamesListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
-                }
+                public void onClosedGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
                 public void onRunningGamesOfTeamChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
@@ -228,24 +213,16 @@ public class GamesListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onOpeningGamesOfTeamChanged() {
-
-                }
+                public void onOpeningGamesOfTeamChanged() { }
 
                 @Override
-                public void onClosedGamesOfTeamChanged() {
-
-                }
+                public void onClosedGamesOfTeamChanged() { }
 
                 @Override
-                public void onRunningGamesOfTeamChanged() {
-
-                }
+                public void onRunningGamesOfTeamChanged() { }
 
                 @Override
-                public void onHappensGamesOfTeamChanged() {
-
-                }
+                public void onHappensGamesOfTeamChanged() { }
             });
         }
         else {
@@ -261,9 +238,7 @@ public class GamesListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
-                }
+                public void onClosedGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
                 public void onRunningGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
@@ -280,34 +255,22 @@ public class GamesListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) {
-
-                }
+                public void onCancelledGamesOfOrgcomChanged(String gameKey, String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription) { }
 
                 @Override
-                public void onOpeningGamesOfOrgcomChanged() {
-
-                }
+                public void onOpeningGamesOfOrgcomChanged() { }
 
                 @Override
-                public void onClosedGamesOfOrgcomChanged() {
-
-                }
+                public void onClosedGamesOfOrgcomChanged() { }
 
                 @Override
-                public void onRunningGamesOfOrgcomChanged() {
-
-                }
+                public void onRunningGamesOfOrgcomChanged() { }
 
                 @Override
-                public void onHappensGamesOfOrgcomChanged() {
-
-                }
+                public void onHappensGamesOfOrgcomChanged() { }
 
                 @Override
-                public void onCancelledGamesOfOrgcomChanged() {
-
-                }
+                public void onCancelledGamesOfOrgcomChanged() { }
             });
         }
     }

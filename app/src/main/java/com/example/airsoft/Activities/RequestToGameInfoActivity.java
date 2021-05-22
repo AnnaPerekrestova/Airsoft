@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,9 +16,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.airsoft.Adapters.MembersGameAdapter;
 import com.example.airsoft.Classes.PlayerClass;
+import com.example.airsoft.R;
+import com.example.airsoft.RecyclerViewDecorator;
 import com.example.data.FirebaseData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RequestToGameInfoActivity extends AppCompatActivity {
@@ -69,13 +72,21 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
         });
 
         getinfo();
-
         addListenerOnButton();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
     public void getinfo(){
         fbData.getRequestToGameInfo(new FirebaseData.requestToGameInfoCallback() {
             @Override
-            public void onRequestToGameInfoChanged(String gameID, String orgcomID, boolean payment, String playersCount, String description, String status, final String teamID) {
+            public void onRequestToGameInfoChanged(String gameID, String orgcomID, boolean payment, String playersCount, String description, String status, final String teamID, final String side) {
 
                 recyclerView = findViewById(R.id.recycler_registration);
 //------Добавляем разделение между строками в RecyclerView ------------------------------------------------------
@@ -102,7 +113,7 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
                             @Override
                             public void onTeamInfoChanged(String teamName, String teamCity, String teamYear, String teamDescription) {
                                 teamname = teamName;
-                                fillInfo(gamename, teamname, pcount, istatus, paymentf, descr);
+                                fillInfo(gamename, teamname, pcount, istatus, paymentf, descr, side);
                             }
                         }, teamID);
 
@@ -123,7 +134,7 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void fillInfo(String gamename, String teamname, String pcount, String istatus, boolean paymentf, String descr){
+    public void fillInfo(String gamename, String teamname, String pcount, String istatus, boolean paymentf, String descr, String side){
         gname = (TextView) findViewById(R.id.request_to_game_info_gamename);
         tname = (TextView) findViewById(R.id.request_to_game_info_teamname);
         plcount = (TextView) findViewById(R.id.request_to_game_info_players_count);
@@ -136,6 +147,11 @@ public class RequestToGameInfoActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterSide = new ArrayAdapter<String>(RequestToGameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
         adapterSide.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSides.setAdapter(adapterSide);
+        if (side!=null) {
+            int sideFromDBIndex = Arrays.asList(sidesList).indexOf(side);
+            spinnerSides.setSelection(sideFromDBIndex);
+        }
+
         spinnerSidesListener();
 
         gname.setText(gamename);

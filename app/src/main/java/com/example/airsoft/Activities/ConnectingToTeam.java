@@ -1,19 +1,16 @@
 package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 
 public class ConnectingToTeam extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +40,6 @@ public class ConnectingToTeam extends AppCompatActivity {
                                 public void onTeamExistChanged(boolean f, String teamName) {
                                     if (f) {
                                         //--высвечиваем уведомление о причоединении к команде---------------------------------
-
                                         Toast.makeText(ConnectingToTeam.this, "Вы успешно присоединены к команде " + teamName + "!",
                                                 Toast.LENGTH_SHORT).show();
                                         //--уходим на главную активность------------------------------------------------------
@@ -57,11 +53,8 @@ public class ConnectingToTeam extends AppCompatActivity {
                                 }
                             }, key);
                         }
-
                     }
-                }
-
-        );
+                });
         create_team.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -70,9 +63,7 @@ public class ConnectingToTeam extends AppCompatActivity {
                         finish();
                         startActivity(i);
                     }
-                }
-
-        );
+                });
         search_team.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -81,9 +72,7 @@ public class ConnectingToTeam extends AppCompatActivity {
                         finish();
                         startActivity(i);
                     }
-                }
-
-        );
+                });
 
     }
 }

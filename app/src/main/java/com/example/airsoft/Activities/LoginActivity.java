@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.airsoft.NotificationService;
 import com.example.airsoft.R;
-import com.example.airsoft.StartActivity;
 import com.example.data.FirebaseData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

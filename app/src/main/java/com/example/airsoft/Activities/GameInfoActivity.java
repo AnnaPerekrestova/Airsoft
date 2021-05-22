@@ -1,15 +1,9 @@
 package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,24 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
-import com.example.airsoft.RecyclerViewDecorator;
-import com.example.data.FirebaseData;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class GameInfoActivity extends AppCompatActivity {
 
@@ -44,7 +21,6 @@ public class GameInfoActivity extends AppCompatActivity {
     String PolygonID;
     String OrgcomID;
     String GameStatus;
-
     Spinner spinnerStatuses;
     Spinner winnerSpinner;
 
@@ -73,6 +49,7 @@ public class GameInfoActivity extends AppCompatActivity {
         });
 
         addListenerOnButton();
+        winnerSpinnerListener();
         getData();
 
     }
@@ -81,7 +58,7 @@ public class GameInfoActivity extends AppCompatActivity {
         fbData.getGameInfo(new FirebaseData.gameInfoCallback() {
             @Override
             public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {
-                fillGameInfo(gameName, gameDate, gameDescription, gameSides);
+                fillGameInfo(gameName, gameDate, gameDescription, gameSides, gameWinner);
                 PolygonID = polygonID;
                 OrgcomID = orgcomID;
                 GameStatus = gameStatus;
@@ -103,9 +80,6 @@ public class GameInfoActivity extends AppCompatActivity {
                 }
                 if (gameStatus.equals("игра прошла")){
 
-                    winnerSpinner.setVisibility(View.VISIBLE);
-
-
                     String[] statusesList= {"игра прошла"};
                     ArrayAdapter<String> adapterStatuses = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, statusesList);
                     adapterStatuses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -113,7 +87,6 @@ public class GameInfoActivity extends AppCompatActivity {
                     statusSpinnerListener();
 
                     winnerSpinner.setVisibility(View.VISIBLE);
-                    winnerSpinnerListener();
                 }
 
             }
@@ -147,17 +120,12 @@ public class GameInfoActivity extends AppCompatActivity {
                         finish();
                         startActivity(getIntent());
                         winnerSpinner.setVisibility(View.VISIBLE);
-                        winnerSpinnerListener();
                     }
                 }
-
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {            }
         });
 
     }
@@ -168,13 +136,10 @@ public class GameInfoActivity extends AppCompatActivity {
                 // Получаем выбранный объект
                 String selectedWinner = (String) parent.getItemAtPosition(position);
                 fbData.changeGameWinner(GameID,selectedWinner);
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {            }
         });
     }
 
@@ -208,7 +173,7 @@ public class GameInfoActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    private void fillGameInfo(String name, String date, String descr, String gameSides){
+    private void fillGameInfo(String name, String date, String descr, String gameSides, String gameWinner){
 
         TextView gname = (TextView) findViewById(R.id.game_info_name);
         TextView gdate = (TextView) findViewById(R.id.GameDataTime);
@@ -225,6 +190,10 @@ public class GameInfoActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterWinner = new ArrayAdapter<String>(GameInfoActivity.this, android.R.layout.simple_spinner_item, sidesList);
         adapterWinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         winnerSpinner.setAdapter(adapterWinner);
-        winnerSpinnerListener();
+
+        if (gameWinner!=null) {
+            int winnerFromDBIndex = Arrays.asList(sidesList).indexOf(gameWinner);
+            winnerSpinner.setSelection(winnerFromDBIndex);
+        }
     }
 }

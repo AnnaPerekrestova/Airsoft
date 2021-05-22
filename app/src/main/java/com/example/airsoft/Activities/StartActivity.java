@@ -1,4 +1,4 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.airsoft.Activities.MainActivity;
+import com.example.airsoft.NotificationService;
+import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -94,7 +94,7 @@ public class RequestsToGame extends AppCompatActivity {
     private void addRow(final String requestKey, final String teamName,final boolean payment, final String status) {
         fbData.getRequestToGameInfo(new FirebaseData.requestToGameInfoCallback() {
             @Override
-            public void onRequestToGameInfoChanged(String gameID, String orgcomID, final boolean payment, final String playersCount, final String description, final String status, String teamID) {
+            public void onRequestToGameInfoChanged(String gameID, String orgcomID, final boolean payment, final String playersCount, final String description, final String status, String teamID, String side) {
                 fbData.getGameInfo(new FirebaseData.gameInfoCallback() {
                     @Override
                     public void onGameInfoChanged(String orgcomID, String gameName, String gameDate, String polygonID, String gameStatus, String gameDescription, String gameWinner, String gameSides) {

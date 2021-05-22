@@ -1,13 +1,10 @@
 package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 import com.google.android.gms.maps.CameraUpdateFactory;

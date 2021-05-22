@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/multicam"
-    tools:context=".CreatingRequestToGame">
+    tools:context=".Activities.CreatingRequestToGame">
 
 
     <ScrollView

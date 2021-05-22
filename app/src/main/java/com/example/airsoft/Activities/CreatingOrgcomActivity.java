@@ -1,19 +1,16 @@
 package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 
 public class CreatingOrgcomActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +40,6 @@ public class CreatingOrgcomActivity extends AppCompatActivity {
                             findViewById(R.id.connecting_members_to_orgcom).setVisibility(View.VISIBLE);
                             findViewById(R.id.new_orgcom_key).setVisibility(View.VISIBLE);
                             findViewById(R.id.create_orgcom_next).setVisibility(View.VISIBLE);
-
-
-                            //key.selectAll();
                         }
                         else {
                             //------если не заполнено, то просим заполнить-----------------------------------

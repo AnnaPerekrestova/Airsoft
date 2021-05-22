@@ -1,18 +1,14 @@
 package com.example.airsoft.Activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.airsoft.R;
-import com.example.airsoft.StartActivity;
 import com.example.data.FirebaseData;
 
 public class MainOrgcomActivity extends AppCompatActivity {

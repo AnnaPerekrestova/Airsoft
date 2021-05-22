@@ -1,21 +1,17 @@
-package com.example.airsoft;
+package com.example.airsoft.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.airsoft.Activities.CreatingPolygon;
+import com.example.airsoft.R;
 import com.example.data.FirebaseData;
 
 public class CreatingRequestToGame extends AppCompatActivity {
-
     FirebaseData fbData = FirebaseData.getInstance();
-
     String orgcomID;
     String gameID;
     String teamID;
@@ -23,7 +19,6 @@ public class CreatingRequestToGame extends AppCompatActivity {
     String playersCount;
     String reqGameStatus;
     boolean payment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +38,7 @@ public class CreatingRequestToGame extends AppCompatActivity {
             }
 
             @Override
-            public void onTeamNameChanged(String teamName) {
-
-            }
+            public void onTeamNameChanged(String teamName) {}
         },fbData.getUserUID());
 
         addListenerOnButton();
